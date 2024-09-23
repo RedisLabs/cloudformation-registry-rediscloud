@@ -1,0 +1,210 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  ProSubscription:
+    Type: Redis::CloudFormation::ProSubscription
+    Properties:
+      SubscriptionName: !Ref SubscriptionName
+      BaseUrl: !Ref BaseUrl
+      DryRun: !Ref DryRun
+      DeploymentType: !Ref DeploymentType
+      PaymentMethod: !Ref PaymentMethod
+      PaymentMethodId: !Ref PaymentMethodId
+      MemoryStorage: !Ref MemoryStorage
+      Provider: !Ref Provider
+      CloudAccountId: !Ref CloudAccountId
+      Region: !Ref Region
+      MultipleAvailabilityZones: !Ref MultipleAvailabilityZones
+      PreferredAvailabilityZones: !Ref PreferredAvailabilityZones
+      DeploymentCIDR: !Ref DeploymentCIDR
+      VpcId: !Ref VpcId
+      DatabaseName: !Ref DatabaseName
+      Protocol: !Ref Protocol
+      DatasetSizeInGb: !Ref DatasetSizeInGb
+      SupportOSSClusterApi: !Ref SupportOSSClusterApi
+      DataPersistence: !Ref DataPersistence
+      Replication: !Ref Replication
+      By: !Ref By
+      Value: !Ref Value
+      LocalThroughputMeasurementRegion: !Ref LocalThroughputMeasurementRegion
+      WriteOperationsPerSecond: !Ref WriteOperationsPerSecond
+      ReadOperationsPerSecond: !Ref ReadOperationsPerSecond
+      ModuleName: !Ref ModuleName
+      ModuleParameters: !Ref ModuleParameters
+      Quantity: !Ref Quantity
+      AverageItemSizeInBytes: !Ref AverageItemSizeInBytes
+      RespVersion: !Ref RespVersion
+      QueryPerformanceFactor: !Ref QueryPerformanceFactor
+      RedisVersion: !Ref RedisVersion
+
+Parameters:
+  SubscriptionName:
+    Type: String
+    Description: "[Optional]. Subscription name. Example: My new subscription"
+    Default: "Sub155"
+  BaseUrl:
+    Type: String
+    Description: "The Base URL where the API calls are sent."
+    Default: "https://api-k8s-cloudapi.qa.redislabs.com"
+  DryRun:
+    Type: String
+    Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
+  DeploymentType:
+    Type: String
+    Description: "[Optional]. Creates a single region subscription. Example: single-region"
+  PaymentMethod:
+    Type: String
+    Description: "[Optional]. Payment method for the requested subscription. If credit card is specified, the payment method Id must be defined. Default: 'credit-card'"
+  PaymentMethodId:
+    Type: String
+    Description: "[Optional]. A valid payment method that was pre-defined in the current account. This value is Optional if 'paymentMethod' is 'marketplace', but Required for all other account types."
+    Default: 33292
+  MemoryStorage:
+    Type: String
+    Description: "[Optional]. Optional. Memory storage preference: either 'ram' or a combination of 'ram-and-flash'. Example: ram. Default: 'ram'"
+  Provider:
+    Type: String
+    Description: "[Optional]. Cloud provider. Example: AWS. Default: 'AWS'"
+  CloudAccountId:
+    Type: String
+    Description: "[Optional]. Cloud account identifier. Default: Redis internal cloud account (using Cloud Account Id = 1 implies using Redis internal cloud account). Note that a GCP subscription can be created only with Redis internal cloud account.Example: 1. Default: 1"
+  Region:
+    Type: String
+    Description: "[Required]. Deployment region as defined by cloud provider. Example: us-east-1"
+    Default: us-east-1
+  MultipleAvailabilityZones:
+    Type: String
+    Description: "[Optional]. Support deployment on multiple availability zones within the selected region. Example: false. Default: 'false'"
+  PreferredAvailabilityZones:
+    Type: String
+    Description: "[Optional]. Availability zones deployment preferences (for the selected provider & region). If 'multipleAvailabilityZones' is set to 'true', you must specify three availability zones. In AWS Redis internal cloud account, set the zone IDs (for example: ['use-az2', 'use-az3', 'use-az5'])"
+  DeploymentCIDR:
+    Type: String
+    Description: "[Required]. Deployment CIDR mask. Example: 10.0.0.0/24. Default: If using Redis internal cloud account, 192.168.0.0/24"
+  VpcId:
+    Type: String
+    Description: "[Optional]. Either an existing VPC Id (already exists in the specific region) or create a new VPC (if no VPC is specified). VPC Identifier must be in a valid format (for example: 'vpc-0125be68a4625884ad') and existing within the hosting account"
+  DatabaseName:
+    Type: String
+    Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
+    Default: db1
+  Protocol:
+    Type: String
+    Description: "[Optional]. Database protocol: either 'redis' or 'memcached'. Default: 'redis'"
+  DatasetSizeInGb:
+    Type: String
+    Description: "[Optional]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value."
+    Default: "1"
+  SupportOSSClusterApi:
+    Type: String
+    Description: "[Optional]. Support Redis open-source (OSS) Cluster API. Default: 'false'"
+  DataPersistence:
+    Type: String
+    Description: "[Optional]. Rate of database data persistence (in persistent storage). Example: none. Default: 'none'"
+  Replication:
+    Type: String
+    Description: "[Optional]. Databases replication. Default: 'true'"
+  By:
+    Type: String
+    Description: "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
+  Value:
+    Type: String
+    Description: "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000. Default: 25000 ops/sec"
+  LocalThroughputMeasurementRegion:
+    Type: String
+    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database"
+  WriteOperationsPerSecond:
+    Type: String
+    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database. Example: 1000. Default: 1000 ops/sec"
+  ReadOperationsPerSecond:
+    Type: String
+    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database. Example: 1000. Default: 1000 ops/sec"
+  ModuleName:
+    Type: String
+    Description: "[Required only to enable modules]. Redis module Id"
+  ModuleParameters:
+    Type: String
+    Description: "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
+  Quantity:
+    Type: String
+    Description: "[Optional]. Number of databases (of this type) that will be created. Default: 1"
+  AverageItemSizeInBytes:
+    Type: String
+    Description: "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
+  RespVersion:
+    Type: String
+    Description: "[Optional]. RESP version must be compatible with Redis version. Example: resp3. Allowed values: resp2/resp3."
+  QueryPerformanceFactor:
+    Type: String
+    Description: "[Optional]. Query performance factor. Example: 2x"
+  RedisVersion:
+    Type: String
+    Description: "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
+
+#Metadata block is used to separate parameters displayed upon stack creation in a more organised order.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - 
+       Label: 
+         default: "Subscription Parameters"
+       Parameters:
+         - BaseUrl
+         - SubscriptionName
+         - DryRun
+         - DeploymentType
+         - PaymentMethod
+         - PaymentMethodId
+         - MemoryStorage
+         - RedisVersion
+      - 
+       Label: 
+         default: "cloudProviders"
+       Parameters:
+         - Provider
+         - CloudAccountId
+      - 
+       Label: 
+         default: "regions"
+       Parameters:
+         - Region
+         - MultipleAvailabilityZones
+         - PreferredAvailabilityZones
+      - 
+       Label: 
+         default: "networking"
+       Parameters:
+         - DeploymentCIDR
+         - VpcId
+      - 
+       Label: 
+         default: "databases"
+       Parameters:
+         - DatabaseName
+         - Protocol
+         - DatasetSizeInGb
+         - SupportOSSClusterApi
+         - DataPersistence
+         - Replication
+         - Quantity
+         - AverageItemSizeInBytes 
+         - RespVersion
+         - QueryPerformanceFactor
+      - 
+       Label: 
+         default: "throughputMeasurement"
+       Parameters:
+         - By
+         - Value
+      - 
+       Label: 
+         default: "localThroughputMeasurement"
+       Parameters:
+         - LocalThroughputMeasurementRegion
+         - WriteOperationsPerSecond
+         - ReadOperationsPerSecond
+      - 
+       Label: 
+         default: "modules"
+       Parameters:
+         - ModuleName
+         - ModuleParameters
