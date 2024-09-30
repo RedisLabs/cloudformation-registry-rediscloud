@@ -40,7 +40,7 @@
     },
     "BaseUrl": {
       "type": "string",
-      "description": "The Base URL where the API calls are sent."
+      "description": "[Required]. The Base URL where the API calls are sent."
     },
     "SubscriptionName": {
       "type": "string",
