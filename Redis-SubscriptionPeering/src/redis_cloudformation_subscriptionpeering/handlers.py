@@ -235,7 +235,23 @@ def update_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+    peer_id = model.PeeringID
+
+    event = {}
+    if model.VpcCidr != '':
+        event["vpcCidr"] = model.VpcCidr
+    elif model.VpcCidrs != '':
+        event["vpcCidrs"] = model.VpcCidrs
+    else:
+        LOG.info(f"No Updates required.")
+        return read_handler(session, request, callback_context)
+
+    event = json.dumps(event)
+    LOG.info(f"The event sent for PUT call is: {event}")
+    PutPeering(base_url, sub_id, peer_id, event, http_headers)
     return read_handler(session, request, callback_context)
 
 
