@@ -1,8 +1,11 @@
 {
-    "region": "eu-west-1",
-    "awsAccountId": "178919255282",
-    "vpcId": "vpc-082e1c0b7388260c9",
-    "vpcCidrs": [
+    "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
+    "SubscriptionID": "184231",
+    "Provider": "AWS",
+    "Region": "eu-west-1",
+    "AwsAccountId": "178919255282",
+    "VpcId": "vpc-082e1c0b7388260c9",
+    "VpcCidrs": [
         "10.10.10.0/24",
         "10.10.20.0/24"
     ]

@@ -25,13 +25,23 @@ LOG.setLevel("INFO")
 
 def HttpRequests(method, url, headers, body = None):
     response = urllib3.request(method = method, url = url, body = body, headers = headers)
+    print ("aaaaa")
+    print (f"Headers are: {headers}")
+    # Print the status code of the response
+    print("Status Code:", response.status)
+
+    # Print the response body
+    print("Response Body:", response.data.decode('utf-8'))  # Decode the bytes to string
+
+    # Print the response headers
+    print("Response Headers:", response.headers)
+    print ("bbbbb")
     response = response.json()
     return response
 
 #Makes the POST API call for Peering    
 def PostPeering (base_url, event, subscription_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/peerings"
-    
 
     response = HttpRequests(method = "POST", url = url, body = event, headers = http_headers)
     LOG.info(f"The POST call response is: {response}")
