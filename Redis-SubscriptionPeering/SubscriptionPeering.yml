@@ -22,7 +22,7 @@ Parameters:
     SubscriptionID:
       Type: String
       Description: "[Required]. The ID of the Pro Subscription that will make a peering connection. Example: 163199"
-      Default: "184231"
+      Default: "184302"
     Provider:
       Type: String
       Description: "[Required]. Cloud provider. Example: AWS. Default AWS"

@@ -25,17 +25,6 @@ LOG.setLevel("INFO")
 
 def HttpRequests(method, url, headers, body = None):
     response = urllib3.request(method = method, url = url, body = body, headers = headers)
-    print ("aaaaa")
-    print (f"Headers are: {headers}")
-    # Print the status code of the response
-    print("Status Code:", response.status)
-
-    # Print the response body
-    print("Response Body:", response.data.decode('utf-8'))  # Decode the bytes to string
-
-    # Print the response headers
-    print("Response Headers:", response.headers)
-    print ("bbbbb")
     response = response.json()
     return response
 
@@ -50,7 +39,6 @@ def PostPeering (base_url, event, subscription_id, http_headers):
 #Returns all the information about Peerings under the specified Subscription
 def GetPeering (base_url, subscription_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/peerings"
-    count = 0
 
     response = HttpRequests(method = "GET", url = url, headers = http_headers)
     count = 0
@@ -61,6 +49,20 @@ def GetPeering (base_url, subscription_id, http_headers):
         response = HttpRequests(method = "GET", url = response['links'][0]['href'], headers = http_headers)
 
     LOG.info(f"Get all Peerings for Subscription with ID {subscription_id} has the response: {response}")
+    return response
+
+def BasicGetPeering (base_url, subscription_id, http_headers):
+    url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/peerings"
+
+    response = HttpRequests(method = "GET", url = url, headers = http_headers)
+    count = 0
+
+    while "resourceId" not in str(response) and count < 50:
+        time.sleep(1)
+        count += 1
+        response = HttpRequests(method = "GET", url = response['links'][0]['href'], headers = http_headers)
+
+    LOG.info(f"The response after basic GET peering is: {response}")
     return response
 
 #Returns the Peering ID used for other API calls
@@ -114,7 +116,18 @@ def DeletePeering (base_url, subscription_id, peering_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/peerings/" + str(peering_id)
     
     response = HttpRequests(method = "DELETE", url = url, headers = http_headers)
+    LOG.info(f"Response for the FIRST response of deletion is: {response}")
+
+    count = 0
+    while response["status"] != "processing-error" or response["status"] != "processing-completed" and count < 50:
+        time.sleep(1)
+        count += 1
+        LOG.info(f"Interogation link for deletion is: {response['links'][0]['href']}")
+        response = HttpRequests(method = "GET", url = response['links'][0]['href'], headers = http_headers)
+        LOG.info(f"Response for the link above is: {response}")
+
     LOG.info(f"Peering with ID {peering_id} was deleted with response: {response}")
+    return response
 
 #Returns the error message of a wrong peering    
 def GetPeeringError (url, http_headers):
@@ -178,7 +191,7 @@ def create_handler(
                 f"Peering creation failed with status: {peer_status}"
             )
     else:
-        # TO DO: Added error handling for all the parameters (in case the customer don t know how to use them or assign a wrong value)
+        # TO DO: Add error handling for all the parameters (in case the customer don t know how to use them or assign a wrong value)
         if provider == "AWS" or provider == '':
             event = {}
             if model.Region != '':
@@ -250,10 +263,11 @@ def update_handler(
     sub_id = model.SubscriptionID
     peer_id = model.PeeringID
 
+
     event = {}
-    if model.VpcCidr != '':
+    if model.VpcCidr and model.VpcCidr != '':
         event["vpcCidr"] = model.VpcCidr
-    elif model.VpcCidrs != '':
+    elif model.VpcCidrs and model.VpcCidrs != '':
         event["vpcCidrs"] = model.VpcCidrs
     else:
         LOG.info(f"No Updates required.")
@@ -261,6 +275,7 @@ def update_handler(
 
     event = json.dumps(event)
     LOG.info(f"The event sent for PUT call is: {event}")
+    LOG.info(f"The model is: {model}")
     PutPeering(base_url, sub_id, peer_id, event, http_headers)
     return read_handler(session, request, callback_context)
 
@@ -275,21 +290,42 @@ def delete_handler(
     typeConfiguration = request.typeConfiguration
     progress: ProgressEvent = ProgressEvent(
         status=OperationStatus.IN_PROGRESS,
-        resourceModel=None,
+        resourceModel=model,
     )
 
     http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
     peer_id = model.PeeringID
+    
+    try:
+        delete_response = DeletePeering(base_url, sub_id, peer_id, http_headers)
 
-    DeletePeering (base_url, sub_id, peer_id, http_headers)
+        # Check if the delete_response indicates a processing error due to not found
+        if 'response' in str(delete_response) and 'error' in str(delete_response['response']):
+            error_code = str(delete_response['response']['error']['type'])
+            if error_code == 'VPC_PEERING_NOT_FOUND':
+                return ProgressEvent.failed(
+                    HandlerErrorCode.NotFound,
+                    f"Peering with ID {peer_id} under Subscription {sub_id} has the description: {delete_response['response']['error']['description']}"
+                )
 
-    return ProgressEvent(
-            status=OperationStatus.SUCCESS,
-            resourceModel=model,
+        # If the delete call was successful but resource still exists, handle that case
+        response_check = BasicGetPeering(base_url, sub_id, http_headers)
+
+        if str(peer_id) in str(response_check):
+            return ProgressEvent.failed(
+                HandlerErrorCode.InternalFailure,
+                f"Peering with ID {peer_id} under Subscription {sub_id} still exists."
+            )
+
+        return ProgressEvent(status=OperationStatus.SUCCESS)
+
+    except Exception as e:
+        return ProgressEvent.failed(
+            HandlerErrorCode.InternalFailure,
+            str(e)
         )
-
 
 @resource.handler(Action.READ)
 def read_handler(
@@ -298,12 +334,31 @@ def read_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModel=model,
-    )
+    typeConfiguration = request.typeConfiguration
+    
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+    peer_id = model.PeeringID
 
+    # Try to retrieve the resource (Peering)
+    response = BasicGetPeering(base_url, sub_id, http_headers)
+
+    # If the resource (peering) does not exist anymore, return NotFound
+    if str(peer_id) not in str(response):
+        LOG.info(f"Peering with ID {peer_id} not found. Returning NotFound error.")
+        return ProgressEvent.failed(
+            HandlerErrorCode.NotFound,
+            f"Peering with ID {peer_id} under Subscription {sub_id} does not exist."
+        )
+    else:
+        # If the resource still exists, return it
+        LOG.info(f"Peering with ID {peer_id} exists. Returning the resource.")
+        LOG.info(f"Model before ending read_handler is: {model}")
+        return ProgressEvent(
+            status=OperationStatus.SUCCESS,
+            resourceModel=model,
+        )
 
 @resource.handler(Action.LIST)
 def list_handler(
