@@ -119,15 +119,17 @@ def DeletePeering (base_url, subscription_id, peering_id, http_headers):
     LOG.info(f"Response for the FIRST response of deletion is: {response}")
 
     count = 0
-    while response["status"] != "processing-error" or response["status"] != "processing-completed" and count < 50:
-        time.sleep(1)
-        count += 1
-        LOG.info(f"Interogation link for deletion is: {response['links'][0]['href']}")
-        response = HttpRequests(method = "GET", url = response['links'][0]['href'], headers = http_headers)
-        LOG.info(f"Response for the link above is: {response}")
-
-    LOG.info(f"Peering with ID {peering_id} was deleted with response: {response}")
-    return response
+    #while response["status"] != "processing-error" or response["status"] != "processing-completed" and count < 50:
+    while count < 50:
+        if response["status"] == "received" or response["status"] == "processing-in-progress":
+            time.sleep(1)
+            count += 1
+            LOG.info(f"Interogation link for deletion is: {response['links'][0]['href']}")
+            response = HttpRequests(method = "GET", url = response['links'][0]['href'], headers = http_headers)
+            LOG.info(f"Response for the link above is: {response}")
+        else:
+            LOG.info(f"Peering with ID {peering_id} was deleted with response: {response}")
+            return response
 
 #Returns the error message of a wrong peering    
 def GetPeeringError (url, http_headers):
@@ -366,8 +368,42 @@ def list_handler(
     request: ResourceHandlerRequest,
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModels=[],
-    )
+    model = request.desiredResourceState
+    typeConfiguration = request.typeConfiguration
+
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+    peer_id = model.PeeringID
+
+    response = GetPeering(base_url, sub_id, http_headers)
+
+    peerings = response["response"]["resource"]["peerings"]
+    for peering in peerings:
+        if peering["vpcPeeringId"] == str(peer_id):
+            if peering["awsAccountId"]:
+                model.AwsAccountId = peering["awsAccountId"]
+            if peering["regionName"]:
+                model.Region = peering["regionName"] 
+            if peering["vpcUid"]:
+                model.VpcId = peering["vpcUid"] 
+            if peering["vpcCidr"]:
+                model.VpcCidr = peering["vpcCidr"] 
+            if peering["vpcCidrs"]:
+                model.VpcCidrs = peering["vpcCidrs"]
+            # if peering["pcProjectUid"]:
+            #     model.VpcProjectUid = peering["vpcProjectUid"]
+            # if peering["vpcNetworkName"]:
+            #     model.vpcCidrs = peering["vpcNetworkName"]
+
+            return ProgressEvent(
+                status=OperationStatus.SUCCESS,
+                resourceModels=model,
+            )
+        else:
+            return ProgressEvent.failed(
+                HandlerErrorCode.NotFound,
+                f"Peering with ID {peer_id} under Subscription {sub_id} does not exist."
+            )
+
+

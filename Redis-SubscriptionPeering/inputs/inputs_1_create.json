@@ -1,6 +1,6 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
-    "SubscriptionID": "184306",
+    "SubscriptionID": "184487",
     "Provider": "AWS",
     "Region": "eu-west-1",
     "AwsAccountId": "178919255282",
