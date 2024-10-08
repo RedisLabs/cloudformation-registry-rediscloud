@@ -48,7 +48,8 @@
       },
       "Provider": {
         "type": "string",
-        "description": "[Optional]. Cloud provider. Example: AWS. Default: 'AWS'"
+        "description": "[Optional]. Cloud provider. Example: AWS. Default: 'AWS'",
+        "default": ""
       },
       "Region": {
         "type": "string",

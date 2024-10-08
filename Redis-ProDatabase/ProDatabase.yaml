@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
   ProSubscription:
-    Type: Redis::CloudFormation::ProSubscription
+    Type: Redis::CloudFormation::ProDatabase
     Properties:
       SubscriptionName: !Ref SubscriptionName
       BaseUrl: !Ref BaseUrl

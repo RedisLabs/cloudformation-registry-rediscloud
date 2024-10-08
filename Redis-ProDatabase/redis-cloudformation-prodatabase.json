@@ -1,0 +1,204 @@
+{
+    "typeName": "Redis::CloudFormation::ProDatabase",
+    "description": "CloudFormation template for Pro Database.",
+    "tagging": {
+      "taggable": false
+    },
+    "typeConfiguration": {
+      "properties": {
+          "RedisAccess": {
+              "$ref": "#/definitions/RedisAccess"
+          }
+      },
+      "additionalProperties": false,
+      "required": [
+          "RedisAccess"
+      ]
+  },
+  "definitions": {
+          "RedisAccess": {
+              "description": "Properties needed to access Redis.",
+              "type": "object",
+              "properties": {
+                  "xapikey": {
+                      "description": "x_api_key",
+                      "type": "string"
+                  },
+                  "xapisecretkey": {
+                      "description": "x_api_secret_key",
+                      "type": "string"
+                  }
+              },
+              "additionalProperties": false
+          }
+      },
+    "properties": {
+      "DatabaseID": {
+        "type": "string",
+        "description": "Database ID. Populated with value within the handlers.py.",
+        "default": "Overwrite this value"
+      },
+      "SubscriptionID": {
+        "type": "string",
+        "description": "[Required]. The Subscription ID under which the Database is created.",
+        "default": "Overwrite this value"
+      },
+      "BaseUrl": {
+        "type": "string",
+        "description": "[Required]. The Base URL where the API calls are sent."
+      },
+      "DryRun": {
+        "type": "string",
+        "description": "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
+      },
+      "DatabaseName": {
+        "type": "string",
+        "description": "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
+      },
+      "Protocol": {
+        "type": "string",
+        "description": "[Optional]. Database protocol: either 'redis' or 'memcached'. Default: 'redis'"
+      },
+      "Port": {
+        "type": "string",
+        "description": "[Optional]. TCP port on which the database is available (10000-19999). Generated automatically if omitted"
+      },
+      "DatasetSizeInGb": {
+        "type": "string",
+        "description": "[Optional]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value. Minimum: 0.1. ExclusiveMinimum: false. Example: 1"
+      },
+      "RespVersion": {
+        "type": "string",
+        "description": "[Optional]. RESP version must be compatible with Redis version. Example: resp3. Allowed values: resp2/resp3."
+      },
+      "SupportOSSClusterApi": {
+        "type": "string",
+        "description": "[Optional]. Support Redis open-source (OSS) Cluster API. Default: 'false'"
+      },
+      "UseExternalEndpointForOSSClusterApi": {
+        "type": "string",
+        "description": "[Optional]. Should use external endpoint for open-source (OSS) Cluster API. Can only be enabled if OSS Cluster API support is enabled'. Default: 'false'"
+      },
+      "DataPersistence": {
+        "type": "string",
+        "description": "[Optional]. Rate of database data persistence (in persistent storage). List of options: [ none, aof-every-1-second, aof-every-write, snapshot-every-1-hour, snapshot-every-6-hours, snapshot-every-12-hours ]. Example: none. Default: 'none'."
+      },
+      "DataEvictionPolicy": {
+        "type": "string",
+        "description": "[Optional]. Data items eviction method. List of options: [ allkeys-lru, allkeys-lfu, allkeys-random, volatile-lru, volatile-lfu, volatile-random, volatile-ttl, noeviction ]. Default: 'volatile-lru'"
+      },
+      "Replication": {
+        "type": "string",
+        "description": "[Optional]. Databases replication. Default: 'true'"
+      },
+      "By": {
+        "type": "string",
+        "description": "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
+      },
+      "Value": {
+        "type": "string",
+        "description": "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000"
+      },
+      "LocalThroughputMeasurementRegion": {
+        "type": "string"
+      },
+      "WriteOperationsPerSecond": {
+        "type": "string",
+        "description": "[Optional]. Example: 1000. Default: 1000 ops/sec"
+      },
+      "ReadOperationsPerSecond": {
+        "type": "string",
+        "description": "[Optional]. Example: 1000. Default: 1000 ops/sec"
+      },
+      "ModuleName": {
+        "type": "string",
+        "description": "[Required only to enable modules]. Redis module Id"
+      },
+      "ModuleParameters": {
+        "type": "string",
+        "description": "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
+      },
+      "Quantity": {
+        "type": "string",
+        "description": "[Optional]. Number of databases (of this type) that will be created. Default: 1"
+      },
+      "AverageItemSizeInBytes": {
+        "type": "string",
+        "description": "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
+      },
+      "QueryPerformanceFactor": {
+        "type": "string",
+        "description": "[Optional]. Query performance factor. Example: 2x"
+      },
+      "RedisVersion": {
+        "type": "string",
+        "description": "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
+      }
+    },
+    "handlers": {
+      "create": {
+          "permissions": []
+      },
+      "read": {
+          "permissions": [
+            "initech:DescribeReport"
+          ]
+      },
+      "update": {
+          "permissions": [
+            "initech:UpdateReport"
+          ]
+      },
+      "delete": {
+          "permissions": []
+      },
+      "list": {
+          "permissions": [
+            "initech:ListReports"
+          ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "Region",
+      "DatabaseName"
+    ],
+    "createOnlyProperties": [
+      "/properties/BaseUrl",
+      "/properties/DryRun",
+      "/properties/DeploymentType",
+      "/properties/PaymentMethod",
+      "/properties/PaymentMethodId",
+      "/properties/MemoryStorage",
+      "/properties/Provider",
+      "/properties/CloudAccountId",
+      "/properties/Region",
+      "/properties/MultipleAvailabilityZones",
+      "/properties/PreferredAvailabilityZones",
+      "/properties/DeploymentCIDR",
+      "/properties/VpcId",
+      "/properties/DatabaseName",
+      "/properties/Protocol",
+      "/properties/DatasetSizeInGb",
+      "/properties/SupportOSSClusterApi",
+      "/properties/DataPersistence",
+      "/properties/Replication",
+      "/properties/By",
+      "/properties/Value",
+      "/properties/LocalThroughputMeasurementRegion",
+      "/properties/WriteOperationsPerSecond",
+      "/properties/ReadOperationsPerSecond",
+      "/properties/ModuleName",
+      "/properties/ModuleParameters",
+      "/properties/Quantity",
+      "/properties/AverageItemSizeInBytes",
+      "/properties/RespVersion",
+      "/properties/QueryPerformanceFactor",
+      "/properties/RedisVersion"
+    ],
+    "readOnlyProperties": [
+      "/properties/SubscriptionID"
+    ],
+    "primaryIdentifier": ["/properties/SubscriptionID"]
+  }
+  

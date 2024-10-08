@@ -377,33 +377,47 @@ def list_handler(
     peer_id = model.PeeringID
 
     response = GetPeering(base_url, sub_id, http_headers)
-
     peerings = response["response"]["resource"]["peerings"]
-    for peering in peerings:
-        if peering["vpcPeeringId"] == str(peer_id):
-            if peering["awsAccountId"]:
-                model.AwsAccountId = peering["awsAccountId"]
-            if peering["regionName"]:
-                model.Region = peering["regionName"] 
-            if peering["vpcUid"]:
-                model.VpcId = peering["vpcUid"] 
-            if peering["vpcCidr"]:
-                model.VpcCidr = peering["vpcCidr"] 
-            if peering["vpcCidrs"]:
-                model.VpcCidrs = peering["vpcCidrs"]
-            # if peering["pcProjectUid"]:
-            #     model.VpcProjectUid = peering["vpcProjectUid"]
-            # if peering["vpcNetworkName"]:
-            #     model.vpcCidrs = peering["vpcNetworkName"]
+    models = []
 
+    if "vpcPeeringId" in str(response["response"]["resource"]["peerings"]):
+        peerings = response["response"]["resource"]["peerings"]
+        LOG.info(f"These are the peerings: {peerings}")
+        for peering in peerings:
+            models.append(ResourceModel(
+                    Provider="AWS" if (peering.get("awsAccountId")!= None or peering.get("awsAccountId")!= '') else "GCP",
+                    PeeringID=str(peering.get("vpcPeeringId")),
+                    AwsAccountId=peering.get("awsAccountId"),
+                    Region=peering.get("regionName"),
+                    VpcId=peering.get("vpcUid"),
+                    VpcCidrs=peering.get("vpcCidrs"),
+                    VpcCidr=peering.get("vpcCidr"),
+                    VpcProjectUid=peering.get("vpcProjectUid"),
+                    VpcNetworkName=peering.get("vpcNetworkName"),
+                    SubscriptionID=response["response"]["resourceId"],
+                    BaseUrl=base_url,
+                ))
+            LOG.info(f"This is the list of models: {models}")
             return ProgressEvent(
                 status=OperationStatus.SUCCESS,
-                resourceModels=model,
+                resourceModels=models,
             )
-        else:
-            return ProgressEvent.failed(
-                HandlerErrorCode.NotFound,
-                f"Peering with ID {peer_id} under Subscription {sub_id} does not exist."
-            )
-
-
+    else:
+        models.append(ResourceModel(
+            Provider="",
+            PeeringID="",
+            AwsAccountId="",
+            Region="",
+            VpcId="",
+            VpcCidrs="",
+            VpcCidr="",
+            VpcProjectUid="",
+            VpcNetworkName="",
+            SubscriptionID="",
+            BaseUrl="",
+        ))
+        LOG.info(f"This is the list of models: {models}")
+        return ProgressEvent(
+            status=OperationStatus.SUCCESS,
+            resourceModels=models,
+        )
