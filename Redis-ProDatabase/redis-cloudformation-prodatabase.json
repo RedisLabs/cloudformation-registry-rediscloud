@@ -38,14 +38,14 @@
         "description": "Database ID. Populated with value within the handlers.py.",
         "default": "Overwrite this value"
       },
+      "BaseUrl": {
+        "type": "string",
+        "description": "[Required]. The Base URL where the API calls are sent."
+      },
       "SubscriptionID": {
         "type": "string",
         "description": "[Required]. The Subscription ID under which the Database is created.",
         "default": "Overwrite this value"
-      },
-      "BaseUrl": {
-        "type": "string",
-        "description": "[Required]. The Base URL where the API calls are sent."
       },
       "DryRun": {
         "type": "string",
@@ -61,11 +61,11 @@
       },
       "Port": {
         "type": "string",
-        "description": "[Optional]. TCP port on which the database is available (10000-19999). Generated automatically if omitted"
+        "description": "[Optional]. TCP port on which the database is available (10000-19999). Generated automatically if omitted. Example: 10000"
       },
       "DatasetSizeInGb": {
         "type": "string",
-        "description": "[Optional]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value. Minimum: 0.1. ExclusiveMinimum: false. Example: 1"
+        "description": "[Required]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value. Minimum: 0.1. ExclusiveMinimum: false. Example: 1"
       },
       "RespVersion": {
         "type": "string",
@@ -91,16 +91,29 @@
         "type": "string",
         "description": "[Optional]. Databases replication. Default: 'true'"
       },
+      "Endpoint": {
+        "type": "string",
+        "description": "[Required for replica]. A Redis URI (sample format: 'redis://user:password@host:port)'. If the URI provided is Redis Cloud instance, only host and port should be provided (using the format: ['redis://endpoint1:6379', 'redis://endpoint2:6380'] )."
+      },
+      "Encryption": {
+        "type": "string",
+        "description": "[Optional]. Defines if encryption should be used to connect to the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect if the source uses encryption."
+      },
+      "ServerCert": {
+        "type": "string",
+        "description": "[Optional]. TLS/SSL certificate chain of the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect the certificate to use."
+      },
       "By": {
         "type": "string",
         "description": "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
       },
       "Value": {
         "type": "string",
-        "description": "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000"
+        "description": "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000. Default: 25000 ops/sec"
       },
       "LocalThroughputMeasurementRegion": {
-        "type": "string"
+        "type": "string",
+        "description": "[Optional]. Local throughput for the regional instance of an Active-Active database"
       },
       "WriteOperationsPerSecond": {
         "type": "string",
@@ -110,6 +123,62 @@
         "type": "string",
         "description": "[Optional]. Example: 1000. Default: 1000 ops/sec"
       },
+      "AverageItemSizeInBytes": {
+        "type": "string",
+        "description": "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
+      },
+      "Active": {
+        "type": "string",
+        "description": "[Optional]. Determine whether backup should be active or not. Default: null"
+      },
+      "Interval": {
+        "type": "string",
+        "description": "[Required when active is true]. Represent the interval between backups, should be in the following format every-x-hours where x is one of (24,12,6,4,2,1). for example: 'every-4-hours'."
+      },
+      "TimeUTC": {
+        "type": "string",
+        "description": "[Optional]. State the hour which the backup will take place. Available only for 12 or 24 hours backup interval. Should be specified an hour for example 2 PM as 14:00"
+      },
+      "StorageType": {
+        "type": "string",
+        "description": "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection)"
+      },
+      "StoragePath": {
+        "type": "string",
+        "description": "[Required when active is true]. Path for backup"
+      },
+      "SourceIp": {
+        "type": "string",
+        "description": "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
+      },
+      "PublicCertificatePEMString": {
+        "type": "string",
+        "description": "[Required for clientTlsCertificates]. Public key certificate (PEM format)"
+      },
+      "EnableTls": {
+        "type": "string",
+        "description": "[Optional]. When 'true', requires TLS authentication for all connections (mTLS with valid clientSslCertificate, regular TLS when the clientSslCertificate is not provided. Default: 'false'"
+      },
+      "Password": {
+        "type": "string",
+        "description": "[Optional]. Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is REDIS"
+      },
+      "SaslUsername": {
+        "type": "string",
+        "description": "[Optional]. Memcached (SASL) Username to access the database. If omitted, the username will be set to a 'mc-' prefix followed by a random 5 character long alphanumeric. Can only be set if Database Protocol is MEMCACHED"
+      },
+      "saslPassword": {
+        "type": "string",
+        "description": "[Optional]. Memcached (SASL) Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is MEMCACHED"
+      },
+      "AlertName": {
+        "type": "string",
+        "description": "[Required to enable alerts]. Alert name. List of options: [ dataset-size, datasets-size, throughput-higher-than, throughput-lower-than, latency, syncsource-error, syncsource-lag, connections-limit ]. Example: dataset-size"
+      },
+      "AlertValue": {
+        "type": "string",
+        "description": "[Required to enable alerts]. Alert value. Example: 80"
+      },
       "ModuleName": {
         "type": "string",
         "description": "[Required only to enable modules]. Redis module Id"
@@ -118,21 +187,9 @@
         "type": "string",
         "description": "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
       },
-      "Quantity": {
-        "type": "string",
-        "description": "[Optional]. Number of databases (of this type) that will be created. Default: 1"
-      },
-      "AverageItemSizeInBytes": {
-        "type": "string",
-        "description": "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
-      },
       "QueryPerformanceFactor": {
         "type": "string",
-        "description": "[Optional]. Query performance factor. Example: 2x"
-      },
-      "RedisVersion": {
-        "type": "string",
-        "description": "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
+        "description": "[Optional]. The query performance factor adds extra compute power specifically for search and query. For databases with search and query, you can increase your search queries per second by the selected factor. Example: 2x"
       }
     },
     "handlers": {
@@ -160,45 +217,50 @@
     },
     "additionalProperties": false,
     "required": [
-      "Region",
+      "SubscriptionID",
+      "DatasetSizeInGb",
       "DatabaseName"
     ],
     "createOnlyProperties": [
       "/properties/BaseUrl",
       "/properties/DryRun",
-      "/properties/DeploymentType",
-      "/properties/PaymentMethod",
-      "/properties/PaymentMethodId",
-      "/properties/MemoryStorage",
-      "/properties/Provider",
-      "/properties/CloudAccountId",
-      "/properties/Region",
-      "/properties/MultipleAvailabilityZones",
-      "/properties/PreferredAvailabilityZones",
-      "/properties/DeploymentCIDR",
-      "/properties/VpcId",
-      "/properties/DatabaseName",
       "/properties/Protocol",
-      "/properties/DatasetSizeInGb",
+      "/properties/Port",
+      "/properties/RespVersion",
       "/properties/SupportOSSClusterApi",
+      "/properties/UseExternalEndpointForOSSClusterApi",
       "/properties/DataPersistence",
+      "/properties/DataEvictionPolicy",
       "/properties/Replication",
+      "/properties/Endpoint",
+      "/properties/Encryption",
+      "/properties/ServerCert",
       "/properties/By",
       "/properties/Value",
       "/properties/LocalThroughputMeasurementRegion",
       "/properties/WriteOperationsPerSecond",
       "/properties/ReadOperationsPerSecond",
+      "/properties/AverageItemSizeInBytes",
+      "/properties/Active",
+      "/properties/Interval",
+      "/properties/TimeUTC",
+      "/properties/StorageType",
+      "/properties/StoragePath",
+      "/properties/SourceIp",
+      "/properties/PublicCertificatePEMString",
+      "/properties/EnableTls",
+      "/properties/Password",
+      "/properties/SaslUsername",
+      "/properties/saslPassword",
+      "/properties/AlertName",
+      "/properties/AlertValue",
       "/properties/ModuleName",
       "/properties/ModuleParameters",
-      "/properties/Quantity",
-      "/properties/AverageItemSizeInBytes",
-      "/properties/RespVersion",
-      "/properties/QueryPerformanceFactor",
-      "/properties/RedisVersion"
+      "/properties/QueryPerformanceFactor"
     ],
     "readOnlyProperties": [
-      "/properties/SubscriptionID"
+      "/properties/DatabaseID"
     ],
-    "primaryIdentifier": ["/properties/SubscriptionID"]
+    "primaryIdentifier": ["/properties/DatabaseID"]
   }
   
