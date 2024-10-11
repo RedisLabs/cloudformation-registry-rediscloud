@@ -14,7 +14,7 @@ from cloudformation_cli_python_lib import (
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 
-# Use this logger to forward log messages to CloudWatch Logs.
+# Use this logger to forward log messages to CloudWatch Logs. NON BREAKING CHANGE TO NOT TRIGGER WORKFLOW
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Redis::CloudFormation::SubscriptionPeering"
 
