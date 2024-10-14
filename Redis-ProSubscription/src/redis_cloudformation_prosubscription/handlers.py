@@ -146,7 +146,7 @@ def create_handler(
         elif sub_status in ["failed", "error"]:
             return ProgressEvent.failed(
                 HandlerErrorCode.InternalFailure,
-                f"Subscription creation failed with status: {sub_status}"
+                f"Subscription creation failed with status: {sub_status}. Please manually check that all resources have been deleted from Redis Cloud console."
             )
         else:
             sub_status = GetSubscriptionStatus(base_url, sub_id, http_headers)

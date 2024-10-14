@@ -167,7 +167,7 @@
         "type": "string",
         "description": "[Optional]. Memcached (SASL) Username to access the database. If omitted, the username will be set to a 'mc-' prefix followed by a random 5 character long alphanumeric. Can only be set if Database Protocol is MEMCACHED"
       },
-      "saslPassword": {
+      "SaslPassword": {
         "type": "string",
         "description": "[Optional]. Memcached (SASL) Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is MEMCACHED"
       },
@@ -251,7 +251,7 @@
       "/properties/EnableTls",
       "/properties/Password",
       "/properties/SaslUsername",
-      "/properties/saslPassword",
+      "/properties/SaslPassword",
       "/properties/AlertName",
       "/properties/AlertValue",
       "/properties/ModuleName",

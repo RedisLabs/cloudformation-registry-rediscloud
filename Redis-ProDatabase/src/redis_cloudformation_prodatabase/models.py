@@ -41,16 +41,45 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
 
 @dataclass
 class ResourceModel(BaseModel):
-    TPSCode: Optional[str]
-    Title: Optional[str]
-    CoverSheetIncluded: Optional[bool]
-    DueDate: Optional[str]
-    ApprovalDate: Optional[str]
-    Memo: Optional["_Memo"]
-    SecondCopyOfMemo: Optional["_Memo"]
-    TestCode: Optional[str]
-    Authors: Optional[Sequence[str]]
-    Tags: Optional[AbstractSet["_Tag"]]
+    DatabaseID: Optional[str]
+    BaseUrl: Optional[str]
+    SubscriptionID: Optional[str]
+    DryRun: Optional[str]
+    DatabaseName: Optional[str]
+    Protocol: Optional[str]
+    Port: Optional[str]
+    DatasetSizeInGb: Optional[str]
+    RespVersion: Optional[str]
+    SupportOSSClusterApi: Optional[str]
+    UseExternalEndpointForOSSClusterApi: Optional[str]
+    DataPersistence: Optional[str]
+    DataEvictionPolicy: Optional[str]
+    Replication: Optional[str]
+    Endpoint: Optional[str]
+    Encryption: Optional[str]
+    ServerCert: Optional[str]
+    By: Optional[str]
+    Value: Optional[str]
+    LocalThroughputMeasurementRegion: Optional[str]
+    WriteOperationsPerSecond: Optional[str]
+    ReadOperationsPerSecond: Optional[str]
+    AverageItemSizeInBytes: Optional[str]
+    Active: Optional[str]
+    Interval: Optional[str]
+    TimeUTC: Optional[str]
+    StorageType: Optional[str]
+    StoragePath: Optional[str]
+    SourceIp: Optional[str]
+    PublicCertificatePEMString: Optional[str]
+    EnableTls: Optional[str]
+    Password: Optional[str]
+    SaslUsername: Optional[str]
+    SaslPassword: Optional[str]
+    AlertName: Optional[str]
+    AlertValue: Optional[str]
+    ModuleName: Optional[str]
+    ModuleParameters: Optional[str]
+    QueryPerformanceFactor: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -62,16 +91,45 @@ class ResourceModel(BaseModel):
         dataclasses = {n: o for n, o in getmembers(sys.modules[__name__]) if isclass(o)}
         recast_object(cls, json_data, dataclasses)
         return cls(
-            TPSCode=json_data.get("TPSCode"),
-            Title=json_data.get("Title"),
-            CoverSheetIncluded=json_data.get("CoverSheetIncluded"),
-            DueDate=json_data.get("DueDate"),
-            ApprovalDate=json_data.get("ApprovalDate"),
-            Memo=Memo._deserialize(json_data.get("Memo")),
-            SecondCopyOfMemo=Memo._deserialize(json_data.get("SecondCopyOfMemo")),
-            TestCode=json_data.get("TestCode"),
-            Authors=json_data.get("Authors"),
-            Tags=set_or_none(json_data.get("Tags")),
+            DatabaseID=json_data.get("DatabaseID"),
+            BaseUrl=json_data.get("BaseUrl"),
+            SubscriptionID=json_data.get("SubscriptionID"),
+            DryRun=json_data.get("DryRun"),
+            DatabaseName=json_data.get("DatabaseName"),
+            Protocol=json_data.get("Protocol"),
+            Port=json_data.get("Port"),
+            DatasetSizeInGb=json_data.get("DatasetSizeInGb"),
+            RespVersion=json_data.get("RespVersion"),
+            SupportOSSClusterApi=json_data.get("SupportOSSClusterApi"),
+            UseExternalEndpointForOSSClusterApi=json_data.get("UseExternalEndpointForOSSClusterApi"),
+            DataPersistence=json_data.get("DataPersistence"),
+            DataEvictionPolicy=json_data.get("DataEvictionPolicy"),
+            Replication=json_data.get("Replication"),
+            Endpoint=json_data.get("Endpoint"),
+            Encryption=json_data.get("Encryption"),
+            ServerCert=json_data.get("ServerCert"),
+            By=json_data.get("By"),
+            Value=json_data.get("Value"),
+            LocalThroughputMeasurementRegion=json_data.get("LocalThroughputMeasurementRegion"),
+            WriteOperationsPerSecond=json_data.get("WriteOperationsPerSecond"),
+            ReadOperationsPerSecond=json_data.get("ReadOperationsPerSecond"),
+            AverageItemSizeInBytes=json_data.get("AverageItemSizeInBytes"),
+            Active=json_data.get("Active"),
+            Interval=json_data.get("Interval"),
+            TimeUTC=json_data.get("TimeUTC"),
+            StorageType=json_data.get("StorageType"),
+            StoragePath=json_data.get("StoragePath"),
+            SourceIp=json_data.get("SourceIp"),
+            PublicCertificatePEMString=json_data.get("PublicCertificatePEMString"),
+            EnableTls=json_data.get("EnableTls"),
+            Password=json_data.get("Password"),
+            SaslUsername=json_data.get("SaslUsername"),
+            SaslPassword=json_data.get("SaslPassword"),
+            AlertName=json_data.get("AlertName"),
+            AlertValue=json_data.get("AlertValue"),
+            ModuleName=json_data.get("ModuleName"),
+            ModuleParameters=json_data.get("ModuleParameters"),
+            QueryPerformanceFactor=json_data.get("QueryPerformanceFactor"),
         )
 
 
@@ -80,51 +138,8 @@ _ResourceModel = ResourceModel
 
 
 @dataclass
-class Memo(BaseModel):
-    Heading: Optional[str]
-    Body: Optional[str]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_Memo"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_Memo"]:
-        if not json_data:
-            return None
-        return cls(
-            Heading=json_data.get("Heading"),
-            Body=json_data.get("Body"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_Memo = Memo
-
-
-@dataclass
-class Tag(BaseModel):
-    Key: Optional[str]
-    Value: Optional[str]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_Tag"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_Tag"]:
-        if not json_data:
-            return None
-        return cls(
-            Key=json_data.get("Key"),
-            Value=json_data.get("Value"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_Tag = Tag
-
-
-@dataclass
 class TypeConfigurationModel(BaseModel):
+    RedisAccess: Optional["_RedisAccess"]
 
     @classmethod
     def _deserialize(
@@ -134,10 +149,33 @@ class TypeConfigurationModel(BaseModel):
         if not json_data:
             return None
         return cls(
+            RedisAccess=RedisAccess._deserialize(json_data.get("RedisAccess")),
         )
 
 
 # work around possible type aliasing issues when variable has same name as a model
 _TypeConfigurationModel = TypeConfigurationModel
+
+
+@dataclass
+class RedisAccess(BaseModel):
+    xapikey: Optional[str]
+    xapisecretkey: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_RedisAccess"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_RedisAccess"]:
+        if not json_data:
+            return None
+        return cls(
+            xapikey=json_data.get("xapikey"),
+            xapisecretkey=json_data.get("xapisecretkey"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_RedisAccess = RedisAccess
 
 

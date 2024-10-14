@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  ProSubscription:
+  ProDatabase:
     Type: Redis::CloudFormation::ProDatabase
     Properties:
       BaseUrl: !Ref BaseUrl
@@ -35,7 +35,7 @@ Resources:
       EnableTls: !Ref EnableTls
       Password: !Ref Password
       SaslUsername: !Ref SaslUsername
-      saslPassword: !Ref saslPassword
+      SaslPassword: !Ref SaslPassword
       AlertName: !Ref AlertName
       AlertValue: !Ref AlertValue
       ModuleName: !Ref ModuleName
@@ -46,7 +46,7 @@ Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb1"
+    Default: "testdb5"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -54,7 +54,7 @@ Parameters:
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "184690"
+    Default: "185084"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -143,7 +143,7 @@ Parameters:
   SaslUsername:
     Type: String
     Description: "[Optional]. Memcached (SASL) Username to access the database. If omitted, the username will be set to a 'mc-' prefix followed by a random 5 character long alphanumeric. Can only be set if Database Protocol is MEMCACHED"
-  saslPassword:
+  SaslPassword:
     Type: String
     Description: "[Optional]. Memcached (SASL) Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is MEMCACHED"
   AlertName:
@@ -188,7 +188,7 @@ Metadata:
          - EnableTls
          - Password
          - SaslUsername
-         - saslPassword
+         - SaslPassword
          - QueryPerformanceFactor
       - 
        Label: 
