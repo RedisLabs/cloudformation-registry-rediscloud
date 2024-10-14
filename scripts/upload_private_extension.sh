@@ -23,4 +23,5 @@ typeNamePrefix='Redis::CloudFormation::'
 typeName="${typeNamePrefix}${FolderName}"
 
 VERSION_ID=$(aws cloudformation list-type-versions --type RESOURCE --type-name $typeName | jq -r '.TypeVersionSummaries | sort_by(.TimeCreated) | reverse | .[0].VersionId')
+echo $VERSION_ID
 aws cloudformation set-type-default-version --type RESOURCE --type-name $typeName --version-id $VERSION_ID
