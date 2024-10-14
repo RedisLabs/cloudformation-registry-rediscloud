@@ -1,14 +1,13 @@
 #!/bin/bash
 
 ## Check if the correct number of arguments is provided
-#if [ "$#" -ne 1 ]; then
-#    echo "Usage: $0 <Name_Of_Subfolder>"
-#    exit 1
-#fi
-#
-#echo $1 #Is the name of the subfolder containing the exenstion's code 
-folderName='ProSubscription'
-echo 'SAY SOMETHING'
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <Name_Of_Subfolder>"
+    exit 1
+fi
+
+echo $1 #Is the name of the subfolder containing the exenstion's code 
+folderName=$1
 
 # Configure AWS CLI with environment variables
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
@@ -17,8 +16,8 @@ aws configure set default.region $AWS_REGION
 
 # List S3 buckets
 cd $folderName
-# cfn generate
-# cfn submit
+cfn generate
+cfn submit
 
 typeNamePrefix='Redis::CloudFormation::'
 typeName="${typeNamePrefix}${folderName}"
