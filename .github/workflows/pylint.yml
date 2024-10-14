@@ -8,8 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
+    - uses: actions/checkout@v4
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/upload_private_extension.sh
+         ./scripts/upload_private_extension.sh Redis-ProSubscription
+      shell: bash
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
