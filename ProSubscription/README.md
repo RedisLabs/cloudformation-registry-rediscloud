@@ -1,6 +1,7 @@
 ## IMPORTANT:
 Before this code is shared with anyone else we need to clear the commit history since older commits contain secrets!
 
+
 ## Setting up credentials to Redis API
 Simply run this command in the CloudShell or similar. Change the region and key value information first tho.
 
