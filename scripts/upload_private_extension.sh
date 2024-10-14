@@ -7,7 +7,7 @@
 #fi
 #
 #echo $1 #Is the name of the subfolder containing the exenstion's code 
-FolderName='ProSubscription'
+folderName='ProSubscription'
 
 # Configure AWS CLI with environment variables
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
@@ -15,12 +15,13 @@ aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 aws configure set default.region $AWS_REGION
 
 # List S3 buckets
-cd $FolderName
-cfn generate
-cfn submit
+cd $folderName
+# cfn generate
+# cfn submit
 
 typeNamePrefix='Redis::CloudFormation::'
-typeName="${typeNamePrefix}${FolderName}"
+typeName="${typeNamePrefix}${folderName}"
+echo $typeName
 
 VERSION_ID=$(aws cloudformation list-type-versions --type RESOURCE --type-name $typeName | jq -r '.TypeVersionSummaries | sort_by(.TimeCreated) | reverse | .[0].VersionId')
 echo $VERSION_ID
