@@ -5,6 +5,7 @@ TODOs:
 - Before this code is shared with anyone else we need to clear the commit history since older commits contain secrets!
 - Work on a concept for using multiple profiles
 - foldernames should follow a naming convention (lower case all e.g.)
+- Write a proper gitignore
 
 # Redis AWS CloudFormation Public Extensions 
 Code Health -> Link to automated tests  
