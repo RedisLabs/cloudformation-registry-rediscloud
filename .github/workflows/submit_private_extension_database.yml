@@ -2,7 +2,7 @@ name: Pylint
 on:
   push:
     paths:
-      - ProSubscription/**
+      - ProDatabase/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
     - name: Publish new version as a private exension and set to default version
       run: |
          chmod +x ./scripts/upload_private_extension.sh
-         ./scripts/upload_private_extension.sh Redis-ProSubscription
+         ./scripts/upload_private_extension.sh ProDatabase
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

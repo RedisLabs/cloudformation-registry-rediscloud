@@ -1,0 +1,26 @@
+name: Pylint
+on:
+  push:
+    paths:
+      - SubscriptionPeering/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+         chmod +x ./scripts/install_dependencies.sh
+         ./scripts/install_dependencies.sh
+    - name: Publish new version as a private exension and set to default version
+      run: |
+         chmod +x ./scripts/upload_private_extension.sh
+         ./scripts/upload_private_extension.sh SubscriptionPeering
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      shell: bash
