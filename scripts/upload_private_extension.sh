@@ -8,6 +8,7 @@
 #
 #echo $1 #Is the name of the subfolder containing the exenstion's code 
 folderName='ProSubscription'
+echo 'SAY SOMETHING'
 
 # Configure AWS CLI with environment variables
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
