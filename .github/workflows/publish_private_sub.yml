@@ -2,7 +2,7 @@ name: Pylint
 on:
   push:
     paths:
-      - Redis-ProSubscription/**
+      - ProSubscription/**
 jobs:
   build:
     runs-on: ubuntu-latest
