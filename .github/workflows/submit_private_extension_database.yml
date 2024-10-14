@@ -1,4 +1,4 @@
-name: Pylint
+name: submit_private_extension
 on:
   push:
     paths:
