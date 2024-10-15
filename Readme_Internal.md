@@ -6,6 +6,7 @@ TODOs:
 - Work on a concept for using multiple profiles
 - foldernames should follow a naming convention (lower case all e.g.)
 - Write a proper gitignore
+- theres a maximum of 60 versions for private exsntions
 
 steps for deploying stacksets:
  # Step 1: Create a StackSet
