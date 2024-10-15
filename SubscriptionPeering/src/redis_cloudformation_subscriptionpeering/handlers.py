@@ -265,7 +265,6 @@ def update_handler(
     sub_id = model.SubscriptionID
     peer_id = model.PeeringID
 
-
     event = {}
     if model.VpcCidr and model.VpcCidr != '':
         event["vpcCidr"] = model.VpcCidr
@@ -279,6 +278,7 @@ def update_handler(
     LOG.info(f"The event sent for PUT call is: {event}")
     LOG.info(f"The model is: {model}")
     PutPeering(base_url, sub_id, peer_id, event, http_headers)
+    
     return read_handler(session, request, callback_context)
 
 

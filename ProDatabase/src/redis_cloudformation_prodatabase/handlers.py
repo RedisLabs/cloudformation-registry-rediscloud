@@ -260,7 +260,6 @@ def create_handler(
         callbackContext=callback_context
     )
 
-
 @resource.handler(Action.UPDATE)
 def update_handler(
     session: Optional[SessionProxy],
@@ -273,9 +272,110 @@ def update_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
-    return read_handler(session, request, callback_context)
 
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+    db_id = model.DatabaseID
+
+    event = {}
+
+    throughputMeasurement = {}
+    if model.By != '':
+        throughputMeasurement["by"] = model.By
+    if model.Value != '':
+        throughputMeasurement["value"] = int(model.Value)
+
+    replica = {}
+    syncSourcesList = []
+    syncSourcesDict = {}
+    if model.Endpoint != '':
+        syncSourcesDict["endpoint"] = model.Endpoint
+    if model.Encryption != '':
+        syncSourcesDict["encryption"] = model.Encryption
+    if model.ServerCert != '':
+        syncSourcesDict["serverCert"] = model.ServerCert
+    syncSourcesList.append(syncSourcesDict)
+    if model.Endpoint != '':
+        replica["syncSources"] = syncSourcesList
+
+    clientTlsCertificatesList = []
+    clientTlsCertificatesDict = {}
+    if model.PublicCertificatePEMString != '':
+        clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
+    clientTlsCertificatesList.append(clientTlsCertificatesDict)
+
+    alertsList = []
+    alertsDict = {}
+    if model.AlertName != '':
+        alertsDict["name"] = model.AlertName
+    if model.AlertValue != '':
+        alertsDict["value"] = model.AlertValue
+    alertsList.append(alertsDict)
+
+    remoteBackup = {}
+    if model.Active != '':
+        remoteBackup["active"] = model.Active
+    if model.Interval != '':
+        remoteBackup["interval"] = model.Interval
+    if model.TimeUTC != '':
+        remoteBackup["timeUTC"] = model.TimeUTC
+    if model.StorageType != '':
+        remoteBackup["storageType"] = model.StorageType
+    if model.StoragePath != '':
+        remoteBackup["storagePath"] = model.StoragePath
+
+    if model.DryRun != '':
+        event["dryRun"] = model.DryRun
+    if model.DatabaseName != '':
+        event["name"] = model.DatabaseName
+    if model.DatasetSizeInGb != '':
+        event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
+    if model.RespVersion != '':
+        event["respVersion"] = model.RespVersion
+    if model.By != '':
+        event["throughputMeasurement"] = throughputMeasurement
+    if model.DataPersistence != '':
+        event["dataPersistence"] = model.DataPersistence
+    if model.DataEvictionPolicy != '':
+        event["dataEvictionPolicy"] = model.DataEvictionPolicy
+    if model.Replication != '':
+        event["replication"] = model.Replication
+    if model.RegexRules != '':
+        event["regexRules"] = model.RegexRules
+    if model.Endpoint != '':
+        event["replica"] = replica
+    if model.SupportOSSClusterApi != '':
+        event["supportOSSClusterApi"] = model.SupportOSSClusterApi
+    if model.UseExternalEndpointForOSSClusterApi != '':
+        event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
+    if model.Password != '':
+        event["password"] = model.Password
+    if model.SaslUsername != '':
+        event["saslUsername"] = model.SaslUsername
+    if model.SaslPassword != '':
+        event["saslPassword"] = model.SaslPassword
+    if model.SourceIp != '':
+        event["sourceIp"] = model.SourceIp
+    if model.PublicCertificatePEMString != '':
+        event["clientTlsCertificates"] = clientTlsCertificatesList
+    if model.EnableTls != '':
+        event["enableTls"] = model.EnableTls
+    if model.EnableDefaultUser != '':
+        event["enableDefaultUser"] = model.EnableDefaultUser
+    if model.Active != '':
+        event["remoteBackup"] = remoteBackup
+    if model.AlertName != '' or model.AlertValue != '':
+        event["alerts"] = alertsList
+    if model.QueryPerformanceFactor != '':
+        event["queryPerformanceFactor"] = model.QueryPerformanceFactor
+
+    event = json.dumps(event)
+    LOG.info(f"The event sent for PUT call is: {event}")
+    LOG.info(f"The model is: {model}")
+    PutDatabase(base_url, sub_id, db_id, event, http_headers)
+    
+    return read_handler(session, request, callback_context)
 
 @resource.handler(Action.DELETE)
 def delete_handler(

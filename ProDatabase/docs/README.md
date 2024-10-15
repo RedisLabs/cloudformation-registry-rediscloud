@@ -49,7 +49,9 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#alertvalue" title="AlertValue">AlertValue</a>" : <i>String</i>,
         "<a href="#modulename" title="ModuleName">ModuleName</a>" : <i>String</i>,
         "<a href="#moduleparameters" title="ModuleParameters">ModuleParameters</a>" : <i>String</i>,
-        "<a href="#queryperformancefactor" title="QueryPerformanceFactor">QueryPerformanceFactor</a>" : <i>String</i>
+        "<a href="#queryperformancefactor" title="QueryPerformanceFactor">QueryPerformanceFactor</a>" : <i>String</i>,
+        "<a href="#regexrules" title="RegexRules">RegexRules</a>" : <i>String</i>,
+        "<a href="#enabledefaultuser" title="EnableDefaultUser">EnableDefaultUser</a>" : <i>String</i>
     }
 }
 </pre>
@@ -97,6 +99,8 @@ Properties:
     <a href="#modulename" title="ModuleName">ModuleName</a>: <i>String</i>
     <a href="#moduleparameters" title="ModuleParameters">ModuleParameters</a>: <i>String</i>
     <a href="#queryperformancefactor" title="QueryPerformanceFactor">QueryPerformanceFactor</a>: <i>String</i>
+    <a href="#regexrules" title="RegexRules">RegexRules</a>: <i>String</i>
+    <a href="#enabledefaultuser" title="EnableDefaultUser">EnableDefaultUser</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -480,6 +484,26 @@ _Required_: No
 _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+
+#### RegexRules
+
+[Optional. Can only be modified upon Update request from a Cloud Formation stack]. Shard regex rules. Relevant only for a sharded database.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### EnableDefaultUser
+
+[Optional. Can only be modified upon Update request from a Cloud Formation stack]. When 'true', enables connecting to the database with the 'default' user. Default: 'true'. Can only be set if Database Protocol is REDIS
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 ## Return Values
 

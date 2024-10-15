@@ -80,6 +80,8 @@ class ResourceModel(BaseModel):
     ModuleName: Optional[str]
     ModuleParameters: Optional[str]
     QueryPerformanceFactor: Optional[str]
+    RegexRules: Optional[str]
+    EnableDefaultUser: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -130,6 +132,8 @@ class ResourceModel(BaseModel):
             ModuleName=json_data.get("ModuleName"),
             ModuleParameters=json_data.get("ModuleParameters"),
             QueryPerformanceFactor=json_data.get("QueryPerformanceFactor"),
+            RegexRules=json_data.get("RegexRules"),
+            EnableDefaultUser=json_data.get("EnableDefaultUser"),
         )
 
 
