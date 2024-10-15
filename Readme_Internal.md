@@ -7,6 +7,14 @@ TODOs:
 - foldernames should follow a naming convention (lower case all e.g.)
 - Write a proper gitignore
 
+steps for deploying stacksets:
+ # Step 1: Create a StackSet
+aws cloudformation create-stack-set --stack-set-name my-stackset --template-body file://./scripts/stackset_publish_extension.yaml 
+
+# Step 2: Deploy the StackSet to multiple regions
+aws cloudformation create-stack-instances --stack-set-name my-stackset --regions eu-central-1 us-east-1 us-east-2 --accounts $(aws sts get-caller-identity --query Account --output text)
+
+
 # Redis AWS CloudFormation Public Extensions 
 Code Health -> Link to automated tests  
 Contract Testing -> Link to automated tests
