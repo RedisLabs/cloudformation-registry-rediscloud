@@ -116,28 +116,120 @@ def create_handler(
                 callbackContext=callback_context
             )
 
+    replica = {}
+    syncSourcesList = []
+    syncSourcesDict = {}
+    if model.Endpoint != '':
+        syncSourcesDict["endpoint"] = model.Endpoint
+    if model.Encryption != '':
+        syncSourcesDict["encryption"] = model.Encryption
+    if model.ServerCert != '':
+        syncSourcesDict["serverCert"] = model.ServerCert
+    syncSourcesList.append(syncSourcesDict)
+    if model.Endpoint != '':
+        replica["syncSources"] = syncSourcesList
+
+    throughputMeasurement = {}
+    if model.By != '':
+        throughputMeasurement["by"] = model.By
+    if model.Value != '':
+        throughputMeasurement["value"] = int(model.Value)
+
+    localThroughputMeasurementList = []
+    localThroughputMeasurementDict = {}
+    if model.LocalThroughputMeasurementRegion != '':
+        localThroughputMeasurementDict["region"] = model.LocalThroughputMeasurementRegion
+    if model.WriteOperationsPerSecond != '':
+        localThroughputMeasurementDict["writeOperationsPerSecond"] = int(model.WriteOperationsPerSecond)
+    if model.ReadOperationsPerSecond != '':
+        localThroughputMeasurementDict["readOperationsPerSecond"] = int(model.ReadOperationsPerSecond)
+    localThroughputMeasurementList.append(localThroughputMeasurementDict)
+
+    remoteBackup = {}
+    if model.Active != '':
+        remoteBackup["active"] = model.Active
+    if model.Interval != '':
+        remoteBackup["interval"] = model.Interval
+    if model.TimeUTC != '':
+        remoteBackup["timeUTC"] = model.TimeUTC
+    if model.StorageType != '':
+        remoteBackup["storageType"] = model.StorageType
+    if model.StoragePath != '':
+        remoteBackup["storagePath"] = model.StoragePath
+
+    clientTlsCertificatesList = []
+    clientTlsCertificatesDict = {}
+    if model.PublicCertificatePEMString != '':
+        clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
+    clientTlsCertificatesList.append(clientTlsCertificatesDict)
+
+    alertsList = []
+    alertsDict = {}
+    if model.AlertName != '':
+        alertsDict["name"] = model.AlertName
+    if model.AlertValue != '':
+        alertsDict["value"] = model.AlertValue
+    alertsList.append(alertsDict)
+
+    modulesList = []
+    modulesDict = {}
+    if model.ModuleName != '':
+        modulesDict["name"] = model.ModuleName
+    if model.ModuleParameters != '': 
+        modulesDict["parameters"] = model.ModuleParameters
+    modulesList.append(modulesDict)
+
     event = {}
+    if model.DryRun != '':
+        event["dryRun"] = model.DryRun
     if model.DatabaseName != '':
         event["name"] = model.DatabaseName
+    if model.Protocol != '':
+        event["protocol"] = model.Protocol
+    if model.Port != '':
+        event["port"] = model.Port
     if model.DatasetSizeInGb != '':
         event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
-
-    # replica = {}
-    # syncSourcesList = []
-    # syncSourcesDict = {}
-    # if model.Endpoint != '':
-    #     throughputMeasurement["by"] = model.By
-    # if model.Value != '':
-    #     throughputMeasurement["value"] = int(model.Value)
-    # if model.Value != '':
-    #     throughputMeasurement["value"] = int(model.Value)
-
-    # throughputMeasurement = {}
-    # if model.By != '':
-    #     throughputMeasurement["by"] = model.By
-    # if model.Value != '':
-    #     throughputMeasurement["value"] = int(model.Value)
-
+    if model.RespVersion != '':
+        event["respVersion"] = model.RespVersion
+    if model.SupportOSSClusterApi != '':
+        event["supportOSSClusterApi"] = model.SupportOSSClusterApi
+    if model.UseExternalEndpointForOSSClusterApi != '':
+        event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
+    if model.DataPersistence != '':
+        event["dataPersistence"] = model.DataPersistence
+    if model.DataEvictionPolicy != '':
+        event["dataEvictionPolicy"] = model.DataEvictionPolicy
+    if model.Replication != '':
+        event["replication"] = model.Replication
+    if model.Endpoint != '':
+        event["replica"] = replica
+    if model.By != '':
+        event["throughputMeasurement"] = throughputMeasurement
+    if model.LocalThroughputMeasurementRegion != '' or model.WriteOperationsPerSecond != '' or model.ReadOperationsPerSecond != '':
+        event["localThroughputMeasurement"] = localThroughputMeasurementList
+    if model.AverageItemSizeInBytes != '':
+        event["averageItemSizeInBytes"] = model.AverageItemSizeInBytes
+    if model.Active != '':
+        event["remoteBackup"] = remoteBackup
+    if model.SourceIp != '':
+        event["sourceIp"] = model.SourceIp
+    if model.PublicCertificatePEMString != '':
+        event["clientTlsCertificates"] = clientTlsCertificatesList
+    if model.EnableTls != '':
+        event["enableTls"] = model.EnableTls
+    if model.Password != '':
+        event["password"] = model.Password
+    if model.SaslUsername != '':
+        event["saslUsername"] = model.SaslUsername
+    if model.SaslPassword != '':
+        event["saslPassword"] = model.SaslPassword
+    if model.AlertName != '' or model.AlertValue != '':
+        event["alerts"] = alertsList
+    if model.ModuleName != '':
+        event["modules"] = modulesList
+    if model.QueryPerformanceFactor != '':
+        event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 
     event = json.dumps(event)
     LOG.info(f"The actual event sent for POST call is: {event}")
