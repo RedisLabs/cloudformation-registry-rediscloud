@@ -237,12 +237,14 @@ def create_handler(
     #Sending a POST API call to create a database
     response = PostDatabase(base_url, event, sub_id, http_headers)
 
+    while response["status"] != "processing-completed":
+        response = HttpRequests("GET", response["links"][0]["href"], http_headers)
+
     #Retrieving the detailed link for Database after POST call
     LOG.info(f'This is the link after POST call {response["links"][0]["href"]}')
-    href_value = response["links"][0]["href"]
 
     #Retrieving Database ID and it's Description
-    db_id = GetDatabaseId (href_value, http_headers)
+    db_id = GetDatabaseId (response["links"][0]["href"], http_headers)
     db_id = str(db_id)
     model.DatabaseID = db_id
 

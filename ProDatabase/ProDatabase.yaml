@@ -48,7 +48,7 @@ Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb7"
+    Default: "testdb11"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -56,7 +56,7 @@ Parameters:
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "185174"
+    Default: "185217"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
