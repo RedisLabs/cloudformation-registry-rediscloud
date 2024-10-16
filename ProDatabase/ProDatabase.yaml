@@ -48,7 +48,7 @@ Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb11"
+    Default: "testdb13"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
