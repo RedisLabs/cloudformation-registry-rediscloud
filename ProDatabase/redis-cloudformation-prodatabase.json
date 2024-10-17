@@ -141,11 +141,11 @@
       },
       "StorageType": {
         "type": "string",
-        "description": "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection)"
+        "description": "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage]."
       },
       "StoragePath": {
         "type": "string",
-        "description": "[Required when active is true]. Path for backup"
+        "description": "[Required when active is true]. Path for backup. Ex: s3://<bucket-name>/<path>/"
       },
       "SourceIp": {
         "type": "string",
@@ -198,6 +198,14 @@
       "EnableDefaultUser": {
         "type": "string",
         "description": "[Optional. Can only be modified upon Update request from a Cloud Formation stack]. When 'true', enables connecting to the database with the 'default' user. Default: 'true'. Can only be set if Database Protocol is REDIS"
+      },
+      "OnDemandBackup": {
+        "type": "string",
+        "description": "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false."
+      },
+      "RegionName": {
+        "type": "string",
+        "description": "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandBackup' set to 'true']. Name of cloud provider region where the local database is located. When backing up an active-active database, backup is done separately for each local database at a specified region. Example for active-active database: 'us-east-1'. For single-region deployment, the value MUST be 'null'."
       }
     },
     "handlers": {

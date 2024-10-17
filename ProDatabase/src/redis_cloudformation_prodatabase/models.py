@@ -82,6 +82,8 @@ class ResourceModel(BaseModel):
     QueryPerformanceFactor: Optional[str]
     RegexRules: Optional[str]
     EnableDefaultUser: Optional[str]
+    OnDemandBackup: Optional[str]
+    RegionName: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -134,6 +136,8 @@ class ResourceModel(BaseModel):
             QueryPerformanceFactor=json_data.get("QueryPerformanceFactor"),
             RegexRules=json_data.get("RegexRules"),
             EnableDefaultUser=json_data.get("EnableDefaultUser"),
+            OnDemandBackup=json_data.get("OnDemandBackup"),
+            RegionName=json_data.get("RegionName"),
         )
 
 

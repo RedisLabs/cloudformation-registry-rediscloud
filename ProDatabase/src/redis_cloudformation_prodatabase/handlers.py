@@ -66,6 +66,14 @@ def PutDatabase (base_url, subscription_id, database_id, event, http_headers):
     LOG.info(f"The PUT call response is: {response}")
     return response
 
+#Creates Backup for Database
+def PostBackup (base_url, subscription_id, database_id, event, http_headers):
+    url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id) + "/backup"
+    
+    response = HttpRequests(method = "POST", url = url, body = event, headers = http_headers)
+    LOG.info(f"The POST call response for Create Backup is: {response}")
+    return response
+
 #Makes the Delete API call    
 def DeleteDatabase (base_url, subscription_id, database_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id)
@@ -147,7 +155,7 @@ def create_handler(
 
     remoteBackup = {}
     if model.Active != '':
-        remoteBackup["active"] = model.Active
+        remoteBackup["active"] = bool(model.Active)
     if model.Interval != '':
         remoteBackup["interval"] = model.Interval
     if model.TimeUTC != '':
@@ -279,103 +287,113 @@ def update_handler(
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
-
     event = {}
 
-    throughputMeasurement = {}
-    if model.By != '':
-        throughputMeasurement["by"] = model.By
-    if model.Value != '':
-        throughputMeasurement["value"] = int(model.Value)
+    if model.OnDemandBackup == 'true' or model.OnDemandBackup == 'True':
+        if model.RegionName == 'null' or model.RegionName == '':
+            event['regionName'] = None
+            event = json.dumps(event)
+            LOG.info(f"The event when regionName is null is: {event}")
+        else:
+            event['regionName'] = model.RegionName
+            event = json.dumps(event)
+        response = PostBackup (base_url, sub_id, db_id, event, http_headers)
+    else:
+        throughputMeasurement = {}
+        if model.By != '':
+            throughputMeasurement["by"] = model.By
+        if model.Value != '':
+            throughputMeasurement["value"] = int(model.Value)
 
-    replica = {}
-    syncSourcesList = []
-    syncSourcesDict = {}
-    if model.Endpoint != '':
-        syncSourcesDict["endpoint"] = model.Endpoint
-    if model.Encryption != '':
-        syncSourcesDict["encryption"] = model.Encryption
-    if model.ServerCert != '':
-        syncSourcesDict["serverCert"] = model.ServerCert
-    syncSourcesList.append(syncSourcesDict)
-    if model.Endpoint != '':
-        replica["syncSources"] = syncSourcesList
+        replica = {}
+        syncSourcesList = []
+        syncSourcesDict = {}
+        if model.Endpoint != '':
+            syncSourcesDict["endpoint"] = model.Endpoint
+        if model.Encryption != '':
+            syncSourcesDict["encryption"] = model.Encryption
+        if model.ServerCert != '':
+            syncSourcesDict["serverCert"] = model.ServerCert
+        syncSourcesList.append(syncSourcesDict)
+        if model.Endpoint != '':
+            replica["syncSources"] = syncSourcesList
 
-    clientTlsCertificatesList = []
-    clientTlsCertificatesDict = {}
-    if model.PublicCertificatePEMString != '':
-        clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
-    clientTlsCertificatesList.append(clientTlsCertificatesDict)
+        clientTlsCertificatesList = []
+        clientTlsCertificatesDict = {}
+        if model.PublicCertificatePEMString != '':
+            clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
+        clientTlsCertificatesList.append(clientTlsCertificatesDict)
 
-    alertsList = []
-    alertsDict = {}
-    if model.AlertName != '':
-        alertsDict["name"] = model.AlertName
-    if model.AlertValue != '':
-        alertsDict["value"] = model.AlertValue
-    alertsList.append(alertsDict)
+        alertsList = []
+        alertsDict = {}
+        if model.AlertName != '':
+            alertsDict["name"] = model.AlertName
+        if model.AlertValue != '':
+            alertsDict["value"] = model.AlertValue
+        alertsList.append(alertsDict)
 
-    remoteBackup = {}
-    if model.Active != '':
-        remoteBackup["active"] = model.Active
-    if model.Interval != '':
-        remoteBackup["interval"] = model.Interval
-    if model.TimeUTC != '':
-        remoteBackup["timeUTC"] = model.TimeUTC
-    if model.StorageType != '':
-        remoteBackup["storageType"] = model.StorageType
-    if model.StoragePath != '':
-        remoteBackup["storagePath"] = model.StoragePath
+        remoteBackup = {}
+        if model.Active != '':
+            remoteBackup["active"] = bool(model.Active)
+        if model.Interval != '':
+            remoteBackup["interval"] = model.Interval
+        if model.TimeUTC != '':
+            remoteBackup["timeUTC"] = model.TimeUTC
+        if model.StorageType != '':
+            remoteBackup["storageType"] = model.StorageType
+        if model.StoragePath != '':
+            remoteBackup["storagePath"] = model.StoragePath
 
-    if model.DryRun != '':
-        event["dryRun"] = model.DryRun
-    if model.DatabaseName != '':
-        event["name"] = model.DatabaseName
-    if model.DatasetSizeInGb != '':
-        event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
-    if model.RespVersion != '':
-        event["respVersion"] = model.RespVersion
-    if model.By != '':
-        event["throughputMeasurement"] = throughputMeasurement
-    if model.DataPersistence != '':
-        event["dataPersistence"] = model.DataPersistence
-    if model.DataEvictionPolicy != '':
-        event["dataEvictionPolicy"] = model.DataEvictionPolicy
-    if model.Replication != '':
-        event["replication"] = model.Replication
-    if model.RegexRules != '':
-        event["regexRules"] = model.RegexRules
-    if model.Endpoint != '':
-        event["replica"] = replica
-    if model.SupportOSSClusterApi != '':
-        event["supportOSSClusterApi"] = model.SupportOSSClusterApi
-    if model.UseExternalEndpointForOSSClusterApi != '':
-        event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
-    if model.Password != '':
-        event["password"] = model.Password
-    if model.SaslUsername != '':
-        event["saslUsername"] = model.SaslUsername
-    if model.SaslPassword != '':
-        event["saslPassword"] = model.SaslPassword
-    if model.SourceIp != '':
-        event["sourceIp"] = model.SourceIp
-    if model.PublicCertificatePEMString != '':
-        event["clientTlsCertificates"] = clientTlsCertificatesList
-    if model.EnableTls != '':
-        event["enableTls"] = model.EnableTls
-    if model.EnableDefaultUser != '':
-        event["enableDefaultUser"] = model.EnableDefaultUser
-    if model.Active != '':
-        event["remoteBackup"] = remoteBackup
-    if model.AlertName != '' or model.AlertValue != '':
-        event["alerts"] = alertsList
-    if model.QueryPerformanceFactor != '':
-        event["queryPerformanceFactor"] = model.QueryPerformanceFactor
+        if model.DryRun != '':
+            event["dryRun"] = model.DryRun
+        if model.DatabaseName != '':
+            event["name"] = model.DatabaseName
+        if model.DatasetSizeInGb != '':
+            event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
+        if model.RespVersion != '':
+            event["respVersion"] = model.RespVersion
+        if model.By != '':
+            event["throughputMeasurement"] = throughputMeasurement
+        if model.DataPersistence != '':
+            event["dataPersistence"] = model.DataPersistence
+        if model.DataEvictionPolicy != '':
+            event["dataEvictionPolicy"] = model.DataEvictionPolicy
+        if model.Replication != '':
+            event["replication"] = model.Replication
+        if model.RegexRules != '':
+            event["regexRules"] = model.RegexRules
+        if model.Endpoint != '':
+            event["replica"] = replica
+        if model.SupportOSSClusterApi != '':
+            event["supportOSSClusterApi"] = model.SupportOSSClusterApi
+        if model.UseExternalEndpointForOSSClusterApi != '':
+            event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
+        if model.Password != '':
+            event["password"] = model.Password
+        if model.SaslUsername != '':
+            event["saslUsername"] = model.SaslUsername
+        if model.SaslPassword != '':
+            event["saslPassword"] = model.SaslPassword
+        if model.SourceIp != '':
+            event["sourceIp"] = model.SourceIp
+        if model.PublicCertificatePEMString != '':
+            event["clientTlsCertificates"] = clientTlsCertificatesList
+        if model.EnableTls != '':
+            event["enableTls"] = model.EnableTls
+        if model.EnableDefaultUser != '':
+            event["enableDefaultUser"] = model.EnableDefaultUser
+        if model.Active != '':
+            event["remoteBackup"] = remoteBackup
+        if model.AlertName != '' or model.AlertValue != '':
+            event["alerts"] = alertsList
+        if model.QueryPerformanceFactor != '':
+            event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 
-    event = json.dumps(event)
-    LOG.info(f"The event sent for PUT call is: {event}")
-    LOG.info(f"The model is: {model}")
-    PutDatabase(base_url, sub_id, db_id, event, http_headers)
+        event = json.dumps(event)
+        LOG.info(f"The event sent for PUT call is: {event}")
+        LOG.info(f"The model is: {model}")
+        response = PutDatabase(base_url, sub_id, db_id, event, http_headers)
+        LOG.info(f"Response for PUT call is: {response}")
     
     return read_handler(session, request, callback_context)
 

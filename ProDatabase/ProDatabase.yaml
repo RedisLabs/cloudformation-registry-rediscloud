@@ -43,12 +43,14 @@ Resources:
       QueryPerformanceFactor: !Ref QueryPerformanceFactor
       RegexRules: !Ref RegexRules
       EnableDefaultUser: !Ref EnableDefaultUser
+      OnDemandBackup: !Ref OnDemandBackup
+      RegionName: !Ref RegionName
 
 Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb13"
+    Default: "testdb20"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -56,7 +58,7 @@ Parameters:
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "185217"
+    Default: "185273"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -117,19 +119,23 @@ Parameters:
     Description: "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
   Active:
     Type: String
-    Description: "[Optional]. Determine whether backup should be active or not. Default: null"
+    Description: "[Optional]. Determine whether backup should be active or not. Default: null. Example: true"
+    Default: 'true'
   Interval:
     Type: String
     Description: "[Required when active is true]. Represent the interval between backups, should be in the following format every-x-hours where x is one of (24,12,6,4,2,1). for example: 'every-4-hours'."
+    Default: "every-4-hours"
   TimeUTC:
     Type: String
     Description: "[Optional]. State the hour which the backup will take place. Available only for 12 or 24 hours backup interval. Should be specified an hour for example 2 PM as 14:00"
   StorageType:
     Type: String
-    Description: "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection)"
+    Description: "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage]."
+    Default: "aws-s3"
   StoragePath:
     Type: String
-    Description: "[Required when active is true]. Path for backup"
+    Description: "[Required when active is true]. Path for backup. Ex: s3://<bucket-name>/<path>/"
+    Default: "s3://test-redis-backup"
   SourceIp:
     Type: String
     Description: "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
@@ -169,6 +175,12 @@ Parameters:
   EnableDefaultUser:
     Type: String
     Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack]. When 'true', enables connecting to the database with the 'default' user. Default: 'true'. Can only be set if Database Protocol is REDIS"
+  OnDemandBackup:
+    Type: String
+    Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack]. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false."
+  RegionName:
+    Type: String
+    Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandBackup' set to 'true']. Name of cloud provider region where the local database is located. When backing up an active-active database, backup is done separately for each local database at a specified region. Example for active-active database: 'us-east-1'. For single-region deployment, the value MUST be 'null'."
 
 #Metadata block is used to separate parameters displayed upon stack creation in a more organised order.
 Metadata:
@@ -250,4 +262,10 @@ Metadata:
        Parameters:
          - RegexRules
          - EnableDefaultUser
+      - 
+       Label: 
+         default: "Parameters for On Demand Backup"
+       Parameters:
+         - OnDemandBackup
+         - RegionName
 
