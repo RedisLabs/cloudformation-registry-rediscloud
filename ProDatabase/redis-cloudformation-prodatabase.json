@@ -201,11 +201,23 @@
       },
       "OnDemandBackup": {
         "type": "string",
-        "description": "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false."
+        "description": "[Required to enable Backup. Can only be modified upon Update request from a Cloud Formation stack. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default 'false'."
       },
       "RegionName": {
         "type": "string",
         "description": "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandBackup' set to 'true']. Name of cloud provider region where the local database is located. When backing up an active-active database, backup is done separately for each local database at a specified region. Example for active-active database: 'us-east-1'. For single-region deployment, the value MUST be 'null'."
+      },
+      "OnDemandImport": {
+        "type": "string",
+        "description": "[Required to enable Import. Can only be modified upon Update request from a Cloud Formation stack]. If 'true', imports the previous created backup of a database and disables all other parameters set for Update except for 'SourceType' and 'ImportFromUri'. Default 'false'."
+      },
+      "SourceType": {
+        "type": "string",
+        "description": "[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true']. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [ http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage ]."
+      },
+      "ImportFromUri": {
+        "type": "string",
+        "description": "[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true'].  One or more URIs to source data files or Redis databases, as appropriate to specified source type (example: ['http://mydomain.com/redis-backup-file1', 'http://mydomain.com/redis-backup-file2'])"
       }
     },
     "handlers": {

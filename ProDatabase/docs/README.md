@@ -53,7 +53,10 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#regexrules" title="RegexRules">RegexRules</a>" : <i>String</i>,
         "<a href="#enabledefaultuser" title="EnableDefaultUser">EnableDefaultUser</a>" : <i>String</i>,
         "<a href="#ondemandbackup" title="OnDemandBackup">OnDemandBackup</a>" : <i>String</i>,
-        "<a href="#regionname" title="RegionName">RegionName</a>" : <i>String</i>
+        "<a href="#regionname" title="RegionName">RegionName</a>" : <i>String</i>,
+        "<a href="#ondemandimport" title="OnDemandImport">OnDemandImport</a>" : <i>String</i>,
+        "<a href="#sourcetype" title="SourceType">SourceType</a>" : <i>String</i>,
+        "<a href="#importfromuri" title="ImportFromUri">ImportFromUri</a>" : <i>String</i>
     }
 }
 </pre>
@@ -105,6 +108,9 @@ Properties:
     <a href="#enabledefaultuser" title="EnableDefaultUser">EnableDefaultUser</a>: <i>String</i>
     <a href="#ondemandbackup" title="OnDemandBackup">OnDemandBackup</a>: <i>String</i>
     <a href="#regionname" title="RegionName">RegionName</a>: <i>String</i>
+    <a href="#ondemandimport" title="OnDemandImport">OnDemandImport</a>: <i>String</i>
+    <a href="#sourcetype" title="SourceType">SourceType</a>: <i>String</i>
+    <a href="#importfromuri" title="ImportFromUri">ImportFromUri</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -511,7 +517,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### OnDemandBackup
 
-[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false.
+[Required to enable Backup. Can only be modified upon Update request from a Cloud Formation stack. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default 'false'.
 
 _Required_: No
 
@@ -522,6 +528,36 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 #### RegionName
 
 [Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandBackup' set to 'true']. Name of cloud provider region where the local database is located. When backing up an active-active database, backup is done separately for each local database at a specified region. Example for active-active database: 'us-east-1'. For single-region deployment, the value MUST be 'null'.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### OnDemandImport
+
+[Required to enable Import. Can only be modified upon Update request from a Cloud Formation stack]. If 'true', imports the previous created backup of a database and disables all other parameters set for Update except for 'SourceType' and 'ImportFromUri'. Default 'false'.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### SourceType
+
+[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true']. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [ http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage ].
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### ImportFromUri
+
+[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true'].  One or more URIs to source data files or Redis databases, as appropriate to specified source type (example: ['http://mydomain.com/redis-backup-file1', 'http://mydomain.com/redis-backup-file2'])
 
 _Required_: No
 

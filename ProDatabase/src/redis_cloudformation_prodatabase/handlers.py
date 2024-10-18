@@ -74,6 +74,14 @@ def PostBackup (base_url, subscription_id, database_id, event, http_headers):
     LOG.info(f"The POST call response for Create Backup is: {response}")
     return response
 
+#Creates Import for Database
+def PostImport (base_url, subscription_id, database_id, event, http_headers):
+    url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id) + "/import"
+    
+    response = HttpRequests(method = "POST", url = url, body = event, headers = http_headers)
+    LOG.info(f"The POST call response for Create Import is: {response}")
+    return response
+
 #Makes the Delete API call    
 def DeleteDatabase (base_url, subscription_id, database_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id)
@@ -298,6 +306,18 @@ def update_handler(
             event['regionName'] = model.RegionName
             event = json.dumps(event)
         response = PostBackup (base_url, sub_id, db_id, event, http_headers)
+    
+    elif model.OnDemandImport == 'true' or model.OnDemandImport == 'True':
+        if model.SourceType != '':
+            event["sourceType"] = model.SourceType
+        if model.ImportFromUri != '':
+            importFromUriList = []
+            importFromUriList.append(model.ImportFromUri)
+            event["importFromUri"] = importFromUriList
+        event = json.dumps(event)    
+        LOG.info(f"The event sent for Import is: {event}")
+        response = PostImport (base_url, sub_id, db_id, event, http_headers)
+
     else:
         throughputMeasurement = {}
         if model.By != '':
@@ -343,7 +363,6 @@ def update_handler(
             remoteBackup["storageType"] = model.StorageType
         if model.StoragePath != '':
             remoteBackup["storagePath"] = model.StoragePath
-
         if model.DryRun != '':
             event["dryRun"] = model.DryRun
         if model.DatabaseName != '':

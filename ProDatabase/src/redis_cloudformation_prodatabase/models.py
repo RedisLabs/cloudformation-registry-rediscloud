@@ -84,6 +84,9 @@ class ResourceModel(BaseModel):
     EnableDefaultUser: Optional[str]
     OnDemandBackup: Optional[str]
     RegionName: Optional[str]
+    OnDemandImport: Optional[str]
+    SourceType: Optional[str]
+    ImportFromUri: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -138,6 +141,9 @@ class ResourceModel(BaseModel):
             EnableDefaultUser=json_data.get("EnableDefaultUser"),
             OnDemandBackup=json_data.get("OnDemandBackup"),
             RegionName=json_data.get("RegionName"),
+            OnDemandImport=json_data.get("OnDemandImport"),
+            SourceType=json_data.get("SourceType"),
+            ImportFromUri=json_data.get("ImportFromUri"),
         )
 
 

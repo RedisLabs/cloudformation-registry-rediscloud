@@ -45,12 +45,15 @@ Resources:
       EnableDefaultUser: !Ref EnableDefaultUser
       OnDemandBackup: !Ref OnDemandBackup
       RegionName: !Ref RegionName
+      OnDemandImport: !Ref OnDemandImport
+      SourceType: !Ref SourceType
+      ImportFromUri: !Ref ImportFromUri
 
 Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb20"
+    Default: "testdb27"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -58,7 +61,7 @@ Parameters:
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "185273"
+    Default: "185289"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -135,7 +138,7 @@ Parameters:
   StoragePath:
     Type: String
     Description: "[Required when active is true]. Path for backup. Ex: s3://<bucket-name>/<path>/"
-    Default: "s3://test-redis-backup"
+    Default: "s3://redis-test-for-backup-and-import"
   SourceIp:
     Type: String
     Description: "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
@@ -177,10 +180,19 @@ Parameters:
     Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack]. When 'true', enables connecting to the database with the 'default' user. Default: 'true'. Can only be set if Database Protocol is REDIS"
   OnDemandBackup:
     Type: String
-    Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack]. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false."
+    Description: "[Required to enable Backup. Can only be modified upon Update request from a Cloud Formation stack]. Requires 'remoteBackup' to be active]. If 'true', creates a backup of the current database and disables all other parameters set for Update except for 'RegionName'. Default false."
   RegionName:
     Type: String
     Description: "[Optional. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandBackup' set to 'true']. Name of cloud provider region where the local database is located. When backing up an active-active database, backup is done separately for each local database at a specified region. Example for active-active database: 'us-east-1'. For single-region deployment, the value MUST be 'null'."
+  OnDemandImport:
+    Type: String
+    Description: "[Required to enable Import. Can only be modified upon Update request from a Cloud Formation stack]. If 'true', imports the previous created backup of a database and disables all other parameters set for Update except for 'SourceType' and 'ImportFromUri'. Default 'false'."
+  SourceType:
+    Type: String
+    Description: "[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true']. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [ http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage ]."
+  ImportFromUri:
+    Type: String
+    Description: "[Required for Import. Can only be modified upon Update request from a Cloud Formation stack. Requires 'OnDemandImport' set to 'true'].  One or more URIs to source data files or Redis databases, as appropriate to specified source type (example: ['http://mydomain.com/redis-backup-file1', 'http://mydomain.com/redis-backup-file2'])"
 
 #Metadata block is used to separate parameters displayed upon stack creation in a more organised order.
 Metadata:
@@ -268,4 +280,10 @@ Metadata:
        Parameters:
          - OnDemandBackup
          - RegionName
-
+      - 
+       Label: 
+         default: "Parameters for On Demand Import"
+       Parameters:
+         - OnDemandImport
+         - SourceType
+         - ImportFromUri
