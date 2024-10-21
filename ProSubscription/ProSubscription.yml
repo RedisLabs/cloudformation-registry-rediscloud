@@ -10,20 +10,14 @@ Resources:
       PaymentMethod: !Ref PaymentMethod
       PaymentMethodId: !Ref PaymentMethodId
       MemoryStorage: !Ref MemoryStorage
-      Provider: !Ref Provider
-      CloudAccountId: !Ref CloudAccountId
-      Region: !Ref Region
-      MultipleAvailabilityZones: !Ref MultipleAvailabilityZones
-      PreferredAvailabilityZones: !Ref PreferredAvailabilityZones
-      DeploymentCIDR: !Ref DeploymentCIDR
-      VpcId: !Ref VpcId
+      CloudProviders: !Ref CloudProviders
       RedisVersion: !Ref RedisVersion
 
 Parameters:
   SubscriptionName:
     Type: String
     Description: "[Optional]. Subscription name. Example: My new subscription"
-    Default: "Sub174"
+    Default: "Sub183"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -44,28 +38,10 @@ Parameters:
   MemoryStorage:
     Type: String
     Description: "[Optional]. Optional. Memory storage preference: either 'ram' or a combination of 'ram-and-flash'. Example: ram. Default: 'ram'"
-  Provider:
+  CloudProviders:
     Type: String
-    Description: "[Optional]. Cloud provider. Example: AWS. Default: 'AWS'"
-  CloudAccountId:
-    Type: String
-    Description: "[Optional]. Cloud account identifier. Default: Redis internal cloud account (using Cloud Account Id = 1 implies using Redis internal cloud account). Note that a GCP subscription can be created only with Redis internal cloud account.Example: 1. Default: 1"
-  Region:
-    Type: String
-    Description: "[Required]. Deployment region as defined by cloud provider. Example: us-east-1"
-    Default: us-east-1
-  MultipleAvailabilityZones:
-    Type: String
-    Description: "[Optional]. Support deployment on multiple availability zones within the selected region. Example: false. Default: 'false'"
-  PreferredAvailabilityZones:
-    Type: String
-    Description: "[Optional]. Availability zones deployment preferences (for the selected provider & region). If 'multipleAvailabilityZones' is set to 'true', you must specify three availability zones. In AWS Redis internal cloud account, set the zone IDs (for example: ['use-az2', 'use-az3', 'use-az5'])"
-  DeploymentCIDR:
-    Type: String
-    Description: "[Required]. Deployment CIDR mask. Example: 10.0.0.0/24. Default: If using Redis internal cloud account, 192.168.0.0/24"
-  VpcId:
-    Type: String
-    Description: "[Optional]. Either an existing VPC Id (already exists in the specific region) or create a new VPC (if no VPC is specified). VPC Identifier must be in a valid format (for example: 'vpc-0125be68a4625884ad') and existing within the hosting account"
+    Description: '[Required as JSON]. Cloud hosting & networking details. Example: [{"regions": [{"region": "us-east-1", "networking": {}}]}]'
+    Default: '[{"regions": [{"region": "us-east-1", "networking": {}}]}]'
   RedisVersion:
     Type: String
     Description: "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
@@ -85,23 +61,5 @@ Metadata:
          - PaymentMethod
          - PaymentMethodId
          - MemoryStorage
+         - CloudProviders
          - RedisVersion
-      - 
-       Label: 
-         default: "cloudProviders"
-       Parameters:
-         - Provider
-         - CloudAccountId
-      - 
-       Label: 
-         default: "regions"
-       Parameters:
-         - Region
-         - MultipleAvailabilityZones
-         - PreferredAvailabilityZones
-      - 
-       Label: 
-         default: "networking"
-       Parameters:
-         - DeploymentCIDR
-         - VpcId

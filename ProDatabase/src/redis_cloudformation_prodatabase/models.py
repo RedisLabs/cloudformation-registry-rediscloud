@@ -55,30 +55,19 @@ class ResourceModel(BaseModel):
     DataPersistence: Optional[str]
     DataEvictionPolicy: Optional[str]
     Replication: Optional[str]
-    Endpoint: Optional[str]
-    Encryption: Optional[str]
-    ServerCert: Optional[str]
-    By: Optional[str]
-    Value: Optional[str]
-    LocalThroughputMeasurementRegion: Optional[str]
-    WriteOperationsPerSecond: Optional[str]
-    ReadOperationsPerSecond: Optional[str]
+    Replica: Optional[str]
+    ThroughputMeasurement: Optional[str]
+    LocalThroughputMeasurement: Optional[str]
     AverageItemSizeInBytes: Optional[str]
-    Active: Optional[str]
-    Interval: Optional[str]
-    TimeUTC: Optional[str]
-    StorageType: Optional[str]
-    StoragePath: Optional[str]
+    RemoteBackup: Optional[str]
     SourceIp: Optional[str]
-    PublicCertificatePEMString: Optional[str]
+    ClientTlsCertificates: Optional[str]
     EnableTls: Optional[str]
     Password: Optional[str]
     SaslUsername: Optional[str]
     SaslPassword: Optional[str]
-    AlertName: Optional[str]
-    AlertValue: Optional[str]
-    ModuleName: Optional[str]
-    ModuleParameters: Optional[str]
+    Alerts: Optional[str]
+    Modules: Optional[str]
     QueryPerformanceFactor: Optional[str]
     RegexRules: Optional[str]
     EnableDefaultUser: Optional[str]
@@ -112,30 +101,19 @@ class ResourceModel(BaseModel):
             DataPersistence=json_data.get("DataPersistence"),
             DataEvictionPolicy=json_data.get("DataEvictionPolicy"),
             Replication=json_data.get("Replication"),
-            Endpoint=json_data.get("Endpoint"),
-            Encryption=json_data.get("Encryption"),
-            ServerCert=json_data.get("ServerCert"),
-            By=json_data.get("By"),
-            Value=json_data.get("Value"),
-            LocalThroughputMeasurementRegion=json_data.get("LocalThroughputMeasurementRegion"),
-            WriteOperationsPerSecond=json_data.get("WriteOperationsPerSecond"),
-            ReadOperationsPerSecond=json_data.get("ReadOperationsPerSecond"),
+            Replica=json_data.get("Replica"),
+            ThroughputMeasurement=json_data.get("ThroughputMeasurement"),
+            LocalThroughputMeasurement=json_data.get("LocalThroughputMeasurement"),
             AverageItemSizeInBytes=json_data.get("AverageItemSizeInBytes"),
-            Active=json_data.get("Active"),
-            Interval=json_data.get("Interval"),
-            TimeUTC=json_data.get("TimeUTC"),
-            StorageType=json_data.get("StorageType"),
-            StoragePath=json_data.get("StoragePath"),
+            RemoteBackup=json_data.get("RemoteBackup"),
             SourceIp=json_data.get("SourceIp"),
-            PublicCertificatePEMString=json_data.get("PublicCertificatePEMString"),
+            ClientTlsCertificates=json_data.get("ClientTlsCertificates"),
             EnableTls=json_data.get("EnableTls"),
             Password=json_data.get("Password"),
             SaslUsername=json_data.get("SaslUsername"),
             SaslPassword=json_data.get("SaslPassword"),
-            AlertName=json_data.get("AlertName"),
-            AlertValue=json_data.get("AlertValue"),
-            ModuleName=json_data.get("ModuleName"),
-            ModuleParameters=json_data.get("ModuleParameters"),
+            Alerts=json_data.get("Alerts"),
+            Modules=json_data.get("Modules"),
             QueryPerformanceFactor=json_data.get("QueryPerformanceFactor"),
             RegexRules=json_data.get("RegexRules"),
             EnableDefaultUser=json_data.get("EnableDefaultUser"),

@@ -19,13 +19,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#paymentmethod" title="PaymentMethod">PaymentMethod</a>" : <i>String</i>,
         "<a href="#paymentmethodid" title="PaymentMethodId">PaymentMethodId</a>" : <i>String</i>,
         "<a href="#memorystorage" title="MemoryStorage">MemoryStorage</a>" : <i>String</i>,
-        "<a href="#provider" title="Provider">Provider</a>" : <i>String</i>,
-        "<a href="#cloudaccountid" title="CloudAccountId">CloudAccountId</a>" : <i>String</i>,
-        "<a href="#region" title="Region">Region</a>" : <i>String</i>,
-        "<a href="#multipleavailabilityzones" title="MultipleAvailabilityZones">MultipleAvailabilityZones</a>" : <i>String</i>,
-        "<a href="#preferredavailabilityzones" title="PreferredAvailabilityZones">PreferredAvailabilityZones</a>" : <i>String</i>,
-        "<a href="#deploymentcidr" title="DeploymentCIDR">DeploymentCIDR</a>" : <i>String</i>,
-        "<a href="#vpcid" title="VpcId">VpcId</a>" : <i>String</i>,
+        "<a href="#cloudproviders" title="CloudProviders">CloudProviders</a>" : <i>String</i>,
         "<a href="#redisversion" title="RedisVersion">RedisVersion</a>" : <i>String</i>
     }
 }
@@ -43,13 +37,7 @@ Properties:
     <a href="#paymentmethod" title="PaymentMethod">PaymentMethod</a>: <i>String</i>
     <a href="#paymentmethodid" title="PaymentMethodId">PaymentMethodId</a>: <i>String</i>
     <a href="#memorystorage" title="MemoryStorage">MemoryStorage</a>: <i>String</i>
-    <a href="#provider" title="Provider">Provider</a>: <i>String</i>
-    <a href="#cloudaccountid" title="CloudAccountId">CloudAccountId</a>: <i>String</i>
-    <a href="#region" title="Region">Region</a>: <i>String</i>
-    <a href="#multipleavailabilityzones" title="MultipleAvailabilityZones">MultipleAvailabilityZones</a>: <i>String</i>
-    <a href="#preferredavailabilityzones" title="PreferredAvailabilityZones">PreferredAvailabilityZones</a>: <i>String</i>
-    <a href="#deploymentcidr" title="DeploymentCIDR">DeploymentCIDR</a>: <i>String</i>
-    <a href="#vpcid" title="VpcId">VpcId</a>: <i>String</i>
+    <a href="#cloudproviders" title="CloudProviders">CloudProviders</a>: <i>String</i>
     <a href="#redisversion" title="RedisVersion">RedisVersion</a>: <i>String</i>
 </pre>
 
@@ -125,71 +113,11 @@ _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
-#### Provider
+#### CloudProviders
 
-[Optional]. Cloud provider. Example: AWS. Default: 'AWS'
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### CloudAccountId
-
-[Optional]. Cloud account identifier. Default: Redis internal cloud account (using Cloud Account Id = 1 implies using Redis internal cloud account). Note that a GCP subscription can be created only with Redis internal cloud account.Example: 1. Default: 1
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### Region
-
-[Required]. Deployment region as defined by cloud provider. Example: us-east-1
+[Required as JSON]. Cloud hosting & networking details. Example: [{"regions": [{"region": "us-east-1", "networking": {}}]}]
 
 _Required_: Yes
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### MultipleAvailabilityZones
-
-[Optional]. Support deployment on multiple availability zones within the selected region. Example: false. Default: 'false'
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### PreferredAvailabilityZones
-
-[Optional]. Availability zones deployment preferences (for the selected provider & region). If 'multipleAvailabilityZones' is set to 'true', you must specify three availability zones. In AWS Redis internal cloud account, set the zone IDs (for example: ['use-az2', 'use-az3', 'use-az5'])
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### DeploymentCIDR
-
-[Required]. Deployment CIDR mask. Example: 10.0.0.0/24. Default: If using Redis internal cloud account, 192.168.0.0/24
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### VpcId
-
-[Optional]. Either an existing VPC Id (already exists in the specific region) or create a new VPC (if no VPC is specified). VPC Identifier must be in a valid format (for example: 'vpc-0125be68a4625884ad') and existing within the hosting account
-
-_Required_: No
 
 _Type_: String
 

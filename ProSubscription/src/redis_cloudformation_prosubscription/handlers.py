@@ -160,31 +160,7 @@ def create_handler(
 
     # If we're here, it means this is the first call (no sub_id in callback_context)
     # Creating the event dictionary that will be identical with a Swagger API call
-    networking = {}
-    if model.DeploymentCIDR != '':
-        networking["deploymentCIDR"] = model.DeploymentCIDR
-    if model.VpcId != '':
-        networking["vpcId"] = model.VpcId
-    
-    regionsList = []
-    regionsDict = {}
-    regionsDict["region"] = model.Region
-    if model.MultipleAvailabilityZones != '':
-        regionsDict["multipleAvailabilityZones"] = model.MultipleAvailabilityZones
-    if model.PreferredAvailabilityZones != '':
-        regionsDict["preferredAvailabilityZones"] = model.PreferredAvailabilityZones
-    regionsDict["networking"] = networking
-    regionsList.append(regionsDict)
-    
-    cloudProvidersList = []
-    cloudProvidersDict = {}
-    if model.Provider != '':
-        cloudProvidersDict["provider"] = model.Provider
-    if model.CloudAccountId != '':
-        cloudProvidersDict["cloudAccountId"] = int(model.CloudAccountId)
-    cloudProvidersDict["regions"] = regionsList
-    cloudProvidersList.append(cloudProvidersDict)
-    
+
     databasesList = []
     databasesDict = {} 
     databasesDict["name"] = "DummyDatabase"
@@ -204,7 +180,7 @@ def create_handler(
         event["paymentMethodId"] = int(model.PaymentMethodId)
     if model.MemoryStorage != '':
         event["memoryStorage"] = model.MemoryStorage
-    event["cloudProviders"] = cloudProvidersList
+    event["cloudProviders"] = json.loads(model.CloudProviders)
     event["databases"] = databasesList
     if model.RedisVersion != '':
         event["redisVersion"] = model.RedisVersion

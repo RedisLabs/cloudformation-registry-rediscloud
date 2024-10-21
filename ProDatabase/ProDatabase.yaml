@@ -16,30 +16,19 @@ Resources:
       DataPersistence: !Ref DataPersistence
       DataEvictionPolicy: !Ref DataEvictionPolicy
       Replication: !Ref Replication
-      Endpoint: !Ref Endpoint
-      Encryption: !Ref Encryption
-      ServerCert: !Ref ServerCert
-      By: !Ref By
-      Value: !Ref Value
-      LocalThroughputMeasurementRegion: !Ref LocalThroughputMeasurementRegion
-      WriteOperationsPerSecond: !Ref WriteOperationsPerSecond
-      ReadOperationsPerSecond: !Ref ReadOperationsPerSecond
+      Replica: !Ref Replica
+      ThroughputMeasurement: !Ref ThroughputMeasurement
+      LocalThroughputMeasurement: !Ref LocalThroughputMeasurement
       AverageItemSizeInBytes: !Ref AverageItemSizeInBytes
-      Active: !Ref Active
-      Interval: !Ref Interval
-      TimeUTC: !Ref TimeUTC
-      StorageType: !Ref StorageType
-      StoragePath: !Ref StoragePath
+      RemoteBackup: !Ref RemoteBackup
       SourceIp: !Ref SourceIp
-      PublicCertificatePEMString: !Ref PublicCertificatePEMString
+      ClientTlsCertificates: !Ref ClientTlsCertificates
       EnableTls: !Ref EnableTls
       Password: !Ref Password
       SaslUsername: !Ref SaslUsername
       SaslPassword: !Ref SaslPassword
-      AlertName: !Ref AlertName
-      AlertValue: !Ref AlertValue
-      ModuleName: !Ref ModuleName
-      ModuleParameters: !Ref ModuleParameters
+      Alerts: !Ref Alerts
+      Modules: !Ref Modules
       QueryPerformanceFactor: !Ref QueryPerformanceFactor
       RegexRules: !Ref RegexRules
       EnableDefaultUser: !Ref EnableDefaultUser
@@ -53,7 +42,7 @@ Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb28"
+    Default: "testdb29"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -61,7 +50,7 @@ Parameters:
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "185289"
+    Default: "185494"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -93,58 +82,28 @@ Parameters:
   Replication:
     Type: String
     Description: "[Optional]. Databases replication. Default: 'true'"
-  Endpoint:
+  Replica:
     Type: String
-    Description: "[Required for replica]. A Redis URI (sample format: 'redis://user:password@host:port)'. If the URI provided is Redis Cloud instance, only host and port should be provided (using the format: ['redis://endpoint1:6379', 'redis://endpoint2:6380'] )."
-  Encryption:
+    Description: "[Optional. Input as JSON]. Replica Of configuration"
+  ThroughputMeasurement:
     Type: String
-    Description: "[Optional]. Defines if encryption should be used to connect to the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect if the source uses encryption."
-  ServerCert:
+    Description: "[Optional. Input as JSON]. Throughput measurement method. Default: 25000 ops/sec"
+  LocalThroughputMeasurement:
     Type: String
-    Description: "[Optional]. TLS/SSL certificate chain of the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect the certificate to use."
-  By:
-    Type: String
-    Description: "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
-  Value:
-    Type: String
-    Description: "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000. Default: 25000 ops/sec"
-  LocalThroughputMeasurementRegion:
-    Type: String
-    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database"
-  WriteOperationsPerSecond:
-    Type: String
-    Description: "[Optional]. Example: 1000. Default: 1000 ops/sec"
-  ReadOperationsPerSecond:
-    Type: String
-    Description: "[Optional]. Example: 1000. Default: 1000 ops/sec"
+    Description: "[Optional. Input as JSON]. Throughput measurement for an active-active subscription"
   AverageItemSizeInBytes:
     Type: String
     Description: "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
-  Active:
+  RemoteBackup:
     Type: String
-    Description: "[Optional]. Determine whether backup should be active or not. Default: null. Example: true"
-    Default: 'true'
-  Interval:
-    Type: String
-    Description: "[Required when active is true]. Represent the interval between backups, should be in the following format every-x-hours where x is one of (24,12,6,4,2,1). for example: 'every-4-hours'."
-    Default: "every-4-hours"
-  TimeUTC:
-    Type: String
-    Description: "[Optional]. State the hour which the backup will take place. Available only for 12 or 24 hours backup interval. Should be specified an hour for example 2 PM as 14:00"
-  StorageType:
-    Type: String
-    Description: "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage]."
-    Default: "aws-s3"
-  StoragePath:
-    Type: String
-    Description: "[Required when active is true]. Path for backup. Ex: s3://<bucket-name>/<path>/"
-    Default: "s3://redis-test-for-backup-and-import"
+    Description: '[Optional. Input as JSON]. Database remote backup configuration. Example: {"active": true, "interval": "every-4-hours", "storageType": "aws-s3", "storagePath": "s3://redis-test-for-backup-and-import"}'
+    Default: '{"active": true, "interval": "every-4-hours", "storageType": "aws-s3", "storagePath": "s3://redis-test-for-backup-and-import"}'
   SourceIp:
     Type: String
     Description: "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
-  PublicCertificatePEMString:
+  ClientTlsCertificates:
     Type: String
-    Description: "[Required for clientTlsCertificates]. Public key certificate (PEM format)"
+    Description: "[Optional. Input as a JSON]. A list of TLS/SSL certificates (public keys) with new line characters replaced by \n. If specified, mTLS authentication (with enableTls not specified or set to true) will be required to authenticate user connections. If empty list is received, SSL certificates will be removed and mTLS will not be required (note that TLS connection may still apply, depending on the value of the enableTls property). Default: 'null'"
   EnableTls:
     Type: String
     Description: "[Optional]. When 'true', requires TLS authentication for all connections (mTLS with valid clientSslCertificate, regular TLS when the clientSslCertificate is not provided. Default: 'false'"
@@ -157,18 +116,12 @@ Parameters:
   SaslPassword:
     Type: String
     Description: "[Optional]. Memcached (SASL) Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is MEMCACHED"
-  AlertName:
+  Alerts:
     Type: String
-    Description: "[Required to enable alerts]. Alert name. List of options: [ dataset-size, datasets-size, throughput-higher-than, throughput-lower-than, latency, syncsource-error, syncsource-lag, connections-limit ]. Example: dataset-size"
-  AlertValue:
+    Description: "[Optional. Input as JSON]. Redis database alerts."
+  Modules:
     Type: String
-    Description: "[Required to enable alerts]. Alert value. Example: 80"
-  ModuleName:
-    Type: String
-    Description: "[Required only to enable modules]. Redis module Id"
-  ModuleParameters:
-    Type: String
-    Description: "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
+    Description: "[Optional. Input as JSON]. Redis modules to be provisioned in the database."
   QueryPerformanceFactor:
     Type: String
     Description: "[Optional]. The query performance factor adds extra compute power specifically for search and query. For databases with search and query, you can increase your search queries per second by the selected factor. Example: 2x"
@@ -215,59 +168,20 @@ Metadata:
          - DataPersistence
          - DataEvictionPolicy
          - Replication
+         - Replica
+         - ThroughputMeasurement
+         - LocalThroughputMeasurement
          - AverageItemSizeInBytes
+         - RemoteBackup
          - SourceIp
+         - ClientTlsCertificates
          - EnableTls
          - Password
          - SaslUsername
          - SaslPassword
+         - Alerts
+         - Modules
          - QueryPerformanceFactor
-      - 
-       Label: 
-         default: "replica"
-       Parameters:
-         - Endpoint
-         - Encryption
-         - ServerCert
-      - 
-       Label: 
-         default: "throughputMeasurement"
-       Parameters:
-         - By
-         - Value
-      -
-       Label: 
-         default: "localThroughputMeasurement"
-       Parameters:
-         - LocalThroughputMeasurementRegion
-         - WriteOperationsPerSecond
-         - ReadOperationsPerSecond
-      - 
-       Label: 
-         default: "remoteBackup"
-       Parameters:
-         - Active
-         - Interval
-         - TimeUTC
-         - StorageType
-         - StoragePath
-      - 
-       Label: 
-         default: "clientTlsCertificates"
-       Parameters:
-         - PublicCertificatePEMString
-      - 
-       Label: 
-         default: "alerts"
-       Parameters:
-         - AlertName
-         - AlertValue
-      - 
-       Label: 
-         default: "modules"
-       Parameters:
-         - ModuleName
-         - ModuleParameters
       - 
        Label: 
          default: "Parameters supported only for Update action"

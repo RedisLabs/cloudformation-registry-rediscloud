@@ -132,69 +132,6 @@ def create_handler(
                 callbackContext=callback_context
             )
 
-    replica = {}
-    syncSourcesList = []
-    syncSourcesDict = {}
-    if model.Endpoint != '':
-        syncSourcesDict["endpoint"] = model.Endpoint
-    if model.Encryption != '':
-        syncSourcesDict["encryption"] = model.Encryption
-    if model.ServerCert != '':
-        syncSourcesDict["serverCert"] = model.ServerCert
-    syncSourcesList.append(syncSourcesDict)
-    if model.Endpoint != '':
-        replica["syncSources"] = syncSourcesList
-
-    throughputMeasurement = {}
-    if model.By != '':
-        throughputMeasurement["by"] = model.By
-    if model.Value != '':
-        throughputMeasurement["value"] = int(model.Value)
-
-    localThroughputMeasurementList = []
-    localThroughputMeasurementDict = {}
-    if model.LocalThroughputMeasurementRegion != '':
-        localThroughputMeasurementDict["region"] = model.LocalThroughputMeasurementRegion
-    if model.WriteOperationsPerSecond != '':
-        localThroughputMeasurementDict["writeOperationsPerSecond"] = int(model.WriteOperationsPerSecond)
-    if model.ReadOperationsPerSecond != '':
-        localThroughputMeasurementDict["readOperationsPerSecond"] = int(model.ReadOperationsPerSecond)
-    localThroughputMeasurementList.append(localThroughputMeasurementDict)
-
-    remoteBackup = {}
-    if model.Active != '':
-        remoteBackup["active"] = bool(model.Active)
-    if model.Interval != '':
-        remoteBackup["interval"] = model.Interval
-    if model.TimeUTC != '':
-        remoteBackup["timeUTC"] = model.TimeUTC
-    if model.StorageType != '':
-        remoteBackup["storageType"] = model.StorageType
-    if model.StoragePath != '':
-        remoteBackup["storagePath"] = model.StoragePath
-
-    clientTlsCertificatesList = []
-    clientTlsCertificatesDict = {}
-    if model.PublicCertificatePEMString != '':
-        clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
-    clientTlsCertificatesList.append(clientTlsCertificatesDict)
-
-    alertsList = []
-    alertsDict = {}
-    if model.AlertName != '':
-        alertsDict["name"] = model.AlertName
-    if model.AlertValue != '':
-        alertsDict["value"] = model.AlertValue
-    alertsList.append(alertsDict)
-
-    modulesList = []
-    modulesDict = {}
-    if model.ModuleName != '':
-        modulesDict["name"] = model.ModuleName
-    if model.ModuleParameters != '': 
-        modulesDict["parameters"] = model.ModuleParameters
-    modulesList.append(modulesDict)
-
     event = {}
     if model.DryRun != '':
         event["dryRun"] = model.DryRun
@@ -218,20 +155,20 @@ def create_handler(
         event["dataEvictionPolicy"] = model.DataEvictionPolicy
     if model.Replication != '':
         event["replication"] = model.Replication
-    if model.Endpoint != '':
-        event["replica"] = replica
-    if model.By != '':
-        event["throughputMeasurement"] = throughputMeasurement
-    if model.LocalThroughputMeasurementRegion != '' or model.WriteOperationsPerSecond != '' or model.ReadOperationsPerSecond != '':
-        event["localThroughputMeasurement"] = localThroughputMeasurementList
+    if model.Replica != '':
+        event["replica"] = json.loads(model.Replica)
+    if model.ThroughputMeasurement != '':
+        event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
+    if model.LocalThroughputMeasurement != '':
+        event["localThroughputMeasurement"] = json.loads(model.LocalThroughputMeasurement)
     if model.AverageItemSizeInBytes != '':
         event["averageItemSizeInBytes"] = model.AverageItemSizeInBytes
-    if model.Active != '':
-        event["remoteBackup"] = remoteBackup
+    if model.RemoteBackup != '':
+        event["remoteBackup"] = json.loads(model.RemoteBackup)
     if model.SourceIp != '':
         event["sourceIp"] = model.SourceIp
-    if model.PublicCertificatePEMString != '':
-        event["clientTlsCertificates"] = clientTlsCertificatesList
+    if model.ClientTlsCertificates != '':
+        event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
     if model.EnableTls != '':
         event["enableTls"] = model.EnableTls
     if model.Password != '':
@@ -240,10 +177,10 @@ def create_handler(
         event["saslUsername"] = model.SaslUsername
     if model.SaslPassword != '':
         event["saslPassword"] = model.SaslPassword
-    if model.AlertName != '' or model.AlertValue != '':
-        event["alerts"] = alertsList
-    if model.ModuleName != '':
-        event["modules"] = modulesList
+    if model.Alerts != '':
+        event["alerts"] = json.loads(model.Alerts)
+    if model.Modules != '':
+        event["modules"] = json.loads(model.Modules)
     if model.QueryPerformanceFactor != '':
         event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 
@@ -319,50 +256,6 @@ def update_handler(
         response = PostImport (base_url, sub_id, db_id, event, http_headers)
 
     else:
-        throughputMeasurement = {}
-        if model.By != '':
-            throughputMeasurement["by"] = model.By
-        if model.Value != '':
-            throughputMeasurement["value"] = int(model.Value)
-
-        replica = {}
-        syncSourcesList = []
-        syncSourcesDict = {}
-        if model.Endpoint != '':
-            syncSourcesDict["endpoint"] = model.Endpoint
-        if model.Encryption != '':
-            syncSourcesDict["encryption"] = model.Encryption
-        if model.ServerCert != '':
-            syncSourcesDict["serverCert"] = model.ServerCert
-        syncSourcesList.append(syncSourcesDict)
-        if model.Endpoint != '':
-            replica["syncSources"] = syncSourcesList
-
-        clientTlsCertificatesList = []
-        clientTlsCertificatesDict = {}
-        if model.PublicCertificatePEMString != '':
-            clientTlsCertificatesDict["publicCertificatePEMString"] = model.PublicCertificatePEMString
-        clientTlsCertificatesList.append(clientTlsCertificatesDict)
-
-        alertsList = []
-        alertsDict = {}
-        if model.AlertName != '':
-            alertsDict["name"] = model.AlertName
-        if model.AlertValue != '':
-            alertsDict["value"] = model.AlertValue
-        alertsList.append(alertsDict)
-
-        remoteBackup = {}
-        if model.Active != '':
-            remoteBackup["active"] = bool(model.Active)
-        if model.Interval != '':
-            remoteBackup["interval"] = model.Interval
-        if model.TimeUTC != '':
-            remoteBackup["timeUTC"] = model.TimeUTC
-        if model.StorageType != '':
-            remoteBackup["storageType"] = model.StorageType
-        if model.StoragePath != '':
-            remoteBackup["storagePath"] = model.StoragePath
         if model.DryRun != '':
             event["dryRun"] = model.DryRun
         if model.DatabaseName != '':
@@ -371,8 +264,8 @@ def update_handler(
             event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
         if model.RespVersion != '':
             event["respVersion"] = model.RespVersion
-        if model.By != '':
-            event["throughputMeasurement"] = throughputMeasurement
+        if model.ThroughputMeasurement != '':
+            event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)    
         if model.DataPersistence != '':
             event["dataPersistence"] = model.DataPersistence
         if model.DataEvictionPolicy != '':
@@ -381,8 +274,8 @@ def update_handler(
             event["replication"] = model.Replication
         if model.RegexRules != '':
             event["regexRules"] = model.RegexRules
-        if model.Endpoint != '':
-            event["replica"] = replica
+        if model.Replica != '':
+            event["replica"] = json.loads(model.Replica)
         if model.SupportOSSClusterApi != '':
             event["supportOSSClusterApi"] = model.SupportOSSClusterApi
         if model.UseExternalEndpointForOSSClusterApi != '':
@@ -395,16 +288,16 @@ def update_handler(
             event["saslPassword"] = model.SaslPassword
         if model.SourceIp != '':
             event["sourceIp"] = model.SourceIp
-        if model.PublicCertificatePEMString != '':
-            event["clientTlsCertificates"] = clientTlsCertificatesList
+        if model.ClientTlsCertificates != '':
+            event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
         if model.EnableTls != '':
             event["enableTls"] = model.EnableTls
         if model.EnableDefaultUser != '':
             event["enableDefaultUser"] = model.EnableDefaultUser
-        if model.Active != '':
-            event["remoteBackup"] = remoteBackup
-        if model.AlertName != '' or model.AlertValue != '':
-            event["alerts"] = alertsList
+        if model.RemoteBackup != '':
+            event["remoteBackup"] = json.loads(model.RemoteBackup)
+        if model.Alerts != '':
+            event["alerts"] = json.loads(model.Alerts)
         if model.QueryPerformanceFactor != '':
             event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 

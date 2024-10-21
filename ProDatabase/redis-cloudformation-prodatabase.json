@@ -91,69 +91,33 @@
         "type": "string",
         "description": "[Optional]. Databases replication. Default: 'true'"
       },
-      "Endpoint": {
+      "Replica": {
         "type": "string",
-        "description": "[Required for replica]. A Redis URI (sample format: 'redis://user:password@host:port)'. If the URI provided is Redis Cloud instance, only host and port should be provided (using the format: ['redis://endpoint1:6379', 'redis://endpoint2:6380'] )."
+        "description": "[Optional. Input as JSON]. Replica Of configuration"
       },
-      "Encryption": {
+      "ThroughputMeasurement": {
         "type": "string",
-        "description": "[Optional]. Defines if encryption should be used to connect to the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect if the source uses encryption."
+        "description": "[Optional. Input as JSON]. Throughput measurement method. Default: 25000 ops/sec"
       },
-      "ServerCert": {
+      "LocalThroughputMeasurement": {
         "type": "string",
-        "description": "[Optional]. TLS/SSL certificate chain of the sync source. If left null and if the source is a Redis Cloud instance, it will automatically detect the certificate to use."
-      },
-      "By": {
-        "type": "string",
-        "description": "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
-      },
-      "Value": {
-        "type": "string",
-        "description": "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000. Default: 25000 ops/sec"
-      },
-      "LocalThroughputMeasurementRegion": {
-        "type": "string",
-        "description": "[Optional]. Local throughput for the regional instance of an Active-Active database"
-      },
-      "WriteOperationsPerSecond": {
-        "type": "string",
-        "description": "[Optional]. Example: 1000. Default: 1000 ops/sec"
-      },
-      "ReadOperationsPerSecond": {
-        "type": "string",
-        "description": "[Optional]. Example: 1000. Default: 1000 ops/sec"
+        "description": "[Optional. Input as JSON]. Throughput measurement for an active-active subscription"
       },
       "AverageItemSizeInBytes": {
         "type": "string",
         "description": "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
       },
-      "Active": {
+      "RemoteBackup": {
         "type": "string",
-        "description": "[Optional]. Determine whether backup should be active or not. Default: null"
-      },
-      "Interval": {
-        "type": "string",
-        "description": "[Required when active is true]. Represent the interval between backups, should be in the following format every-x-hours where x is one of (24,12,6,4,2,1). for example: 'every-4-hours'."
-      },
-      "TimeUTC": {
-        "type": "string",
-        "description": "[Optional]. State the hour which the backup will take place. Available only for 12 or 24 hours backup interval. Should be specified an hour for example 2 PM as 14:00"
-      },
-      "StorageType": {
-        "type": "string",
-        "description": "[Required when active is true]. Type of storage source from which to import the database file (RDB files) or data (Redis connection). List of options: [http, redis, ftp, aws-s3, azure-blob-storage, google-blob-storage]."
-      },
-      "StoragePath": {
-        "type": "string",
-        "description": "[Required when active is true]. Path for backup. Ex: s3://<bucket-name>/<path>/"
+        "description": "[Optional. Input as JSON]. Database remote backup configuration"
       },
       "SourceIp": {
         "type": "string",
-        "description": "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
+        "description": "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. Example value: '['192.168.10.0/32', '192.168.12.0/24']'"
       },
-      "PublicCertificatePEMString": {
+      "ClientTlsCertificates": {
         "type": "string",
-        "description": "[Required for clientTlsCertificates]. Public key certificate (PEM format)"
+        "description": "[Optional. Input as a JSON]. A list of TLS/SSL certificates (public keys) with new line characters replaced by \n. If specified, mTLS authentication (with enableTls not specified or set to true) will be required to authenticate user connections. If empty list is received, SSL certificates will be removed and mTLS will not be required (note that TLS connection may still apply, depending on the value of the enableTls property). Default: 'null'"
       },
       "EnableTls": {
         "type": "string",
@@ -171,21 +135,13 @@
         "type": "string",
         "description": "[Optional]. Memcached (SASL) Password to access the database. If omitted, a random 32 character long alphanumeric password will be automatically generated. Can only be set if Database Protocol is MEMCACHED"
       },
-      "AlertName": {
+      "Alerts": {
         "type": "string",
-        "description": "[Required to enable alerts]. Alert name. List of options: [ dataset-size, datasets-size, throughput-higher-than, throughput-lower-than, latency, syncsource-error, syncsource-lag, connections-limit ]. Example: dataset-size"
+        "description": "[Optional. Input as JSON]. Redis database alerts."
       },
-      "AlertValue": {
+      "Modules": {
         "type": "string",
-        "description": "[Required to enable alerts]. Alert value. Example: 80"
-      },
-      "ModuleName": {
-        "type": "string",
-        "description": "[Required only to enable modules]. Redis module Id"
-      },
-      "ModuleParameters": {
-        "type": "string",
-        "description": "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
+        "description": "[Optional. Input as JSON]. Redis modules to be provisioned in the database."
       },
       "QueryPerformanceFactor": {
         "type": "string",
@@ -253,12 +209,9 @@
       "/properties/BaseUrl",
       "/properties/Protocol",
       "/properties/Port",
-      "/properties/LocalThroughputMeasurementRegion",
-      "/properties/WriteOperationsPerSecond",
-      "/properties/ReadOperationsPerSecond",
+      "/properties/LocalThroughputMeasurement",
       "/properties/AverageItemSizeInBytes",
-      "/properties/ModuleName",
-      "/properties/ModuleParameters"
+      "/properties/Modules"
     ],
     "readOnlyProperties": [
       "/properties/DatabaseID"

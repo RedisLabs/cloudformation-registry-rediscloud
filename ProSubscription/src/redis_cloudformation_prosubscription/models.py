@@ -49,13 +49,7 @@ class ResourceModel(BaseModel):
     PaymentMethod: Optional[str]
     PaymentMethodId: Optional[str]
     MemoryStorage: Optional[str]
-    Provider: Optional[str]
-    CloudAccountId: Optional[str]
-    Region: Optional[str]
-    MultipleAvailabilityZones: Optional[str]
-    PreferredAvailabilityZones: Optional[str]
-    DeploymentCIDR: Optional[str]
-    VpcId: Optional[str]
+    CloudProviders: Optional[str]
     RedisVersion: Optional[str]
 
     @classmethod
@@ -76,13 +70,7 @@ class ResourceModel(BaseModel):
             PaymentMethod=json_data.get("PaymentMethod"),
             PaymentMethodId=json_data.get("PaymentMethodId"),
             MemoryStorage=json_data.get("MemoryStorage"),
-            Provider=json_data.get("Provider"),
-            CloudAccountId=json_data.get("CloudAccountId"),
-            Region=json_data.get("Region"),
-            MultipleAvailabilityZones=json_data.get("MultipleAvailabilityZones"),
-            PreferredAvailabilityZones=json_data.get("PreferredAvailabilityZones"),
-            DeploymentCIDR=json_data.get("DeploymentCIDR"),
-            VpcId=json_data.get("VpcId"),
+            CloudProviders=json_data.get("CloudProviders"),
             RedisVersion=json_data.get("RedisVersion"),
         )
 
