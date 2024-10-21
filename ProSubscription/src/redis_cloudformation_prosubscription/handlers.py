@@ -185,57 +185,10 @@ def create_handler(
     cloudProvidersDict["regions"] = regionsList
     cloudProvidersList.append(cloudProvidersDict)
     
-    throughputMeasurement = {}
-    if model.By != '':
-        throughputMeasurement["by"] = model.By
-    if model.Value != '':
-        throughputMeasurement["value"] = int(model.Value)
-
-    localThroughputMeasurementList = []
-    localThroughputMeasurementDict = {}
-    if model.LocalThroughputMeasurementRegion != '':
-        localThroughputMeasurementDict["region"] = model.LocalThroughputMeasurementRegion
-    if model.WriteOperationsPerSecond != '':
-        localThroughputMeasurementDict["writeOperationsPerSecond"] = int(model.WriteOperationsPerSecond)
-    if model.ReadOperationsPerSecond != '':
-        localThroughputMeasurementDict["readOperationsPerSecond"] = int(model.ReadOperationsPerSecond)
-    localThroughputMeasurementList.append(localThroughputMeasurementDict)
-
-    modulesList = []
-    modulesDict = {}
-    if model.ModuleName != '':
-        modulesDict["name"] = model.ModuleName
-    if model.ModuleParameters != '': 
-        modulesDict["parameters"] = model.ModuleParameters
-    modulesList.append(modulesDict)
-    
     databasesList = []
     databasesDict = {} 
-    databasesDict["name"] = model.DatabaseName
-    if model.Protocol != '':
-        databasesDict["protocol"] = model.Protocol
-    if model.DatasetSizeInGb != '':
-        databasesDict["datasetSizeInGb"] = int(model.DatasetSizeInGb)
-    if model.SupportOSSClusterApi != '':
-        databasesDict["supportOSSClusterApi"] = model.SupportOSSClusterApi
-    if model.DataPersistence != '':
-        databasesDict["dataPersistence"] = model.DataPersistence
-    if model.Replication != '':
-        databasesDict["replication"] = model.Replication
-    if model.By != '':
-        databasesDict["throughputMeasurement"] = throughputMeasurement
-    if model.LocalThroughputMeasurementRegion != '' or model.WriteOperationsPerSecond != '' or model.ReadOperationsPerSecond != '':
-        databasesDict["localThroughputMeasurement"] = localThroughputMeasurementList
-    if model.ModuleName != '':
-        databasesDict["modules"] = modulesList
-    if model.Quantity != '':
-        databasesDict["quantity"] = int(model.Quantity)
-    if model.AverageItemSizeInBytes != '':
-        databasesDict["averageItemSizeInBytes"] = int(model.AverageItemSizeInBytes)
-    if model.RespVersion != '':
-        databasesDict["respVersion"] = model.RespVersion
-    if model.QueryPerformanceFactor != '':
-        databasesDict["queryPerformanceFactor"] = model.QueryPerformanceFactor
+    databasesDict["name"] = "DummyDatabase"
+    databasesDict["datasetSizeInGb"] = 1
     databasesList.append(databasesDict)
     
     event = {}

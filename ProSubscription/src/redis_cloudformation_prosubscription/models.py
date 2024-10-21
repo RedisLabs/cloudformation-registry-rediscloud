@@ -56,23 +56,6 @@ class ResourceModel(BaseModel):
     PreferredAvailabilityZones: Optional[str]
     DeploymentCIDR: Optional[str]
     VpcId: Optional[str]
-    DatabaseName: Optional[str]
-    Protocol: Optional[str]
-    DatasetSizeInGb: Optional[str]
-    SupportOSSClusterApi: Optional[str]
-    DataPersistence: Optional[str]
-    Replication: Optional[str]
-    By: Optional[str]
-    Value: Optional[str]
-    LocalThroughputMeasurementRegion: Optional[str]
-    WriteOperationsPerSecond: Optional[str]
-    ReadOperationsPerSecond: Optional[str]
-    ModuleName: Optional[str]
-    ModuleParameters: Optional[str]
-    Quantity: Optional[str]
-    AverageItemSizeInBytes: Optional[str]
-    RespVersion: Optional[str]
-    QueryPerformanceFactor: Optional[str]
     RedisVersion: Optional[str]
 
     @classmethod
@@ -100,23 +83,6 @@ class ResourceModel(BaseModel):
             PreferredAvailabilityZones=json_data.get("PreferredAvailabilityZones"),
             DeploymentCIDR=json_data.get("DeploymentCIDR"),
             VpcId=json_data.get("VpcId"),
-            DatabaseName=json_data.get("DatabaseName"),
-            Protocol=json_data.get("Protocol"),
-            DatasetSizeInGb=json_data.get("DatasetSizeInGb"),
-            SupportOSSClusterApi=json_data.get("SupportOSSClusterApi"),
-            DataPersistence=json_data.get("DataPersistence"),
-            Replication=json_data.get("Replication"),
-            By=json_data.get("By"),
-            Value=json_data.get("Value"),
-            LocalThroughputMeasurementRegion=json_data.get("LocalThroughputMeasurementRegion"),
-            WriteOperationsPerSecond=json_data.get("WriteOperationsPerSecond"),
-            ReadOperationsPerSecond=json_data.get("ReadOperationsPerSecond"),
-            ModuleName=json_data.get("ModuleName"),
-            ModuleParameters=json_data.get("ModuleParameters"),
-            Quantity=json_data.get("Quantity"),
-            AverageItemSizeInBytes=json_data.get("AverageItemSizeInBytes"),
-            RespVersion=json_data.get("RespVersion"),
-            QueryPerformanceFactor=json_data.get("QueryPerformanceFactor"),
             RedisVersion=json_data.get("RedisVersion"),
         )
 

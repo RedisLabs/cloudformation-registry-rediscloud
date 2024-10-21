@@ -17,30 +17,13 @@ Resources:
       PreferredAvailabilityZones: !Ref PreferredAvailabilityZones
       DeploymentCIDR: !Ref DeploymentCIDR
       VpcId: !Ref VpcId
-      DatabaseName: !Ref DatabaseName
-      Protocol: !Ref Protocol
-      DatasetSizeInGb: !Ref DatasetSizeInGb
-      SupportOSSClusterApi: !Ref SupportOSSClusterApi
-      DataPersistence: !Ref DataPersistence
-      Replication: !Ref Replication
-      By: !Ref By
-      Value: !Ref Value
-      LocalThroughputMeasurementRegion: !Ref LocalThroughputMeasurementRegion
-      WriteOperationsPerSecond: !Ref WriteOperationsPerSecond
-      ReadOperationsPerSecond: !Ref ReadOperationsPerSecond
-      ModuleName: !Ref ModuleName
-      ModuleParameters: !Ref ModuleParameters
-      Quantity: !Ref Quantity
-      AverageItemSizeInBytes: !Ref AverageItemSizeInBytes
-      RespVersion: !Ref RespVersion
-      QueryPerformanceFactor: !Ref QueryPerformanceFactor
       RedisVersion: !Ref RedisVersion
 
 Parameters:
   SubscriptionName:
     Type: String
     Description: "[Optional]. Subscription name. Example: My new subscription"
-    Default: "Sub173"
+    Default: "Sub174"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."
@@ -83,59 +66,6 @@ Parameters:
   VpcId:
     Type: String
     Description: "[Optional]. Either an existing VPC Id (already exists in the specific region) or create a new VPC (if no VPC is specified). VPC Identifier must be in a valid format (for example: 'vpc-0125be68a4625884ad') and existing within the hosting account"
-  DatabaseName:
-    Type: String
-    Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: db1
-  Protocol:
-    Type: String
-    Description: "[Optional]. Database protocol: either 'redis' or 'memcached'. Default: 'redis'"
-  DatasetSizeInGb:
-    Type: String
-    Description: "[Optional]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value."
-    Default: "1"
-  SupportOSSClusterApi:
-    Type: String
-    Description: "[Optional]. Support Redis open-source (OSS) Cluster API. Default: 'false'"
-  DataPersistence:
-    Type: String
-    Description: "[Optional]. Rate of database data persistence (in persistent storage). Example: none. Default: 'none'"
-  Replication:
-    Type: String
-    Description: "[Optional]. Databases replication. Default: 'true'"
-  By:
-    Type: String
-    Description: "[Required to enable throughputMeasurement]. Throughput measurement method. Either 'number-of-shards' or 'operations-per-second'"
-  Value:
-    Type: String
-    Description: "[Required to enable throughputMeasurement]. Throughput value (as applies to selected measurement method). Example: 10000. Default: 25000 ops/sec"
-  LocalThroughputMeasurementRegion:
-    Type: String
-    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database"
-  WriteOperationsPerSecond:
-    Type: String
-    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database. Example: 1000. Default: 1000 ops/sec"
-  ReadOperationsPerSecond:
-    Type: String
-    Description: "[Optional]. Local throughput for the regional instance of an Active-Active database. Example: 1000. Default: 1000 ops/sec"
-  ModuleName:
-    Type: String
-    Description: "[Required only to enable modules]. Redis module Id"
-  ModuleParameters:
-    Type: String
-    Description: "[Optional]. Redis database module parameters (name and value), as relevant to the specific module (see modules parameters specification). Example: OrderedMap {}"
-  Quantity:
-    Type: String
-    Description: "[Optional]. Number of databases (of this type) that will be created. Default: 1"
-  AverageItemSizeInBytes:
-    Type: String
-    Description: "[Optional]. Relevant only to ram-and-flash clusters. Estimated average size (measured in bytes) of the items stored in the database. Default: 1000"
-  RespVersion:
-    Type: String
-    Description: "[Optional]. RESP version must be compatible with Redis version. Example: resp3. Allowed values: resp2/resp3."
-  QueryPerformanceFactor:
-    Type: String
-    Description: "[Optional]. Query performance factor. Example: 2x"
   RedisVersion:
     Type: String
     Description: "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
@@ -175,36 +105,3 @@ Metadata:
        Parameters:
          - DeploymentCIDR
          - VpcId
-      - 
-       Label: 
-         default: "databases"
-       Parameters:
-         - DatabaseName
-         - Protocol
-         - DatasetSizeInGb
-         - SupportOSSClusterApi
-         - DataPersistence
-         - Replication
-         - Quantity
-         - AverageItemSizeInBytes 
-         - RespVersion
-         - QueryPerformanceFactor
-      - 
-       Label: 
-         default: "throughputMeasurement"
-       Parameters:
-         - By
-         - Value
-      - 
-       Label: 
-         default: "localThroughputMeasurement"
-       Parameters:
-         - LocalThroughputMeasurementRegion
-         - WriteOperationsPerSecond
-         - ReadOperationsPerSecond
-      - 
-       Label: 
-         default: "modules"
-       Parameters:
-         - ModuleName
-         - ModuleParameters
