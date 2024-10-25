@@ -164,7 +164,7 @@ def create_handler(
     provider = model.Provider
     vpcId = model.VpcId
 
-     #Check if we're retrying (if sub_id and sub_status are in callback_context)
+    #Check if we're retrying (if sub_id and sub_status are in callback_context)
     if "peer_id" in callback_context and "peer_status" in callback_context:
         peer_id = callback_context["peer_id"]
         peer_status = callback_context["peer_status"]
@@ -278,7 +278,7 @@ def update_handler(
     LOG.info(f"The event sent for PUT call is: {event}")
     LOG.info(f"The model is: {model}")
     PutPeering(base_url, sub_id, peer_id, event, http_headers)
-    
+
     return read_handler(session, request, callback_context)
 
 
@@ -374,7 +374,6 @@ def list_handler(
     http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
-    peer_id = model.PeeringID
 
     response = GetPeering(base_url, sub_id, http_headers)
     peerings = response["response"]["resource"]["peerings"]

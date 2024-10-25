@@ -17,7 +17,7 @@ Parameters:
   SubscriptionName:
     Type: String
     Description: "[Optional]. Subscription name. Example: My new subscription"
-    Default: "Sub183"
+    Default: "Sub186"
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent."

@@ -134,7 +134,10 @@ def create_handler(
 
     event = {}
     if model.DryRun != '':
-        event["dryRun"] = model.DryRun
+        if model.DryRun.lower() == 'true':
+            event["dryRun"] = True
+        elif model.DryRun.lower() == 'false':
+            event["dryRun"] = False
     if model.DatabaseName != '':
         event["name"] = model.DatabaseName
     if model.Protocol != '':
@@ -146,15 +149,24 @@ def create_handler(
     if model.RespVersion != '':
         event["respVersion"] = model.RespVersion
     if model.SupportOSSClusterApi != '':
-        event["supportOSSClusterApi"] = model.SupportOSSClusterApi
+        if model.SupportOSSClusterApi.lower() == 'true':
+            event["supportOSSClusterApi"] = True
+        elif model.SupportOSSClusterApi.lower() == 'false':
+            event["supportOSSClusterApi"] = False
     if model.UseExternalEndpointForOSSClusterApi != '':
-        event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
+        if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
+            event["useExternalEndpointForOSSClusterApi"] = True
+        elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
+            event["useExternalEndpointForOSSClusterApi"] = False
     if model.DataPersistence != '':
         event["dataPersistence"] = model.DataPersistence
     if model.DataEvictionPolicy != '':
         event["dataEvictionPolicy"] = model.DataEvictionPolicy
     if model.Replication != '':
-        event["replication"] = model.Replication
+        if model.Replication.lower() == 'true':
+            event["replication"] = True
+        elif model.Replication.lower() == 'false':
+            event["replication"] = False
     if model.Replica != '':
         event["replica"] = json.loads(model.Replica)
     if model.ThroughputMeasurement != '':
@@ -170,7 +182,10 @@ def create_handler(
     if model.ClientTlsCertificates != '':
         event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
     if model.EnableTls != '':
-        event["enableTls"] = model.EnableTls
+        if model.EnableTls.lower() == 'true':
+            event["enableTls"] = True
+        elif model.EnableTls.lower() == 'false':
+            event["enableTls"] = False
     if model.Password != '':
         event["password"] = model.Password
     if model.SaslUsername != '':
@@ -257,7 +272,10 @@ def update_handler(
 
     else:
         if model.DryRun != '':
-            event["dryRun"] = model.DryRun
+            if model.DryRun.lower() == 'true':
+                event["dryRun"] = True
+            elif model.DryRun.lower() == 'false':
+                event["dryRun"] = False
         if model.DatabaseName != '':
             event["name"] = model.DatabaseName
         if model.DatasetSizeInGb != '':
@@ -271,15 +289,24 @@ def update_handler(
         if model.DataEvictionPolicy != '':
             event["dataEvictionPolicy"] = model.DataEvictionPolicy
         if model.Replication != '':
-            event["replication"] = model.Replication
+            if model.Replication.lower() == 'true':
+                event["replication"] = True
+            elif model.Replication.lower() == 'false':
+                event["replication"] = False
         if model.RegexRules != '':
             event["regexRules"] = model.RegexRules
         if model.Replica != '':
             event["replica"] = json.loads(model.Replica)
         if model.SupportOSSClusterApi != '':
-            event["supportOSSClusterApi"] = model.SupportOSSClusterApi
+            if model.SupportOSSClusterApi.lower() == 'true':
+                event["supportOSSClusterApi"] = True
+            elif model.SupportOSSClusterApi.lower() == 'false':
+                event["supportOSSClusterApi"] = False
         if model.UseExternalEndpointForOSSClusterApi != '':
-            event["useExternalEndpointForOSSClusterApi"] = model.UseExternalEndpointForOSSClusterApi
+            if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
+                event["useExternalEndpointForOSSClusterApi"] = True
+            elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
+                event["useExternalEndpointForOSSClusterApi"] = False
         if model.Password != '':
             event["password"] = model.Password
         if model.SaslUsername != '':
@@ -291,7 +318,10 @@ def update_handler(
         if model.ClientTlsCertificates != '':
             event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
         if model.EnableTls != '':
-            event["enableTls"] = model.EnableTls
+            if model.EnableTls.lower() == 'true':
+                event["enableTls"] = True
+            elif model.EnableTls.lower() == 'false':
+                event["enableTls"] = False
         if model.EnableDefaultUser != '':
             event["enableDefaultUser"] = model.EnableDefaultUser
         if model.RemoteBackup != '':
