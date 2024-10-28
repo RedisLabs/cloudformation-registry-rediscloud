@@ -2,7 +2,6 @@
 
 Congratulations on starting development! Next steps:
 
-
 1. Write the JSON schema describing your resource, `redis-cloudformation-prodatabase.json`
 2. Implement your resource handlers in `redis_cloudformation_prodatabase/handlers.py`
 
