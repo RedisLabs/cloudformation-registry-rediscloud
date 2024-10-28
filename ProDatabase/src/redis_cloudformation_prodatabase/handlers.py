@@ -132,103 +132,104 @@ def create_handler(
                 callbackContext=callback_context
             )
 
-    event = {}
-    if model.DryRun != '':
-        if model.DryRun.lower() == 'true':
-            event["dryRun"] = True
-        elif model.DryRun.lower() == 'false':
-            event["dryRun"] = False
-    if model.DatabaseName != '':
-        event["name"] = model.DatabaseName
-    if model.Protocol != '':
-        event["protocol"] = model.Protocol
-    if model.Port != '':
-        event["port"] = model.Port
-    if model.DatasetSizeInGb != '':
-        event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
-    if model.RespVersion != '':
-        event["respVersion"] = model.RespVersion
-    if model.SupportOSSClusterApi != '':
-        if model.SupportOSSClusterApi.lower() == 'true':
-            event["supportOSSClusterApi"] = True
-        elif model.SupportOSSClusterApi.lower() == 'false':
-            event["supportOSSClusterApi"] = False
-    if model.UseExternalEndpointForOSSClusterApi != '':
-        if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
-            event["useExternalEndpointForOSSClusterApi"] = True
-        elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
-            event["useExternalEndpointForOSSClusterApi"] = False
-    if model.DataPersistence != '':
-        event["dataPersistence"] = model.DataPersistence
-    if model.DataEvictionPolicy != '':
-        event["dataEvictionPolicy"] = model.DataEvictionPolicy
-    if model.Replication != '':
-        if model.Replication.lower() == 'true':
-            event["replication"] = True
-        elif model.Replication.lower() == 'false':
-            event["replication"] = False
-    if model.Replica != '':
-        event["replica"] = json.loads(model.Replica)
-    if model.ThroughputMeasurement != '':
-        event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
-    if model.LocalThroughputMeasurement != '':
-        event["localThroughputMeasurement"] = json.loads(model.LocalThroughputMeasurement)
-    if model.AverageItemSizeInBytes != '':
-        event["averageItemSizeInBytes"] = model.AverageItemSizeInBytes
-    if model.RemoteBackup != '':
-        event["remoteBackup"] = json.loads(model.RemoteBackup)
-    if model.SourceIp != '':
-        event["sourceIp"] = model.SourceIp
-    if model.ClientTlsCertificates != '':
-        event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
-    if model.EnableTls != '':
-        if model.EnableTls.lower() == 'true':
-            event["enableTls"] = True
-        elif model.EnableTls.lower() == 'false':
-            event["enableTls"] = False
-    if model.Password != '':
-        event["password"] = model.Password
-    if model.SaslUsername != '':
-        event["saslUsername"] = model.SaslUsername
-    if model.SaslPassword != '':
-        event["saslPassword"] = model.SaslPassword
-    if model.Alerts != '':
-        event["alerts"] = json.loads(model.Alerts)
-    if model.Modules != '':
-        event["modules"] = json.loads(model.Modules)
-    if model.QueryPerformanceFactor != '':
-        event["queryPerformanceFactor"] = model.QueryPerformanceFactor
+    else:
+        event = {}
+        if model.DryRun != '':
+            if model.DryRun.lower() == 'true':
+                event["dryRun"] = True
+            elif model.DryRun.lower() == 'false':
+                event["dryRun"] = False
+        if model.DatabaseName != '':
+            event["name"] = model.DatabaseName
+        if model.Protocol != '':
+            event["protocol"] = model.Protocol
+        if model.Port != '':
+            event["port"] = model.Port
+        if model.DatasetSizeInGb != '':
+            event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
+        if model.RespVersion != '':
+            event["respVersion"] = model.RespVersion
+        if model.SupportOSSClusterApi != '':
+            if model.SupportOSSClusterApi.lower() == 'true':
+                event["supportOSSClusterApi"] = True
+            elif model.SupportOSSClusterApi.lower() == 'false':
+                event["supportOSSClusterApi"] = False
+        if model.UseExternalEndpointForOSSClusterApi != '':
+            if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
+                event["useExternalEndpointForOSSClusterApi"] = True
+            elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
+                event["useExternalEndpointForOSSClusterApi"] = False
+        if model.DataPersistence != '':
+            event["dataPersistence"] = model.DataPersistence
+        if model.DataEvictionPolicy != '':
+            event["dataEvictionPolicy"] = model.DataEvictionPolicy
+        if model.Replication != '':
+            if model.Replication.lower() == 'true':
+                event["replication"] = True
+            elif model.Replication.lower() == 'false':
+                event["replication"] = False
+        if model.Replica != '':
+            event["replica"] = json.loads(model.Replica)
+        if model.ThroughputMeasurement != '':
+            event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
+        if model.LocalThroughputMeasurement != '':
+            event["localThroughputMeasurement"] = json.loads(model.LocalThroughputMeasurement)
+        if model.AverageItemSizeInBytes != '':
+            event["averageItemSizeInBytes"] = model.AverageItemSizeInBytes
+        if model.RemoteBackup != '':
+            event["remoteBackup"] = json.loads(model.RemoteBackup)
+        if model.SourceIp != '':
+            event["sourceIp"] = model.SourceIp
+        if model.ClientTlsCertificates != '':
+            event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
+        if model.EnableTls != '':
+            if model.EnableTls.lower() == 'true':
+                event["enableTls"] = True
+            elif model.EnableTls.lower() == 'false':
+                event["enableTls"] = False
+        if model.Password != '':
+            event["password"] = model.Password
+        if model.SaslUsername != '':
+            event["saslUsername"] = model.SaslUsername
+        if model.SaslPassword != '':
+            event["saslPassword"] = model.SaslPassword
+        if model.Alerts != '':
+            event["alerts"] = json.loads(model.Alerts)
+        if model.Modules != '':
+            event["modules"] = json.loads(model.Modules)
+        if model.QueryPerformanceFactor != '':
+            event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 
-    event = json.dumps(event)
-    LOG.info(f"The actual event sent for POST call is: {event}")
+        event = json.dumps(event)
+        LOG.info(f"The actual event sent for POST call is: {event}")
 
-    #Sending a POST API call to create a database
-    response = PostDatabase(base_url, event, sub_id, http_headers)
+        #Sending a POST API call to create a database
+        response = PostDatabase(base_url, event, sub_id, http_headers)
 
-    while response["status"] != "processing-completed":
-        response = HttpRequests("GET", response["links"][0]["href"], http_headers)
+        while response["status"] != "processing-completed":
+            response = HttpRequests("GET", response["links"][0]["href"], http_headers)
 
-    #Retrieving the detailed link for Database after POST call
-    LOG.info(f'This is the link after POST call {response["links"][0]["href"]}')
+        #Retrieving the detailed link for Database after POST call
+        LOG.info(f'This is the link after POST call {response["links"][0]["href"]}')
 
-    #Retrieving Database ID and it's Description
-    db_id = GetDatabaseId (response["links"][0]["href"], http_headers)
-    db_id = str(db_id)
-    model.DatabaseID = db_id
+        #Retrieving Database ID and it's Description
+        db_id = GetDatabaseId (response["links"][0]["href"], http_headers)
+        db_id = str(db_id)
+        model.DatabaseID = db_id
 
-    LOG.info(f"The Database ID is: {db_id}")
+        LOG.info(f"The Database ID is: {db_id}")
 
-    # Initial status check and storing both in callback_context
-    db_status = GetDatabaseStatus(base_url, sub_id, db_id, http_headers)
-    callback_context["db_id"] = db_id
-    callback_context["db_status"] = db_status
+        # Initial status check and storing both in callback_context
+        db_status = GetDatabaseStatus(base_url, sub_id, db_id, http_headers)
+        callback_context["db_id"] = db_id
+        callback_context["db_status"] = db_status
 
-    return ProgressEvent(
-        status=OperationStatus.IN_PROGRESS,
-        resourceModel=model,
-        callbackDelaySeconds=60,
-        callbackContext=callback_context
-    )
+        return ProgressEvent(
+            status=OperationStatus.IN_PROGRESS,
+            resourceModel=model,
+            callbackDelaySeconds=60,
+            callbackContext=callback_context
+        )
 
 @resource.handler(Action.UPDATE)
 def update_handler(
@@ -247,8 +248,8 @@ def update_handler(
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
-    event = {}
 
+    event = {}
     if model.OnDemandBackup == 'true' or model.OnDemandBackup == 'True':
         if model.RegionName == 'null' or model.RegionName == '':
             event['regionName'] = None

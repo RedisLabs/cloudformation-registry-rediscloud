@@ -270,7 +270,6 @@ def update_handler(
 
     return read_handler(session, request, callback_context)
 
-
 @resource.handler(Action.DELETE)
 def delete_handler(
     session: Optional[SessionProxy],
@@ -281,26 +280,10 @@ def delete_handler(
     typeConfiguration = request.typeConfiguration
     progress: ProgressEvent = ProgressEvent(
         status=OperationStatus.IN_PROGRESS,
-        resourceModel=model
+        resourceModel=model,
     )
 
-    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
-    base_url = model.BaseUrl
-    sub_id = model.SubscriptionID
-@resource.handler(Action.DELETE)
-def delete_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
-) -> ProgressEvent:
-    model = request.desiredResourceState
-    typeConfiguration = request.typeConfiguration
-    http_headers = {
-        "accept": "application/json", 
-        "x-api-key": typeConfiguration.RedisAccess.xapikey, 
-        "x-api-secret-key": typeConfiguration.RedisAccess.xapisecretkey, 
-        "Content-Type": "application/json"
-    }
+    http_headers = {"accept": "application/json", "x-api-key": typeConfiguration.RedisAccess.xapikey, "x-api-secret-key": typeConfiguration.RedisAccess.xapisecretkey, "Content-Type": "application/json"}
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
 
@@ -423,64 +406,32 @@ def list_handler(
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
 
-    response = GetSubscriptions (base_url, http_headers)
-    subscriptions = response["subscriptions"]
+    # Fetch all subscriptions from the external service
+    response = GetSubscriptions(base_url, http_headers)
+    subscriptions = response.get("subscriptions", [])
     models = []
 
-    if 'id' in str(subscriptions):
-        LOG.info(f"These are the subscriptions: {subscriptions}")
-        for sub in subscriptions:
-            if sub['id'] == sub_id and sub['status'] != 'deleting':
-                models.append(ResourceModel(
-                        SubscriptionID=str(sub.get("id")),
-                        BaseUrl=base_url,
-                        SubscriptionName=sub.get("name"),
-                        DryRun="false",
-                        DeploymentType=sub.get("deploymentType"),
-                        PaymentMethod=sub.get("paymentMethodType"),
-                        PaymentMethodId=sub.get("paymentMethodId"),
-                        MemoryStorage=sub.get("memoryStorage"),
-                        CloudProviders=json.loads(model.CloudProviders),
-                        RedisVersion=model.RedisVersion,
-                ))
-                LOG.info(f"This is the list of models: {models}")
-                return ProgressEvent(
-                    status=OperationStatus.SUCCESS,
-                    resourceModels=models,
-                )
-            else:
-                models.append(ResourceModel(
-                    SubscriptionID="",
-                    BaseUrl="",
-                    SubscriptionName="",
-                    DryRun="",
-                    DeploymentType="",
-                    PaymentMethod="",
-                    PaymentMethodId="",
-                    MemoryStorage="",
-                    CloudProviders="",
-                    RedisVersion="",
-                )) 
-                LOG.info(f"This is the list of models: {models}")
-                return ProgressEvent(
-                    status=OperationStatus.SUCCESS,
-                    resourceModels=models,
-                )
-    else:
-        models.append(ResourceModel(
-            SubscriptionID="",
-            BaseUrl="",
-            SubscriptionName="",
-            DryRun="",
-            DeploymentType="",
-            PaymentMethod="",
-            PaymentMethodId="",
-            MemoryStorage="",
-            CloudProviders="",
-            RedisVersion="",
-        )) 
-        LOG.info(f"This is the list of models: {models}")
-        return ProgressEvent(
-            status=OperationStatus.SUCCESS,
-            resourceModels=models,
-        )
+    # Loop through each subscription and build models based on criteria
+    LOG.info(f"Retrieved subscriptions: {subscriptions}")
+    for sub in subscriptions:
+        # Only include subscriptions that are not in 'deleting' state
+        if sub['status'] != 'deleting':
+            models.append(ResourceModel(
+                SubscriptionID=str(sub.get("id")),
+                BaseUrl=base_url,
+                SubscriptionName=sub.get("name"),
+                DryRun="false",
+                DeploymentType=sub.get("deploymentType"),
+                PaymentMethod=sub.get("paymentMethodType"),
+                PaymentMethodId=sub.get("paymentMethodId"),
+                MemoryStorage=sub.get("memoryStorage"),
+                CloudProviders=sub.get("cloudDetails"),
+                RedisVersion=model.RedisVersion,
+            ))
+
+    # If no subscriptions are found, return an empty model array
+    LOG.info(f"Final list of models: {models}")
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModels=models,
+    )

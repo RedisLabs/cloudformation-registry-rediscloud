@@ -1,0 +1,6 @@
+{
+    "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
+    "SubscriptionID": "185701",
+    "DatabaseName": "CONTRACT_TESTS_DB",
+    "DatasetSizeInGb": "1"
+}
