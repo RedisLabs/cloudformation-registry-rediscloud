@@ -2,7 +2,6 @@
 
 Congratulations on starting development! Next steps:
 
-
 1. Write the JSON schema describing your resource, `redis-cloudformation-subscriptionpeering.json`
 2. Implement your resource handlers in `redis_cloudformation_subscriptionpeering/handlers.py`
 
