@@ -36,6 +36,29 @@ def PostDatabase (base_url, event, subscription_id, http_headers):
     LOG.info(f"The POST call response is: {response}")
     return response
 
+#Returns the details about all the existing Databases
+def GetDatabases (base_url, subscription_id, http_headers):
+    url = base_url + "/v1/subscriptionss/" + str(subscription_id) + "/databases?offset=0&limit=100"
+
+    response = HttpRequests(method = "GET", url = url, headers = http_headers)
+
+    LOG.info(f"The response after GET all Databases is: {response}")
+    return response
+
+def BasicGetDatabase (base_url, subscription_id, database_id, http_headers):
+    url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id)
+
+    response = HttpRequests(method = "GET", url = url, headers = http_headers)
+
+    LOG.info(f"The response after Basic GET Database is: {response}")
+    return response
+
+def GetHrefLink (href_value, http_headers):
+    response = HttpRequests(method = "GET", url = href_value, headers = http_headers)
+
+    LOG.info(f"This is the response for the href_link given: {response}")
+    return response
+
 #Returns the status of the Database: active/pending/deleting
 def GetDatabaseStatus (base_url, subscription_id, database_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id)
@@ -88,6 +111,7 @@ def DeleteDatabase (base_url, subscription_id, database_id, http_headers):
     
     response = HttpRequests(method = "DELETE", url = url, headers = http_headers)
     LOG.info("Database was deleted with response:" + str(response))
+    return response
 
 @resource.handler(Action.CREATE)
 def create_handler(
@@ -134,7 +158,7 @@ def create_handler(
 
     else:
         event = {}
-        if model.DryRun != '':
+        if model.DryRun != '' and model.DryRun != None:
             if model.DryRun.lower() == 'true':
                 event["dryRun"] = True
             elif model.DryRun.lower() == 'false':
@@ -145,16 +169,16 @@ def create_handler(
             event["protocol"] = model.Protocol
         if model.Port != '':
             event["port"] = model.Port
-        if model.DatasetSizeInGb != '':
+        if model.DatasetSizeInGb != '' and model.DatasetSizeInGb != None:
             event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
         if model.RespVersion != '':
             event["respVersion"] = model.RespVersion
-        if model.SupportOSSClusterApi != '':
+        if model.SupportOSSClusterApi != '' and model.SupportOSSClusterApi != None:
             if model.SupportOSSClusterApi.lower() == 'true':
                 event["supportOSSClusterApi"] = True
             elif model.SupportOSSClusterApi.lower() == 'false':
                 event["supportOSSClusterApi"] = False
-        if model.UseExternalEndpointForOSSClusterApi != '':
+        if model.UseExternalEndpointForOSSClusterApi != '' and model.UseExternalEndpointForOSSClusterApi != None:
             if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
                 event["useExternalEndpointForOSSClusterApi"] = True
             elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
@@ -163,26 +187,26 @@ def create_handler(
             event["dataPersistence"] = model.DataPersistence
         if model.DataEvictionPolicy != '':
             event["dataEvictionPolicy"] = model.DataEvictionPolicy
-        if model.Replication != '':
+        if model.Replication != '' and model.Replication != None:
             if model.Replication.lower() == 'true':
                 event["replication"] = True
             elif model.Replication.lower() == 'false':
                 event["replication"] = False
-        if model.Replica != '':
+        if model.Replica != '' and model.Replica != None:
             event["replica"] = json.loads(model.Replica)
-        if model.ThroughputMeasurement != '':
+        if model.ThroughputMeasurement != '' and model.ThroughputMeasurement != None:
             event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
-        if model.LocalThroughputMeasurement != '':
+        if model.LocalThroughputMeasurement != '' and model.LocalThroughputMeasurement != None:
             event["localThroughputMeasurement"] = json.loads(model.LocalThroughputMeasurement)
         if model.AverageItemSizeInBytes != '':
             event["averageItemSizeInBytes"] = model.AverageItemSizeInBytes
-        if model.RemoteBackup != '':
+        if model.RemoteBackup != '' and model.RemoteBackup != None:
             event["remoteBackup"] = json.loads(model.RemoteBackup)
         if model.SourceIp != '':
             event["sourceIp"] = model.SourceIp
-        if model.ClientTlsCertificates != '':
+        if model.ClientTlsCertificates != '' and model.ClientTlsCertificates != None:
             event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
-        if model.EnableTls != '':
+        if model.EnableTls != '' and model.EnableTls != None:
             if model.EnableTls.lower() == 'true':
                 event["enableTls"] = True
             elif model.EnableTls.lower() == 'false':
@@ -193,9 +217,9 @@ def create_handler(
             event["saslUsername"] = model.SaslUsername
         if model.SaslPassword != '':
             event["saslPassword"] = model.SaslPassword
-        if model.Alerts != '':
+        if model.Alerts != '' and model.Alerts != None:
             event["alerts"] = json.loads(model.Alerts)
-        if model.Modules != '':
+        if model.Modules != '' and model.Modules != None:
             event["modules"] = json.loads(model.Modules)
         if model.QueryPerformanceFactor != '':
             event["queryPerformanceFactor"] = model.QueryPerformanceFactor
@@ -272,38 +296,38 @@ def update_handler(
         response = PostImport (base_url, sub_id, db_id, event, http_headers)
 
     else:
-        if model.DryRun != '':
+        if model.DryRun != '' and model.DryRun != None:
             if model.DryRun.lower() == 'true':
                 event["dryRun"] = True
             elif model.DryRun.lower() == 'false':
                 event["dryRun"] = False
         if model.DatabaseName != '':
             event["name"] = model.DatabaseName
-        if model.DatasetSizeInGb != '':
+        if model.DatasetSizeInGb != '' and model.DatasetSizeInGb != None:
             event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
         if model.RespVersion != '':
             event["respVersion"] = model.RespVersion
-        if model.ThroughputMeasurement != '':
+        if model.ThroughputMeasurement != '' and model.ThroughputMeasurement != None:
             event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)    
         if model.DataPersistence != '':
             event["dataPersistence"] = model.DataPersistence
         if model.DataEvictionPolicy != '':
             event["dataEvictionPolicy"] = model.DataEvictionPolicy
-        if model.Replication != '':
+        if model.Replication != '' and model.Replication != None:
             if model.Replication.lower() == 'true':
                 event["replication"] = True
             elif model.Replication.lower() == 'false':
                 event["replication"] = False
         if model.RegexRules != '':
             event["regexRules"] = model.RegexRules
-        if model.Replica != '':
+        if model.Replica != '' and model.Replica != None:
             event["replica"] = json.loads(model.Replica)
-        if model.SupportOSSClusterApi != '':
+        if model.SupportOSSClusterApi != '' and model.SupportOSSClusterApi != None:
             if model.SupportOSSClusterApi.lower() == 'true':
                 event["supportOSSClusterApi"] = True
             elif model.SupportOSSClusterApi.lower() == 'false':
                 event["supportOSSClusterApi"] = False
-        if model.UseExternalEndpointForOSSClusterApi != '':
+        if model.UseExternalEndpointForOSSClusterApi != '' and model.UseExternalEndpointForOSSClusterApi != None:
             if model.UseExternalEndpointForOSSClusterApi.lower() == 'true':
                 event["useExternalEndpointForOSSClusterApi"] = True
             elif model.UseExternalEndpointForOSSClusterApi.lower() == 'false':
@@ -316,18 +340,18 @@ def update_handler(
             event["saslPassword"] = model.SaslPassword
         if model.SourceIp != '':
             event["sourceIp"] = model.SourceIp
-        if model.ClientTlsCertificates != '':
+        if model.ClientTlsCertificates != '' and model.ClientTlsCertificates != None:
             event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
-        if model.EnableTls != '':
+        if model.EnableTls != '' and model.EnableTls != None:
             if model.EnableTls.lower() == 'true':
                 event["enableTls"] = True
             elif model.EnableTls.lower() == 'false':
                 event["enableTls"] = False
         if model.EnableDefaultUser != '':
             event["enableDefaultUser"] = model.EnableDefaultUser
-        if model.RemoteBackup != '':
+        if model.RemoteBackup != '' and model.RemoteBackup != None:
             event["remoteBackup"] = json.loads(model.RemoteBackup)
-        if model.Alerts != '':
+        if model.Alerts != '' and model.Alerts != None:
             event["alerts"] = json.loads(model.Alerts)
         if model.QueryPerformanceFactor != '':
             event["queryPerformanceFactor"] = model.QueryPerformanceFactor
@@ -358,10 +382,71 @@ def delete_handler(
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
 
-    DeleteDatabase (base_url, sub_id, db_id, http_headers)
+    if callback_context.get("delete_in_progress"):
+        try:
+            # Poll the Database status
+            response_check = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
+            LOG.info(f"Polling deletion status: {response_check}")
 
-    return ProgressEvent(status=OperationStatus.SUCCESS)
+            if 'delete-draft' in response_check:
+                return ProgressEvent(
+                    status=OperationStatus.IN_PROGRESS,
+                    resourceModel=model,
+                    callbackDelaySeconds=60,  # Poll every 60 seconds
+                    callbackContext={"delete_in_progress": True}
+                )
+            
+            if "Not Found" in str(response_check):
+                return ProgressEvent(
+                    status=OperationStatus.SUCCESS
+                )
 
+        except Exception as e:
+            return ProgressEvent.failed(
+                HandlerErrorCode.InternalFailure,
+                str(e)
+            )
+
+    try:
+        delete_response = DeleteDatabase (base_url, sub_id, db_id, http_headers)
+        href_value = delete_response["links"][0]["href"]
+        LOG.info(f"Deletion initiated: {delete_response}")
+
+        delete_response = GetHrefLink (href_value, http_headers)
+
+        # Handle the case where the subscription is already not found
+        if 'response' in str(delete_response) and 'error' in str(delete_response['response']):
+            error_code = str(delete_response['response']['error']['type'])
+            if error_code == 'DATABASE_NOT_FOUND':
+                return ProgressEvent.failed(
+                    HandlerErrorCode.NotFound,
+                    f"Database with ID {db_id} was not found."
+                    )
+        else:
+            response_check = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
+            LOG.info(f"DatabaseId is: {response_check['databaseId']}")
+            LOG.info(f"response_check['databaseId'] has the type: {type(response_check['databaseId'])}")
+            LOG.info(f"response_check['status'] is: {response_check['status']}")
+            if 'delete-draft' in str(response_check):
+                LOG.info(f"Database has the status: delete-draft.")
+                return ProgressEvent(
+                    status=OperationStatus.IN_PROGRESS,
+                    resourceModel=model,
+                    callbackDelaySeconds=60,  # Poll every 60 seconds
+                    callbackContext={"delete_in_progress": True}
+                )
+            else:
+                LOG.info(f"Database has the status: {response_check['status']}")
+                return ProgressEvent.failed(
+                    HandlerErrorCode.InternalFailure,
+                    f"Database {db_id} still exists and is not in a deleting state."
+                )
+
+    except Exception as e:
+        return ProgressEvent.failed(
+            HandlerErrorCode.InternalFailure,
+            str(e)
+        )
 
 @resource.handler(Action.READ)
 def read_handler(
@@ -371,12 +456,37 @@ def read_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
     typeConfiguration = request.typeConfiguration
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModel=model,
-    )
 
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+    db_id = model.DatabaseID
+    LOG.info(f"the model in read handler: {model}")
+
+    # Try to retrieve the resource
+    response = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
+    LOG.info(f"This is the response after BasicGetDatabase: {response}")
+
+    # If the resource does not exist anymore, return NotFound
+    if 'databaseId' not in str(response) or response['databaseId'] != int(db_id):
+        LOG.info(f"Database with ID {db_id} not found. Returning NotFound error.")
+        return ProgressEvent.failed(
+            HandlerErrorCode.NotFound,
+            f"Database {db_id} does not exist."
+        )
+    elif response["status"] == "deleting":
+        return ProgressEvent.failed(
+            HandlerErrorCode.NotFound,
+            f"Database {db_id} is in delete state"
+        )
+    else:
+        # If the resource still exists, return it
+        LOG.info(f"Database with ID {db_id} exists. Returning the resource.")
+        LOG.info(f"Model before ending read_handler is: {model}")
+        return ProgressEvent(
+            status=OperationStatus.SUCCESS,
+            resourceModel=model,
+        )
 
 @resource.handler(Action.LIST)
 def list_handler(
@@ -386,8 +496,63 @@ def list_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
     typeConfiguration = request.typeConfiguration
-    # TODO: put code here
+
+    http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
+    base_url = model.BaseUrl
+    sub_id = model.SubscriptionID
+
+    # Fetch all subscriptions from the external service
+    response = GetDatabases(base_url, sub_id, http_headers)
+    subscriptions = response.get("subscriptions", [])
+    databases = subscriptions.get("databases", [])
+    models = []
+
+    # Loop through each subscription and build models based on criteria
+    LOG.info(f"Retrieved databases: {databases}")
+    for db in databases:
+        # Only include databases that are not in 'deleting' state
+        if db['status'] != 'deleting':
+            models.append(ResourceModel(
+                DatabaseID=str(db.get("databaseId")),
+                BaseUrl=base_url,
+                SubscriptionID=sub_id,
+                DryRun="false",
+                DatabaseName=db.get("name"),
+                Protocol=db.get("protocol"),
+                Port=db.get("port"),
+                DatasetSizeInGb=db.get("datasetSizeInGb"),
+                RespVersion=db.get("respVersion"),
+                SupportOSSClusterApi=db.get("supportOSSClusterApi"),
+                UseExternalEndpointForOSSClusterApi=db.get("useExternalEndpointForOSSClusterApi"),
+                DataPersistence=db.get("dataPersistence"),
+                DataEvictionPolicy=db.get("dataEvictionPolicy"),
+                Replication=db.get("replication"),
+                Replica=db.get("replica"),
+                ThroughputMeasurement=db.get("throughputMeasurement"),
+                LocalThroughputMeasurement=db.get("localThroughputMeasurement"),
+                AverageItemSizeInBytes=db.get("averageItemSizeInBytes"),
+                RemoteBackup=db.get("backup"),
+                SourceIp=db.get("security", {}).get("sourceIps", []),
+                ClientTlsCertificates=db.get("security", {}).get("tlsClientAuthentication", None),
+                EnableTls=db.get("security", {}).get("enableTls", None),
+                Password=db.get("password", None),
+                SaslUsername=db.get("saslUsername", None),
+                SaslPassword=db.get("saslPassword", None),
+                Alerts=db.get("alerts"),
+                Modules=db.get("modules"),
+                QueryPerformanceFactor=db.get("queryPerformanceFactor", None),
+                RegexRules=db.get("clustering", {}).get("regexRules", []),
+                EnableDefaultUser=db.get("security", {}).get("enableDefaultUser", None),
+                OnDemandBackup="",
+                RegionName="",
+                OnDemandImport="",
+                SourceType="",
+                ImportFromUri="",
+            ))
+
+    # If no subscriptions are found, return an empty model array
+    LOG.info(f"Final list of models: {models}")
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModels=[],
+        resourceModels=models,
     )

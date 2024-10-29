@@ -1,5 +1,5 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
-    "SubscriptionID": "185701",
-    "DatabaseName": "Updated_contract_name"
+    "SubscriptionID": "185893",
+    "DatabaseName": "Updatedcontract"
 }

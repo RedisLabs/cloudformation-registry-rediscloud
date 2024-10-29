@@ -294,7 +294,6 @@ def delete_handler(
             response_check = BasicGetSubscription(base_url, sub_id, http_headers)
             LOG.info(f"Polling deletion status: {response_check}")
 
-            # If the subscription still exists and is not deleting, return InternalFailure
             if response_check['status'] == 'deleting':
                 return ProgressEvent(
                     status=OperationStatus.IN_PROGRESS,
@@ -404,7 +403,6 @@ def list_handler(
 
     http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
     base_url = model.BaseUrl
-    sub_id = model.SubscriptionID
 
     # Fetch all subscriptions from the external service
     response = GetSubscriptions(base_url, http_headers)
