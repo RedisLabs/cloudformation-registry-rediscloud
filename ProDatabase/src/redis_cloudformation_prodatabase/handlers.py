@@ -38,8 +38,8 @@ def PostDatabase (base_url, event, subscription_id, http_headers):
 
 #Returns the details about all the existing Databases
 def GetDatabases (base_url, subscription_id, http_headers):
-    url = base_url + "/v1/subscriptionss/" + str(subscription_id) + "/databases?offset=0&limit=100"
-
+    url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases?offset=0&limit=100"
+    LOG.info(f"URL for GetDatabases is: {url}")
     response = HttpRequests(method = "GET", url = url, headers = http_headers)
 
     LOG.info(f"The response after GET all Databases is: {response}")
@@ -394,11 +394,16 @@ def delete_handler(
                     resourceModel=model,
                     callbackDelaySeconds=60,  # Poll every 60 seconds
                     callbackContext={"delete_in_progress": True}
-                )
-            
-            if "Not Found" in str(response_check):
+                ) 
+            elif "Not Found" in str(response_check):
                 return ProgressEvent(
                     status=OperationStatus.SUCCESS
+                )
+            else:
+                LOG.info(f"Database has the status: {response_check['status']}")
+                return ProgressEvent.failed(
+                    HandlerErrorCode.InternalFailure,
+                    f"Database {db_id} still exists and is not in a deleting state."
                 )
 
         except Exception as e:
@@ -408,39 +413,25 @@ def delete_handler(
             )
 
     try:
-        delete_response = DeleteDatabase (base_url, sub_id, db_id, http_headers)
-        href_value = delete_response["links"][0]["href"]
-        LOG.info(f"Deletion initiated: {delete_response}")
+        DeleteDatabase (base_url, sub_id, db_id, http_headers)
+        # href_value = delete_response["links"][0]["href"]
+        # LOG.info(f"Deletion initiated: {delete_response}")
 
-        delete_response = GetHrefLink (href_value, http_headers)
+        # response_check = GetHrefLink (href_value, http_headers)
+        response_check = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
 
-        # Handle the case where the subscription is already not found
-        if 'response' in str(delete_response) and 'error' in str(delete_response['response']):
-            error_code = str(delete_response['response']['error']['type'])
-            if error_code == 'DATABASE_NOT_FOUND':
-                return ProgressEvent.failed(
-                    HandlerErrorCode.NotFound,
-                    f"Database with ID {db_id} was not found."
-                    )
+        if "404" in str(response_check):
+            return ProgressEvent.failed(
+                HandlerErrorCode.NotFound,
+                f"Database with ID {db_id} was not found."
+                )
         else:
-            response_check = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
-            LOG.info(f"DatabaseId is: {response_check['databaseId']}")
-            LOG.info(f"response_check['databaseId'] has the type: {type(response_check['databaseId'])}")
-            LOG.info(f"response_check['status'] is: {response_check['status']}")
-            if 'delete-draft' in str(response_check):
-                LOG.info(f"Database has the status: delete-draft.")
-                return ProgressEvent(
-                    status=OperationStatus.IN_PROGRESS,
-                    resourceModel=model,
-                    callbackDelaySeconds=60,  # Poll every 60 seconds
-                    callbackContext={"delete_in_progress": True}
-                )
-            else:
-                LOG.info(f"Database has the status: {response_check['status']}")
-                return ProgressEvent.failed(
-                    HandlerErrorCode.InternalFailure,
-                    f"Database {db_id} still exists and is not in a deleting state."
-                )
+            return ProgressEvent(
+                status=OperationStatus.IN_PROGRESS,
+                resourceModel=model,
+                callbackDelaySeconds=60,  # Poll every 60 seconds
+                callbackContext={"delete_in_progress": True}
+            )
 
     except Exception as e:
         return ProgressEvent.failed(
@@ -502,16 +493,25 @@ def list_handler(
     sub_id = model.SubscriptionID
 
     # Fetch all subscriptions from the external service
+    LOG.info(f"sub_id in list is: {sub_id}")
     response = GetDatabases(base_url, sub_id, http_headers)
-    subscriptions = response.get("subscriptions", [])
-    databases = subscriptions.get("databases", [])
+    subscription = response.get("subscription", [])
+    LOG.info(f"This is the Subscriptions list: {subscription}")
+    LOG.info(f"This is the Subscriptions type: {type(subscription)}")
+    # Check if subscriptions list is not empty before accessing the first item
+    if subscription:
+        databases = subscription[0].get("databases", [])
+        LOG.info(f"This is the Database list: {subscription}")
+        LOG.info(f"This is the Database type: {type(subscription)}")
+    else:
+        databases = []
     models = []
 
     # Loop through each subscription and build models based on criteria
     LOG.info(f"Retrieved databases: {databases}")
     for db in databases:
         # Only include databases that are not in 'deleting' state
-        if db['status'] != 'deleting':
+        if 'delete-draft' not in str(db):
             models.append(ResourceModel(
                 DatabaseID=str(db.get("databaseId")),
                 BaseUrl=base_url,
