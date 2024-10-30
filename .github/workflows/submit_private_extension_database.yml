@@ -1,4 +1,4 @@
-name: submit_private_extension
+name: submit database private extension
 on:
   push:
     paths:

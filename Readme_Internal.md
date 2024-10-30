@@ -7,6 +7,7 @@ TODOs:
 - foldernames should follow a naming convention (lower case all e.g.)
 - Write a proper gitignore
 - theres a maximum of 60 versions for private exsntions
+- Contract Testing -> Link to automated tests and linting in git
 
 steps for deploying stacksets:
  # Step 1: Create a StackSet

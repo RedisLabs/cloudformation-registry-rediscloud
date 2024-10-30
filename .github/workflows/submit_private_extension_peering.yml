@@ -1,4 +1,4 @@
-name: submit_private_extension
+name: submit peering private extension
 on:
   push:
     paths:
