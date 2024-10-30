@@ -3,6 +3,7 @@ Code Health -> Link to automated tests
 Contract Testing -> Link to automated tests
 
 ![example workflow](https://github.com/github/docs/actions/workflows/submit_private_extension_database.yml/badge.svg?event=push)
+[![Code Health](https://github.com/FlorinManaila/Redis-CloudFormationResourceType/actions/workflows/submit_private_extension_database.yml/badge.svg?branch=master)](https://github.com/github/docs/actions/workflows/submit_private_extension_database.yml)
 
 ## About this project
 ### What is a CloudFormation Public Extension?
