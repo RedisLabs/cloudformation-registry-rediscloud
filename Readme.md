@@ -2,7 +2,7 @@
 Code Health -> Link to automated tests  
 Contract Testing -> Link to automated tests
 
-![example workflow](https://github.com/github/docs/actions/workflows/submit_private_extension_database.yml/badge.svg)
+![example workflow](https://github.com/github/docs/actions/workflows/submit_private_extension_database.yml/badge.svg?event=push)
 
 ## About this project
 ### What is a CloudFormation Public Extension?
