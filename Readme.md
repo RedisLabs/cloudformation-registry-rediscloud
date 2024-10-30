@@ -9,12 +9,12 @@
 
 ## About this project
 ### What is a CloudFormation Public Extension?
-A CloudFormation Public extension is typically a resource type developed from a third-party publisher, like Redis. Extensions allow AWS customers to integrate RedisCloud-specific resources, which are only available over the Redis API, in their CloudFormation templates. 
+A CloudFormation Public Extension is typically a CloudFormation resource type developed by a third-party publisher, like Redis. Such an extension can allow AWS customers to integrate Redis-specific resources, which are only available over the Redis API, in their CloudFormation templates. 
 
 The AWS CloudFormation registry serves as a centralized hub to discover, manage, and provision these extensions.
 
 ### What are the capabilities of Redis' extensions?
-There are currently three resource types can be provisioned via CloudFormation. The resource types act as a wrapper around our API [1]. How resource types relate to the API can be seen in the diagram below.
+There are currently three Redis resource types that can be provisioned via CloudFormation. The resource types act as a wrapper around our API [1]. How resource types relate to the API can be seen in the diagram below.
 
 ![Diagram](resource_architecture_diagram.png)
 
