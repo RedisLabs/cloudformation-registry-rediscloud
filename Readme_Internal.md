@@ -1,5 +1,5 @@
 # Internal Readme:
-This is a draft for the internal readme. It doesn't contain seneitive information but rather information about developing CloudFormation Public Extensions.
+This an internal readme. It doesn't contain sensitive information but rather information about developing CloudFormation Public Extensions.
 
 TODOs:
 - Before this code is shared with anyone else we need to clear the commit history since older commits contain secrets!
