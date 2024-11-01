@@ -23,6 +23,7 @@ test_entrypoint = resource.test_entrypoint
 
 LOG.setLevel("INFO")
 
+#Function using urllib3 that creates and sends the API call
 def HttpRequests(method, url, headers, body = None):
     response = urllib3.request(method = method, url = url, body = body, headers = headers)
     response = response.json()
@@ -45,6 +46,7 @@ def GetSubscriptions (base_url, http_headers):
     LOG.info(f"The response after GET all Subscriptions is: {response}")
     return response
 
+#Function which returns the response of GET Subscription
 def BasicGetSubscription (base_url, subscription_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id)
 
@@ -53,6 +55,7 @@ def BasicGetSubscription (base_url, subscription_id, http_headers):
     LOG.info(f"The response after basic GET Subscription is: {response}")
     return response
 
+#Function that runs a GET call based on a href link took from another response
 def GetHrefLink (href_value, http_headers):
     response = HttpRequests(method = "GET", url = href_value, headers = http_headers)
 
@@ -78,12 +81,12 @@ def GetSubscriptionId (href_value, http_headers):
 def GetSubscriptionStatus (base_url, subscription_id, http_headers):
     sub_url = base_url + "/v1/subscriptions/" + str(subscription_id)
     
-    # A GET request to the API
     response = HttpRequests(method = "GET", url = sub_url, headers = http_headers)
     sub_status = response["status"]
     LOG.info("Subscription status is: " + sub_status)
     return sub_status
 
+#Function which returns the Database ID
 def GetDatabaseId (base_url, subscription_id, http_headers, offset = 0, limit = 100):
     db_url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases?offset=" + str(offset) + "&limit=" + str(limit)
     
@@ -106,6 +109,7 @@ def DeleteDatabase (base_url, subscription_id, database_id, http_headers):
     response = HttpRequests(method = "DELETE", url = url, headers = http_headers)
     LOG.info("Default database was deleted with response:" + str(response))
 
+#Functions which returns the total number of databases assigned to a subscription
 def GetNumberOfDatabases (base_url, subscription_id, http_headers):
     sub_url = base_url + "/v1/subscriptions/" + str(subscription_id)
 
@@ -114,6 +118,7 @@ def GetNumberOfDatabases (base_url, subscription_id, http_headers):
     LOG.info("The Number of Databases assigned to Subscription with ID " + str(subscription_id) + " is " + str(db_number))
     return str(db_number)
 
+#Function to delete a subscription
 def DeleteSubscription (base_url, subscription_id, http_headers):
     subs_url = base_url + "/v1/subscriptions/" + subscription_id
     
@@ -258,6 +263,7 @@ def update_handler(
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
 
+    #Decided that only the Subscription Name is an updatable field
     event = {}
     if model.SubscriptionName != '':
         event["name"] = model.SubscriptionName
@@ -365,7 +371,7 @@ def read_handler(
     http_headers = {"accept":"application/json", "x-api-key":typeConfiguration.RedisAccess.xapikey, "x-api-secret-key":typeConfiguration.RedisAccess.xapisecretkey, "Content-Type":"application/json"}
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
-    LOG.info(f"the model in read handler: {model}")
+    LOG.info(f"This is the model sent in read handler: {model}")
 
     # Try to retrieve the resource
     response = BasicGetSubscription(base_url, sub_id, http_headers)

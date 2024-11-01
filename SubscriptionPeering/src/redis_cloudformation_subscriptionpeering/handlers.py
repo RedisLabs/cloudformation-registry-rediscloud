@@ -23,6 +23,7 @@ test_entrypoint = resource.test_entrypoint
 
 LOG.setLevel("INFO")
 
+#Function using urllib3 that creates and sends the API call
 def HttpRequests(method, url, headers, body = None):
     response = urllib3.request(method = method, url = url, body = body, headers = headers)
     response = response.json()
@@ -51,6 +52,7 @@ def GetPeering (base_url, subscription_id, http_headers):
     LOG.info(f"Get all Peerings for Subscription with ID {subscription_id} has the response: {response}")
     return response
 
+#Function which returns the response of a GET Peering call
 def BasicGetPeering (base_url, subscription_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/peerings"
 
@@ -65,7 +67,7 @@ def BasicGetPeering (base_url, subscription_id, http_headers):
     LOG.info(f"The response after basic GET peering is: {response}")
     return response
 
-#Returns the Peering ID used for other API calls
+#Returns the Peering ID and description used for other API calls
 def GetPeeringId (url, http_headers):
     response = HttpRequests(method = "GET", url = url, headers = http_headers)
     count = 0
@@ -119,7 +121,6 @@ def DeletePeering (base_url, subscription_id, peering_id, http_headers):
     LOG.info(f"Response for the FIRST response of deletion is: {response}")
 
     count = 0
-    #while response["status"] != "processing-error" or response["status"] != "processing-completed" and count < 50:
     while count < 50:
         if response["status"] == "received" or response["status"] == "processing-in-progress":
             time.sleep(1)
@@ -193,7 +194,6 @@ def create_handler(
                 f"Peering creation failed with status: {peer_status}"
             )
     else:
-        # TO DO: Add error handling for all the parameters (in case the customer don t know how to use them or assign a wrong value)
         if provider == "AWS" or provider == '':
             event = {}
             if model.Region != '':
@@ -276,7 +276,6 @@ def update_handler(
 
     event = json.dumps(event)
     LOG.info(f"The event sent for PUT call is: {event}")
-    LOG.info(f"The model is: {model}")
     PutPeering(base_url, sub_id, peer_id, event, http_headers)
 
     return read_handler(session, request, callback_context)
@@ -379,6 +378,7 @@ def list_handler(
     peerings = response["response"]["resource"]["peerings"]
     models = []
 
+    # Loop through all peerings and build the model as a list based on the desired peering
     if "vpcPeeringId" in str(response["response"]["resource"]["peerings"]):
         peerings = response["response"]["resource"]["peerings"]
         LOG.info(f"These are the peerings: {peerings}")

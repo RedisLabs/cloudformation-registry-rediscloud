@@ -23,6 +23,7 @@ test_entrypoint = resource.test_entrypoint
 
 LOG.setLevel("INFO")
 
+#Function using urllib3 that creates and sends the API call
 def HttpRequests(method, url, headers, body = None):
     response = urllib3.request(method = method, url = url, body = body, headers = headers)
     response = response.json()
@@ -45,6 +46,7 @@ def GetDatabases (base_url, subscription_id, http_headers):
     LOG.info(f"The response after GET all Databases is: {response}")
     return response
 
+#Function which returns the response of GET Database
 def BasicGetDatabase (base_url, subscription_id, database_id, http_headers):
     url = base_url + "/v1/subscriptions/" + str(subscription_id) + "/databases/" + str(database_id)
 
@@ -53,6 +55,7 @@ def BasicGetDatabase (base_url, subscription_id, database_id, http_headers):
     LOG.info(f"The response after Basic GET Database is: {response}")
     return response
 
+#Function that runs a GET call based on a href link took from another response
 def GetHrefLink (href_value, http_headers):
     response = HttpRequests(method = "GET", url = href_value, headers = http_headers)
 
@@ -155,7 +158,8 @@ def create_handler(
                 callbackDelaySeconds=60,
                 callbackContext=callback_context
             )
-
+   
+    # Creating the event dictionary that will be identical with a Swagger API call
     else:
         event = {}
         if model.DryRun != '' and model.DryRun != None:
@@ -273,6 +277,7 @@ def update_handler(
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
 
+    #Checking if the Update should create a new backup on demand
     event = {}
     if model.OnDemandBackup == 'true' or model.OnDemandBackup == 'True':
         if model.RegionName == 'null' or model.RegionName == '':
@@ -284,6 +289,7 @@ def update_handler(
             event = json.dumps(event)
         response = PostBackup (base_url, sub_id, db_id, event, http_headers)
     
+    #Checking if the Update should Import a previous created Backup
     elif model.OnDemandImport == 'true' or model.OnDemandImport == 'True':
         if model.SourceType != '':
             event["sourceType"] = model.SourceType
@@ -295,6 +301,7 @@ def update_handler(
         LOG.info(f"The event sent for Import is: {event}")
         response = PostImport (base_url, sub_id, db_id, event, http_headers)
 
+    #If neither Backup nor Import are desired upon Update call, then initiate a normal Put call for the current database
     else:
         if model.DryRun != '' and model.DryRun != None:
             if model.DryRun.lower() == 'true':
@@ -358,7 +365,6 @@ def update_handler(
 
         event = json.dumps(event)
         LOG.info(f"The event sent for PUT call is: {event}")
-        LOG.info(f"The model is: {model}")
         response = PutDatabase(base_url, sub_id, db_id, event, http_headers)
         LOG.info(f"Response for PUT call is: {response}")
     
@@ -382,6 +388,7 @@ def delete_handler(
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
 
+    #This block runs only after callback is activated in order to check the database status
     if callback_context.get("delete_in_progress"):
         try:
             # Poll the Database status
@@ -414,12 +421,9 @@ def delete_handler(
 
     try:
         DeleteDatabase (base_url, sub_id, db_id, http_headers)
-        # href_value = delete_response["links"][0]["href"]
-        # LOG.info(f"Deletion initiated: {delete_response}")
-
-        # response_check = GetHrefLink (href_value, http_headers)
         response_check = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
 
+        # Handle the case where the database is already not found
         if "404" in str(response_check):
             return ProgressEvent.failed(
                 HandlerErrorCode.NotFound,
@@ -454,7 +458,7 @@ def read_handler(
     db_id = model.DatabaseID
     LOG.info(f"the model in read handler: {model}")
 
-    # Try to retrieve the resource
+    # Retrieve the resource
     response = BasicGetDatabase(base_url, sub_id, db_id, http_headers)
     LOG.info(f"This is the response after BasicGetDatabase: {response}")
 
@@ -497,12 +501,10 @@ def list_handler(
     response = GetDatabases(base_url, sub_id, http_headers)
     subscription = response.get("subscription", [])
     LOG.info(f"This is the Subscriptions list: {subscription}")
-    LOG.info(f"This is the Subscriptions type: {type(subscription)}")
     # Check if subscriptions list is not empty before accessing the first item
     if subscription:
         databases = subscription[0].get("databases", [])
         LOG.info(f"This is the Database list: {subscription}")
-        LOG.info(f"This is the Database type: {type(subscription)}")
     else:
         databases = []
     models = []

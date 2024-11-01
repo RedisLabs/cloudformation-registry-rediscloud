@@ -18,34 +18,27 @@ Parameters:
     BaseUrl:
       Type: String
       Description: "[Required]. Base URL link used to connect to API. Example: https://api-k8s-cloudapi.qa.redislabs.com."
-      Default: https://api-k8s-cloudapi.qa.redislabs.com
     SubscriptionID:
       Type: String
       Description: "[Required]. The ID of the Pro Subscription that will make a peering connection. Example: 163199"
-      Default: "184302"
     Provider:
       Type: String
       Description: "[Required]. Cloud provider. Example: AWS. Default AWS"
-      Default: AWS
     Region:
       Type: String
-      Description: "[Required]. Deployment region as defined by cloud provider. Example: us-east-1"
-      Default: eu-west-1
+      Description: "[Required]. Deployment region as defined by cloud provider. Example: eu-west-1"
     AwsAccountId:
       Type: String
-      Description: "[Required]. AWS Account uid. Example: 178919255286"
-      Default: "178919255282"
+      Description: "[Required]. AWS Account uid. Example: 178919255282"
     VpcId: 
       Type: String
-      Description: "[Required]. VPC uid. Example: vpc-00e1a8cdca658ce8c"
-      Default: "vpc-082e1c0b7388260c9"
+      Description: "[Required]. VPC uid. Example: vpc-082e1c0b7388260c9"
     VpcCidr:
       Type: String
       Description: "[Optional]. VPC CIDR. Example:  '10.10.10.0/24'"
     VpcCidrs:
       Type: CommaDelimitedList
       Description: "[Optional]. The VPC CIDRs delimited by commas. Example: '10.10.10.0/24,10.10.20.0/24'"
-      Default: "10.10.10.0/24,10.10.20.0/24"
     VpcProjectUid:
       Type: String
       Description: "[Required for GCP]. VPC project uid."

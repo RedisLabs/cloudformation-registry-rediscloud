@@ -17,11 +17,9 @@ Parameters:
   SubscriptionName:
     Type: String
     Description: "[Optional]. Subscription name. Example: My new subscription"
-    Default: "Sub189"
   BaseUrl:
     Type: String
-    Description: "The Base URL where the API calls are sent."
-    Default: "https://api-k8s-cloudapi.qa.redislabs.com"
+    Description: "The Base URL where the API calls are sent. Example: https://api-k8s-cloudapi.qa.redislabs.com"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -33,15 +31,13 @@ Parameters:
     Description: "[Optional]. Payment method for the requested subscription. If credit card is specified, the payment method Id must be defined. Default: 'credit-card'"
   PaymentMethodId:
     Type: String
-    Description: "[Optional]. A valid payment method that was pre-defined in the current account. This value is Optional if 'paymentMethod' is 'marketplace', but Required for all other account types."
-    Default: 33292
+    Description: "[Optional]. A valid payment method that was pre-defined in the current account. This value is Optional if 'paymentMethod' is 'marketplace', but Required for all other account types. Example: 33292"
   MemoryStorage:
     Type: String
     Description: "[Optional]. Optional. Memory storage preference: either 'ram' or a combination of 'ram-and-flash'. Example: ram. Default: 'ram'"
   CloudProviders:
     Type: String
     Description: '[Required as JSON]. Cloud hosting & networking details. Example: [{"regions": [{"region": "us-east-1", "networking": {}}]}]'
-    Default: '[{"regions": [{"region": "us-east-1", "networking": {}}]}]'
   RedisVersion:
     Type: String
     Description: "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"

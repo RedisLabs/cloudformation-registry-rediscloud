@@ -42,15 +42,12 @@ Parameters:
   DatabaseName:
     Type: String
     Description: "[Required]. Database name (Database name must be up to 40 characters long, include only letters, digits, or hyphen ('-'), start with a letter, and end with a letter or digit). Example: Redis-database-example"
-    Default: "testdb30"
   BaseUrl:
     Type: String
-    Description: "The Base URL where the API calls are sent."
-    Default: "https://api-k8s-cloudapi.qa.redislabs.com"
+    Description: "The Base URL where the API calls are sent. Example: https://api-k8s-cloudapi.qa.redislabs.com"
   SubscriptionID:
     Type: String
-    Description: "[Required]. The Subscription ID under which the Database is created. Example: 163199"
-    Default: "185494"
+    Description: "[Required]. The Subscription ID under which the Database is created. Example: 185494"
   DryRun:
     Type: String
     Description: "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
@@ -63,7 +60,6 @@ Parameters:
   DatasetSizeInGb:
     Type: String
     Description: "[Optional]. The maximum amount of data in the dataset for this specific database is in GB. You can not set both datasetSizeInGb and totalMemoryInGb. if 'replication' is true, the database's total memory will be twice as large as the datasetSizeInGb.if 'replication' is false, the database's total memory of the database will be the datasetSizeInGb value. Minimum: 0.1. ExclusiveMinimum: false. Example: 1"
-    Default: "1"
   RespVersion:
     Type: String
     Description: "[Optional]. RESP version must be compatible with Redis version. Example: resp3. Allowed values: resp2/resp3."
@@ -97,7 +93,6 @@ Parameters:
   RemoteBackup:
     Type: String
     Description: '[Optional. Input as JSON]. Database remote backup configuration. Example: {"active": true, "interval": "every-4-hours", "storageType": "aws-s3", "storagePath": "s3://redis-test-for-backup-and-import"}'
-    Default: '{"active": true, "interval": "every-4-hours", "storageType": "aws-s3", "storagePath": "s3://redis-test-for-backup-and-import"}'
   SourceIp:
     Type: String
     Description: "[Optional]. List of source IP addresses or subnet masks. If specified, Redis clients will be able to connect to this database only from within the specified source IP addresses ranges. example value: '['192.168.10.0/32', '192.168.12.0/24']'"
