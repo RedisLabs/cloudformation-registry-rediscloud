@@ -1,0 +1,29 @@
+{
+    "properties": {
+        "RedisAccess": {
+            "$ref": "#/definitions/RedisAccess"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "RedisAccess"
+    ],
+    "definitions": {
+        "RedisAccess": {
+            "description": "Properties needed to access Redis.",
+            "type": "object",
+            "properties": {
+                "xapikey": {
+                    "description": "x_api_key",
+                    "type": "string"
+                },
+                "xapisecretkey": {
+                    "description": "x_api_secret_key",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "typeName": "Redis::CloudFormation::ProSubscription"
+}

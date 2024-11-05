@@ -1,0 +1,119 @@
+{
+  "typeName": "Redis::CloudFormation::ProSubscription",
+  "description": "CloudFormation template for Pro Subscription.",
+  "tagging": {
+    "taggable": false
+  },
+  "typeConfiguration": {
+    "properties": {
+        "RedisAccess": {
+            "$ref": "#/definitions/RedisAccess"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "RedisAccess"
+    ]
+},
+"definitions": {
+        "RedisAccess": {
+            "description": "Properties needed to access Redis.",
+            "type": "object",
+            "properties": {
+                "xapikey": {
+                    "description": "x_api_key",
+                    "type": "string"
+                },
+                "xapisecretkey": {
+                    "description": "x_api_secret_key",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+  "properties": {
+    "SubscriptionID": {
+      "type": "string",
+      "description": "Subscription ID. Populated with value within the handlers.py.",
+      "default": "Overwrite this value"
+    },
+    "BaseUrl": {
+      "type": "string",
+      "description": "[Required]. The Base URL where the API calls are sent."
+    },
+    "SubscriptionName": {
+      "type": "string",
+      "description": "[Optional]. Subscription name. Example: My new subscription"
+    },
+    "DryRun": {
+      "type": "string",
+      "description": "[Optional]. When 'false': Creates a deployment plan and deploys it (creating any resources required by the plan). When 'true': creates a read-only deployment plan without any resource creation. Example: false. Default: 'false'."
+    },
+    "DeploymentType": {
+      "type": "string",
+      "description": "[Optional]. Creates a single region subscription. Example: single-region"
+    },
+    "PaymentMethod": {
+      "type": "string",
+      "description": "[Optional]. Payment method for the requested subscription. If credit card is specified, the payment method Id must be defined. Default: 'credit-card'"
+    },
+    "PaymentMethodId": {
+      "type": "string",
+      "description": "[Optional]. A valid payment method that was pre-defined in the current account. This value is Optional if 'paymentMethod' is 'marketplace', but Required for all other account types."
+    },
+    "MemoryStorage": {
+      "type": "string",
+      "description": "[Optional]. Optional. Memory storage preference: either 'ram' or a combination of 'ram-and-flash'. Example: ram. Default: 'ram'"
+    },
+    "CloudProviders": {
+      "type": "string",
+      "description": "[Required as JSON]. Cloud hosting & networking details. Example: [{\"regions\": [{\"region\": \"us-east-1\", \"networking\": {}}]}]"
+    },
+    "RedisVersion": {
+      "type": "string",
+      "description": "[Optional]. If specified, the redisVersion defines the Redis version of the databases in the subscription. If omitted, the Redis version will be the default (available in 'GET /subscriptions/redis-versions'). Example: 7.2. Default = 'default'"
+    }
+  },
+  "handlers": {
+    "create": {
+        "permissions": []
+    },
+    "read": {
+        "permissions": [
+          "initech:DescribeReport"
+        ]
+    },
+    "update": {
+        "permissions": [
+          "initech:UpdateReport"
+        ]
+    },
+    "delete": {
+        "permissions": []
+    },
+    "list": {
+        "permissions": [
+          "initech:ListReports"
+        ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "CloudProviders"
+  ],
+  "createOnlyProperties": [
+    "/properties/BaseUrl",
+    "/properties/DryRun",
+    "/properties/DeploymentType",
+    "/properties/PaymentMethod",
+    "/properties/PaymentMethodId",
+    "/properties/MemoryStorage",
+    "/properties/CloudProviders",
+    "/properties/RedisVersion"
+  ],
+  "readOnlyProperties": [
+    "/properties/SubscriptionID"
+  ],
+  "primaryIdentifier": ["/properties/SubscriptionID"]
+}

@@ -1,0 +1,11 @@
+{
+    "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
+    "SubscriptionName": "CONTRACT_TESTS",
+    "DryRun": "false",
+    "DeploymentType": "single-region",
+    "PaymentMethod": "credit-card",
+    "PaymentMethodId": "33292",
+    "MemoryStorage": "ram",
+    "CloudProviders": "[{\"regions\": [{\"region\": \"us-east-1\", \"networking\": {}}]}]",
+    "RedisVersion": "7.2"
+}
