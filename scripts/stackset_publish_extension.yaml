@@ -1,13 +1,28 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation template to create an S3 bucket
-
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Registers and sets a new default resource version, registers the account as a publisher, and publishes the resource to the public registry.
+Parameters:
+  SchemaPackageURL:
+    Description: URL to S3::Bucket that contains the resource project package 
+    Type: String
 Resources:
-  MyS3Bucket:
-    Type: "AWS::S3::Bucket"
+  PrivateResourceVersion: 
+    Type: AWS::CloudFormation::ResourceVersion
     Properties:
-      BucketName: !Sub "${AWS::StackName}-s3bucket"
-
-Outputs:
-  BucketName:
-    Description: "Name of the created S3 bucket"
-    Value: !Ref MyS3Bucket
+      SchemaHandlerPackage: !Ref SchemaPackageURL 
+      TypeName: MyOrg::MyService::MyType 
+  ResourceDefaultVersion:    
+    Type: AWS::CloudFormation::ResourceDefaultVersion
+    DependsOn: PrivateResourceVersion
+    Properties:
+      TypeVersionArn: !Ref PrivateResourceVersion
+  Publisher:
+    Type: AWS::CloudFormation::Publisher
+    DependsOn: ResourceDefaultVersion
+    Properties:
+      AcceptTermsAndConditions: true
+  PublishedResource:     
+    Type: AWS::CloudFormation::PublicTypeVersion
+    DependsOn: Publisher
+    Properties:
+      Type: RESOURCE
+      TypeName: MyOrg::MyService::MyType
