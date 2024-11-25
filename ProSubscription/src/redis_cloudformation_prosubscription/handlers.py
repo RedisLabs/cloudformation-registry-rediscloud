@@ -212,7 +212,7 @@ def create_handler(
                 return ProgressEvent(
                     status=OperationStatus.IN_PROGRESS,
                     resourceModel=model,
-                    callbackDelaySeconds=60,
+                    callbackDelaySeconds=30,
                     callbackContext=callback_context,
                 )
         elif sub_status in ["failed", "error"]:
@@ -285,7 +285,7 @@ def create_handler(
         return ProgressEvent(
             status=OperationStatus.IN_PROGRESS,
             resourceModel=model,
-            callbackDelaySeconds=60,
+            callbackDelaySeconds=30,
             callbackContext=callback_context,
         )
 
@@ -358,7 +358,7 @@ def delete_handler(
                 return ProgressEvent(
                     status=OperationStatus.IN_PROGRESS,
                     resourceModel=model,
-                    callbackDelaySeconds=60,  # Poll every 60 seconds
+                    callbackDelaySeconds=30,  # Poll every 30 seconds
                     callbackContext={"delete_in_progress": True},
                 )
 
@@ -398,7 +398,7 @@ def delete_handler(
                 return ProgressEvent(
                     status=OperationStatus.IN_PROGRESS,
                     resourceModel=model,
-                    callbackDelaySeconds=60,  # Poll every 60 seconds
+                    callbackDelaySeconds=30,  # Poll every 30 seconds
                     callbackContext={"delete_in_progress": True},
                 )
             else:
