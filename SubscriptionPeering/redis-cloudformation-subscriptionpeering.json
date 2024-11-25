@@ -86,24 +86,43 @@
     },
     "handlers": {
       "create": {
-          "permissions": []
+          "permissions": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "cloudformation:DescribeTypeRegistration"
+          ]
       },
       "read": {
           "permissions": [
-            "initech:DescribeReport"
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "cloudformation:DescribeTypeRegistration"
           ]
       },
       "update": {
           "permissions": [
-            "initech:UpdateReport"
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "cloudformation:DescribeTypeRegistration"
           ]
       },
       "delete": {
-          "permissions": []
+          "permissions": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "cloudformation:DescribeTypeRegistration"
+          ]
       },
       "list": {
           "permissions": [
-            "initech:ListReports"
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "cloudformation:DescribeTypeRegistration"
           ]
       }
     },
