@@ -78,42 +78,107 @@
   "handlers": {
     "create": {
         "permissions": [
+<<<<<<< HEAD
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
             "cloudformation:DescribeTypeRegistration"
+=======
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+>>>>>>> bf30415 (added deregister permission)
         ]
     },
     "read": {
         "permissions": [
+<<<<<<< HEAD
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
             "cloudformation:DescribeTypeRegistration"
+=======
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+>>>>>>> bf30415 (added deregister permission)
         ]
     },
     "update": {
         "permissions": [
+<<<<<<< HEAD
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
             "cloudformation:DescribeTypeRegistration"
+=======
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+>>>>>>> bf30415 (added deregister permission)
         ]
     },
     "delete": {
         "permissions": [
+<<<<<<< HEAD
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
             "cloudformation:DescribeTypeRegistration"
+=======
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+>>>>>>> bf30415 (added deregister permission)
         ]
     },
     "list": {
         "permissions": [
+<<<<<<< HEAD
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
             "cloudformation:DescribeTypeRegistration"
+=======
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+>>>>>>> bf30415 (added deregister permission)
         ]
     }
   },
