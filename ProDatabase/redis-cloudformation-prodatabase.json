@@ -178,24 +178,68 @@
     },
     "handlers": {
       "create": {
-          "permissions": []
+          "permissions": [
+            "cloudformation:RegisterType",
+            "cloudformation:SetTypeDefaultVersion",
+            "cloudformation:PublishType",
+            "cloudformation:DescribeTypeRegistration",
+            "s3:GetObject",
+            "s3:PutObject",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ]
       },
       "read": {
           "permissions": [
-            "initech:DescribeReport"
+            "cloudformation:RegisterType",
+            "cloudformation:SetTypeDefaultVersion",
+            "cloudformation:PublishType",
+            "cloudformation:DescribeTypeRegistration",
+            "s3:GetObject",
+            "s3:PutObject",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
           ]
       },
       "update": {
           "permissions": [
-            "initech:UpdateReport"
+            "cloudformation:RegisterType",
+            "cloudformation:SetTypeDefaultVersion",
+            "cloudformation:PublishType",
+            "cloudformation:DescribeTypeRegistration",
+            "s3:GetObject",
+            "s3:PutObject",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
           ]
       },
       "delete": {
-          "permissions": []
+          "permissions": [
+            "cloudformation:RegisterType",
+            "cloudformation:SetTypeDefaultVersion",
+            "cloudformation:PublishType",
+            "cloudformation:DescribeTypeRegistration",
+            "s3:GetObject",
+            "s3:PutObject",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ]
       },
       "list": {
           "permissions": [
-            "initech:ListReports"
+            "cloudformation:RegisterType",
+            "cloudformation:SetTypeDefaultVersion",
+            "cloudformation:PublishType",
+            "cloudformation:DescribeTypeRegistration",
+            "s3:GetObject",
+            "s3:PutObject",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
           ]
       }
     },
