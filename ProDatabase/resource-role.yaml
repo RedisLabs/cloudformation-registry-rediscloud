@@ -30,6 +30,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                - "cloudformation:DeregisterType"
                 - "cloudformation:DescribeTypeRegistration"
                 - "cloudformation:PublishType"
                 - "cloudformation:RegisterType"
