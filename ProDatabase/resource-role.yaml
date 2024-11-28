@@ -30,9 +30,15 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - "initech:DescribeReport"
-                - "initech:ListReports"
-                - "initech:UpdateReport"
+                - "cloudformation:DescribeTypeRegistration"
+                - "cloudformation:PublishType"
+                - "cloudformation:RegisterType"
+                - "cloudformation:SetTypeDefaultVersion"
+                - "logs:CreateLogGroup"
+                - "logs:CreateLogStream"
+                - "logs:PutLogEvents"
+                - "s3:GetObject"
+                - "s3:PutObject"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
