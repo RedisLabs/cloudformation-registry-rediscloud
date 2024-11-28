@@ -78,42 +78,72 @@
   "handlers": {
     "create": {
         "permissions": [
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "cloudformation:DescribeTypeRegistration"
+          "logs:PutLogEvents"
         ]
     },
     "read": {
         "permissions": [
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "cloudformation:DescribeTypeRegistration"
+          "logs:PutLogEvents"
         ]
     },
     "update": {
         "permissions": [
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "cloudformation:DescribeTypeRegistration"
+          "logs:PutLogEvents"
         ]
     },
     "delete": {
         "permissions": [
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "cloudformation:DescribeTypeRegistration"
+          "logs:PutLogEvents"
         ]
     },
     "list": {
         "permissions": [
+          "cloudformation:RegisterType",
+          "cloudformation:SetTypeDefaultVersion",
+          "cloudformation:PublishType",
+          "cloudformation:DescribeTypeRegistration",
+          "cloudformation:DeregisterType",
+          "s3:GetObject",
+          "s3:PutObject",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "cloudformation:DescribeTypeRegistration"
+          "logs:PutLogEvents"
         ]
     }
   },
