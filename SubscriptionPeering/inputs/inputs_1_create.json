@@ -1,10 +1,14 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "SubscriptionID": "186637",
 =======
     "SubscriptionID": "187355",
 >>>>>>> 1e3841a (added deregister permission)
+=======
+    "SubscriptionID": "187386",
+>>>>>>> 2bb7f7a (Working TestType version)
     "Provider": "AWS",
     "Region": "us-east-1",
     "AwsAccountId": "688576139038",

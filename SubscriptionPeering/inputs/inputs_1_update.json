@@ -1,10 +1,14 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "SubscriptionID": "186637",
 =======
     "SubscriptionID": "187355",
 >>>>>>> 1e3841a (added deregister permission)
+=======
+    "SubscriptionID": "187386",
+>>>>>>> 2bb7f7a (Working TestType version)
     "VpcCidrs": [
         "10.10.50.0/24",
         "10.10.60.0/24"
