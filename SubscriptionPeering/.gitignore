@@ -128,3 +128,4 @@ sam-tests/
 
 rpdk.log*
 PublishDatabase.yml
+.DS_Store
