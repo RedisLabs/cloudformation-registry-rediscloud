@@ -1,4 +1,5 @@
 .DS_Store
+<<<<<<< HEAD
 rpdk.log*
 
 .hypothesis
@@ -6,3 +7,5 @@ build/*
 sam-tests/
 
 .gitignore
+=======
+>>>>>>> ded409c (added gitignore)

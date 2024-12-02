@@ -202,11 +202,13 @@
           ]
       },
       "delete": {
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents",
-            "cloudformation:DescribeTypeRegistration"
-      },
+        "permissions": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "cloudformation:DescribeTypeRegistration"
+        ]
+    },
       "list": {
           "permissions": [
             "logs:CreateLogGroup",

@@ -45,6 +45,7 @@ Parameters:
   BaseUrl:
     Type: String
     Description: "The Base URL where the API calls are sent. Example: https://api-k8s-cloudapi.qa.redislabs.com"
+    Default: "https://api.redislabs.com/v1/"
   SubscriptionID:
     Type: String
     Description: "[Required]. The Subscription ID under which the Database is created. Example: 185494"
