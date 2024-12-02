@@ -127,3 +127,6 @@ dmypy.json
 sam-tests/
 
 rpdk.log*
+rpdk.log*
+PublishDatabase.yml
+.DS_Store
