@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Registers and sets a new default resource version, registers the account as a publisher, and publishes the resource to the public registry.
+Resources:
+  PublishedResource:     
+    Type: AWS::CloudFormation::PublicTypeVersion
+    Properties:
+      Type: RESOURCE
+      TypeName: Redis::CloudFormation::ProDatabase
