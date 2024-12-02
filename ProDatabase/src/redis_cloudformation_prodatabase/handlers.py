@@ -312,7 +312,7 @@ def create_handler(
 
         LOG.info(f"The Database ID is: {db_id}")
 
-        # Initial status check and storing both in callback_context
+        # Initial status check and ID. Storing both in callback_context
         db_status = GetDatabaseStatus(base_url, sub_id, db_id, http_headers)
         callback_context["db_id"] = db_id
         callback_context["db_status"] = db_status
@@ -347,103 +347,134 @@ def update_handler(
     base_url = model.BaseUrl
     sub_id = model.SubscriptionID
     db_id = model.DatabaseID
+    
+    # Check if we're retrying (if db_id and db_status are in callback_context)
+    if "db_id" in callback_context and "db_status" in callback_context:
+        db_id = callback_context["db_id"]
+        db_status = callback_context["db_status"]
 
-    # Checking if the Update should create a new backup on demand
-    event = {}
-    if model.OnDemandBackup == "true" or model.OnDemandBackup == "True":
-        if model.RegionName == "null" or model.RegionName == "":
-            event["regionName"] = None
-            event = json.dumps(event)
-            LOG.info(f"The event when regionName is null is: {event}")
+        if db_status == "active-change-draft":
+            db_status = GetDatabaseStatus(base_url, sub_id, db_id, http_headers)
+            callback_context["db_status"] = db_status
+            return ProgressEvent(
+                status=OperationStatus.IN_PROGRESS,
+                resourceModel=model,
+                callbackDelaySeconds=60,
+                callbackContext=callback_context,
+            )
+        elif db_status in ["failed", "error"]:
+            return ProgressEvent.failed(
+                HandlerErrorCode.InternalFailure,
+                f"Database creation failed with status: {db_status}",
+            )
         else:
-            event["regionName"] = model.RegionName
-            event = json.dumps(event)
-        response = PostBackup(base_url, sub_id, db_id, event, http_headers)
-
-    # Checking if the Update should Import a previous created Backup
-    elif model.OnDemandImport == "true" or model.OnDemandImport == "True":
-        if model.SourceType != "":
-            event["sourceType"] = model.SourceType
-        if model.ImportFromUri != "":
-            importFromUriList = []
-            importFromUriList.append(model.ImportFromUri)
-            event["importFromUri"] = importFromUriList
-        event = json.dumps(event)
-        LOG.info(f"The event sent for Import is: {event}")
-        response = PostImport(base_url, sub_id, db_id, event, http_headers)
-
-    # If neither Backup nor Import are desired upon Update call, then initiate a normal Put call for the current database
+            return read_handler(session, request, callback_context)
     else:
-        if model.DryRun != "" and model.DryRun != None:
-            if model.DryRun.lower() == "true":
-                event["dryRun"] = True
-            elif model.DryRun.lower() == "false":
-                event["dryRun"] = False
-        if model.DatabaseName != "":
-            event["name"] = model.DatabaseName
-        if model.DatasetSizeInGb != "" and model.DatasetSizeInGb != None:
-            event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
-        if model.RespVersion != "":
-            event["respVersion"] = model.RespVersion
-        if model.ThroughputMeasurement != "" and model.ThroughputMeasurement != None:
-            event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
-        if model.DataPersistence != "":
-            event["dataPersistence"] = model.DataPersistence
-        if model.DataEvictionPolicy != "":
-            event["dataEvictionPolicy"] = model.DataEvictionPolicy
-        if model.Replication != "" and model.Replication != None:
-            if model.Replication.lower() == "true":
-                event["replication"] = True
-            elif model.Replication.lower() == "false":
-                event["replication"] = False
-        if model.RegexRules != "":
-            event["regexRules"] = model.RegexRules
-        if model.Replica != "" and model.Replica != None:
-            event["replica"] = json.loads(model.Replica)
-        if model.SupportOSSClusterApi != "" and model.SupportOSSClusterApi != None:
-            if model.SupportOSSClusterApi.lower() == "true":
-                event["supportOSSClusterApi"] = True
-            elif model.SupportOSSClusterApi.lower() == "false":
-                event["supportOSSClusterApi"] = False
-        if (
-            model.UseExternalEndpointForOSSClusterApi != ""
-            and model.UseExternalEndpointForOSSClusterApi != None
-        ):
-            if model.UseExternalEndpointForOSSClusterApi.lower() == "true":
-                event["useExternalEndpointForOSSClusterApi"] = True
-            elif model.UseExternalEndpointForOSSClusterApi.lower() == "false":
-                event["useExternalEndpointForOSSClusterApi"] = False
-        if model.Password != "":
-            event["password"] = model.Password
-        if model.SaslUsername != "":
-            event["saslUsername"] = model.SaslUsername
-        if model.SaslPassword != "":
-            event["saslPassword"] = model.SaslPassword
-        if model.SourceIp != "":
-            event["sourceIp"] = model.SourceIp
-        if model.ClientTlsCertificates != "" and model.ClientTlsCertificates != None:
-            event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
-        if model.EnableTls != "" and model.EnableTls != None:
-            if model.EnableTls.lower() == "true":
-                event["enableTls"] = True
-            elif model.EnableTls.lower() == "false":
-                event["enableTls"] = False
-        if model.EnableDefaultUser != "":
-            event["enableDefaultUser"] = model.EnableDefaultUser
-        if model.RemoteBackup != "" and model.RemoteBackup != None:
-            event["remoteBackup"] = json.loads(model.RemoteBackup)
-        if model.Alerts != "" and model.Alerts != None:
-            event["alerts"] = json.loads(model.Alerts)
-        if model.QueryPerformanceFactor != "":
-            event["queryPerformanceFactor"] = model.QueryPerformanceFactor
+        # Checking if the Update should create a new backup on demand
+        event = {}
+        if model.OnDemandBackup == "true" or model.OnDemandBackup == "True":
+            if model.RegionName == "null" or model.RegionName == "":
+                event["regionName"] = None
+                event = json.dumps(event)
+                LOG.info(f"The event when regionName is null is: {event}")
+            else:
+                event["regionName"] = model.RegionName
+                event = json.dumps(event)
+            response = PostBackup(base_url, sub_id, db_id, event, http_headers)
 
-        event = json.dumps(event)
-        LOG.info(f"The event sent for PUT call is: {event}")
-        response = PutDatabase(base_url, sub_id, db_id, event, http_headers)
-        LOG.info(f"Response for PUT call is: {response}")
+        # Checking if the Update should Import a previous created Backup
+        elif model.OnDemandImport == "true" or model.OnDemandImport == "True":
+            if model.SourceType != "":
+                event["sourceType"] = model.SourceType
+            if model.ImportFromUri != "":
+                importFromUriList = []
+                importFromUriList.append(model.ImportFromUri)
+                event["importFromUri"] = importFromUriList
+            event = json.dumps(event)
+            LOG.info(f"The event sent for Import is: {event}")
+            response = PostImport(base_url, sub_id, db_id, event, http_headers)
 
-    return read_handler(session, request, callback_context)
+        # If neither Backup nor Import are desired upon Update call, then initiate a normal Put call for the current database
+        else:
+            if model.DryRun != "" and model.DryRun != None:
+                if model.DryRun.lower() == "true":
+                    event["dryRun"] = True
+                elif model.DryRun.lower() == "false":
+                    event["dryRun"] = False
+            if model.DatabaseName != "":
+                event["name"] = model.DatabaseName
+            if model.DatasetSizeInGb != "" and model.DatasetSizeInGb != None:
+                event["datasetSizeInGb"] = int(model.DatasetSizeInGb)
+            if model.RespVersion != "":
+                event["respVersion"] = model.RespVersion
+            if model.ThroughputMeasurement != "" and model.ThroughputMeasurement != None:
+                event["throughputMeasurement"] = json.loads(model.ThroughputMeasurement)
+            if model.DataPersistence != "":
+                event["dataPersistence"] = model.DataPersistence
+            if model.DataEvictionPolicy != "":
+                event["dataEvictionPolicy"] = model.DataEvictionPolicy
+            if model.Replication != "" and model.Replication != None:
+                if model.Replication.lower() == "true":
+                    event["replication"] = True
+                elif model.Replication.lower() == "false":
+                    event["replication"] = False
+            if model.RegexRules != "":
+                event["regexRules"] = model.RegexRules
+            if model.Replica != "" and model.Replica != None:
+                event["replica"] = json.loads(model.Replica)
+            if model.SupportOSSClusterApi != "" and model.SupportOSSClusterApi != None:
+                if model.SupportOSSClusterApi.lower() == "true":
+                    event["supportOSSClusterApi"] = True
+                elif model.SupportOSSClusterApi.lower() == "false":
+                    event["supportOSSClusterApi"] = False
+            if (
+                model.UseExternalEndpointForOSSClusterApi != ""
+                and model.UseExternalEndpointForOSSClusterApi != None
+            ):
+                if model.UseExternalEndpointForOSSClusterApi.lower() == "true":
+                    event["useExternalEndpointForOSSClusterApi"] = True
+                elif model.UseExternalEndpointForOSSClusterApi.lower() == "false":
+                    event["useExternalEndpointForOSSClusterApi"] = False
+            if model.Password != "":
+                event["password"] = model.Password
+            if model.SaslUsername != "":
+                event["saslUsername"] = model.SaslUsername
+            if model.SaslPassword != "":
+                event["saslPassword"] = model.SaslPassword
+            if model.SourceIp != "":
+                event["sourceIp"] = model.SourceIp
+            if model.ClientTlsCertificates != "" and model.ClientTlsCertificates != None:
+                event["clientTlsCertificates"] = json.loads(model.ClientTlsCertificates)
+            if model.EnableTls != "" and model.EnableTls != None:
+                if model.EnableTls.lower() == "true":
+                    event["enableTls"] = True
+                elif model.EnableTls.lower() == "false":
+                    event["enableTls"] = False
+            if model.EnableDefaultUser != "":
+                event["enableDefaultUser"] = model.EnableDefaultUser
+            if model.RemoteBackup != "" and model.RemoteBackup != None:
+                event["remoteBackup"] = json.loads(model.RemoteBackup)
+            if model.Alerts != "" and model.Alerts != None:
+                event["alerts"] = json.loads(model.Alerts)
+            if model.QueryPerformanceFactor != "":
+                event["queryPerformanceFactor"] = model.QueryPerformanceFactor
 
+            event = json.dumps(event)
+            LOG.info(f"The event sent for PUT call is: {event}")
+            response = PutDatabase(base_url, sub_id, db_id, event, http_headers)
+            LOG.info(f"Response for PUT call is: {response}")
+
+            # Initial status check and ID. Storing both in callback_context
+            db_status = GetDatabaseStatus(base_url, sub_id, db_id, http_headers)
+            callback_context["db_id"] = db_id
+            callback_context["db_status"] = db_status
+
+            return ProgressEvent(
+                status=OperationStatus.IN_PROGRESS,
+                resourceModel=model,
+                callbackDelaySeconds=60,
+                callbackContext=callback_context,
+            )
 
 @resource.handler(Action.DELETE)
 def delete_handler(
@@ -488,7 +519,7 @@ def delete_handler(
                 LOG.info(f"Database has the status: {response_check['status']}")
                 return ProgressEvent.failed(
                     HandlerErrorCode.InternalFailure,
-                    f"Database {db_id} still exists and is not in a deleting state.",
+                    f"Database {db_id} still exists and is not in a deleting state. This is the status of the Database: {response_check['status']}",
                 )
 
         except Exception as e:
