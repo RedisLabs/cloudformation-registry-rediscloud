@@ -21,7 +21,7 @@ Resources:
                   Ref: AWS::AccountId
               StringLike:
                 aws:SourceArn:
-                  Fn::Sub: arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:type/resource/Redis-CloudFormation-ProSubscription/*
+                  Fn::Sub: arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:type/resource/Redis-Cloud-Subscription/*
       Path: "/"
       Policies:
         - PolicyName: ResourceTypePolicy
@@ -30,10 +30,16 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                - "cloudformation:DeregisterType"
                 - "cloudformation:DescribeTypeRegistration"
+                - "cloudformation:PublishType"
+                - "cloudformation:RegisterType"
+                - "cloudformation:SetTypeDefaultVersion"
                 - "logs:CreateLogGroup"
                 - "logs:CreateLogStream"
                 - "logs:PutLogEvents"
+                - "s3:GetObject"
+                - "s3:PutObject"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:

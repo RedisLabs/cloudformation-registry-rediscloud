@@ -16,7 +16,7 @@ from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationMode
 
 # Use this logger to forward log messages to CloudWatch Logs. CHANGE TO TRIGGER PIPELINE
 LOG = logging.getLogger(__name__)
-TYPE_NAME = "Redis::CloudFormation::ProSubscription"
+TYPE_NAME = "Redis::Cloud::Subscription"
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint

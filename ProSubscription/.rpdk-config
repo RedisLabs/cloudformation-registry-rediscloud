@@ -1,6 +1,6 @@
 {
     "artifact_type": "RESOURCE",
-    "typeName": "Redis::CloudFormation::ProSubscription",
+    "typeName": "Redis::Cloud::Subscription",
     "language": "python311",
     "runtime": "python3.11",
     "entrypoint": "redis_cloudformation_prosubscription.handlers.resource",

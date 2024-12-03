@@ -25,5 +25,5 @@
             "additionalProperties": false
         }
     },
-    "typeName": "Redis::CloudFormation::ProSubscription"
+    "typeName": "Redis::Cloud::Subscription"
 }

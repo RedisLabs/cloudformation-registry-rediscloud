@@ -1,4 +1,4 @@
-# Redis::CloudFormation::ProSubscription
+# Redis::Cloud::Subscription
 
 Congratulations on starting development! Next steps:
 

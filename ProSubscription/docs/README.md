@@ -1,4 +1,4 @@
-# Redis::CloudFormation::ProSubscription
+# Redis::Cloud::Subscription
 
 CloudFormation template for Pro Subscription.
 
@@ -10,7 +10,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "Type" : "Redis::CloudFormation::ProSubscription",
+    "Type" : "Redis::Cloud::Subscription",
     "Properties" : {
         "<a href="#baseurl" title="BaseUrl">BaseUrl</a>" : <i>String</i>,
         "<a href="#subscriptionname" title="SubscriptionName">SubscriptionName</a>" : <i>String</i>,
@@ -28,7 +28,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-Type: Redis::CloudFormation::ProSubscription
+Type: Redis::Cloud::Subscription
 Properties:
     <a href="#baseurl" title="BaseUrl">BaseUrl</a>: <i>String</i>
     <a href="#subscriptionname" title="SubscriptionName">SubscriptionName</a>: <i>String</i>

@@ -1,5 +1,5 @@
 {
-  "typeName": "Redis::CloudFormation::ProSubscription",
+  "typeName": "Redis::Cloud::Subscription",
   "description": "CloudFormation template for Pro Subscription.",
   "tagging": {
     "taggable": false
