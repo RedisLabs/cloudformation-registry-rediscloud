@@ -1,10 +1,10 @@
 {
     "artifact_type": "RESOURCE",
-    "typeName": "Redis::CloudFormation::SubscriptionPeering",
+    "typeName": "Redis::Cloud::Peering",
     "language": "python311",
     "runtime": "python3.11",
-    "entrypoint": "redis_cloudformation_subscriptionpeering.handlers.resource",
-    "testEntrypoint": "redis_cloudformation_subscriptionpeering.handlers.test_entrypoint",
+    "entrypoint": "redis_cloud_peering.handlers.resource",
+    "testEntrypoint": "redis_cloud_peering.handlers.test_entrypoint",
     "settings": {
         "version": false,
         "subparser_name": null,

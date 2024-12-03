@@ -1,9 +1,9 @@
-# Redis::CloudFormation::SubscriptionPeering
+# Redis::Cloud::Peering
 
 Congratulations on starting development! Next steps:
 
 1. Write the JSON schema describing your resource, `redis-cloudformation-subscriptionpeering.json`
-2. Implement your resource handlers in `redis_cloudformation_subscriptionpeering/handlers.py`
+2. Implement your resource handlers in `redis_cloud_peering/handlers.py`
 
 > Don't modify `models.py` by hand, any modifications will be overwritten when the `generate` or `package` commands are run.
 

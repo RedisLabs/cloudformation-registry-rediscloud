@@ -16,7 +16,7 @@ from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationMode
 
 # Use this logger to forward log messages to CloudWatch Logs. NON BREAKING CHANGE TO NOT TRIGGER WORKFLOW
 LOG = logging.getLogger(__name__)
-TYPE_NAME = "Redis::CloudFormation::SubscriptionPeering"
+TYPE_NAME = "Redis::Cloud::Peering"
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint

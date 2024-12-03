@@ -1,5 +1,5 @@
 {
-    "typeName": "Redis::CloudFormation::SubscriptionPeering",
+    "typeName": "Redis::Cloud::Peering",
     "description": "CloudFormation template for Subscription Peering.",
     "tagging": {
       "taggable": false

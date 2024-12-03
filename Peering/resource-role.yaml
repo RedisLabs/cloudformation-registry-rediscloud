@@ -21,7 +21,7 @@ Resources:
                   Ref: AWS::AccountId
               StringLike:
                 aws:SourceArn:
-                  Fn::Sub: arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:type/resource/Redis-CloudFormation-SubscriptionPeering/*
+                  Fn::Sub: arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:type/resource/Redis-Cloud-Peering/*
       Path: "/"
       Policies:
         - PolicyName: ResourceTypePolicy
