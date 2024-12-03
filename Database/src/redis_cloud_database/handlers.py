@@ -16,7 +16,7 @@ from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationMode
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
-TYPE_NAME = "Redis::CloudFormation::ProDatabase"
+TYPE_NAME = "Redis::Cloud::Database"
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint

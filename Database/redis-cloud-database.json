@@ -1,5 +1,5 @@
 {
-    "typeName": "Redis::CloudFormation::ProDatabase",
+    "typeName": "Redis::Cloud::Database",
     "description": "CloudFormation template for Pro Database.",
     "tagging": {
       "taggable": false

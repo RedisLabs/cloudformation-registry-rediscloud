@@ -25,5 +25,5 @@
             "additionalProperties": false
         }
     },
-    "typeName": "Redis::CloudFormation::ProDatabase"
+    "typeName": "Redis::Cloud::Database"
 }

@@ -1,9 +1,9 @@
-# Redis::CloudFormation::ProDatabase
+# Redis::Cloud::Database
 
 Congratulations on starting development! Next steps:
 
 1. Write the JSON schema describing your resource, `redis-cloudformation-prodatabase.json`
-2. Implement your resource handlers in `redis_cloudformation_prodatabase/handlers.py`
+2. Implement your resource handlers in `redis_cloud_database/handlers.py`
 
 > Don't modify `models.py` by hand, any modifications will be overwritten when the `generate` or `package` commands are run.
 

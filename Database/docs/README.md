@@ -1,4 +1,4 @@
-# Redis::CloudFormation::ProDatabase
+# Redis::Cloud::Database
 
 CloudFormation template for Pro Database.
 
@@ -10,7 +10,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "Type" : "Redis::CloudFormation::ProDatabase",
+    "Type" : "Redis::Cloud::Database",
     "Properties" : {
         "<a href="#baseurl" title="BaseUrl">BaseUrl</a>" : <i>String</i>,
         "<a href="#subscriptionid" title="SubscriptionID">SubscriptionID</a>" : <i>String</i>,
@@ -53,7 +53,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-Type: Redis::CloudFormation::ProDatabase
+Type: Redis::Cloud::Database
 Properties:
     <a href="#baseurl" title="BaseUrl">BaseUrl</a>: <i>String</i>
     <a href="#subscriptionid" title="SubscriptionID">SubscriptionID</a>: <i>String</i>

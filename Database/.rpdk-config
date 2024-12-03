@@ -1,10 +1,10 @@
 {
     "artifact_type": "RESOURCE",
-    "typeName": "Redis::CloudFormation::ProDatabase",
+    "typeName": "Redis::Cloud::Database",
     "language": "python311",
     "runtime": "python3.11",
-    "entrypoint": "redis_cloudformation_prodatabase.handlers.resource",
-    "testEntrypoint": "redis_cloudformation_prodatabase.handlers.test_entrypoint",
+    "entrypoint": "redis_cloud_database.handlers.resource",
+    "testEntrypoint": "redis_cloud_database.handlers.test_entrypoint",
     "settings": {
         "version": false,
         "subparser_name": null,
