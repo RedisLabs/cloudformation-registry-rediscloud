@@ -3,8 +3,8 @@
     "typeName": "Redis::Cloud::Subscription",
     "language": "python311",
     "runtime": "python3.11",
-    "entrypoint": "redis_cloudformation_prosubscription.handlers.resource",
-    "testEntrypoint": "redis_cloudformation_prosubscription.handlers.test_entrypoint",
+    "entrypoint": "redis_cloud_subscription.handlers.resource",
+    "testEntrypoint": "redis_cloud_subscription.handlers.test_entrypoint",
     "settings": {
         "version": false,
         "subparser_name": null,
