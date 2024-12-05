@@ -5,4 +5,4 @@ Resources:
     Type: AWS::CloudFormation::PublicTypeVersion
     Properties:
       Type: RESOURCE
-      TypeName: Redis::CloudFormation::ProSubscription
+      TypeName: Redis::Cloud::Subscription
