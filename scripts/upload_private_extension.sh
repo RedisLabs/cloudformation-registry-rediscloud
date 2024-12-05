@@ -19,7 +19,7 @@ echo 'Submit Project'
 cfn submit
 
 # Concatenate the name of the of the extension as it is supposed to be uploaded
-typeNamePrefix='Redis::CloudFormation::'
+typeNamePrefix='Redis::Cloud::'
 typeName="${typeNamePrefix}${folderName}"
 echo 'Name of Extension'
 echo $typeName
