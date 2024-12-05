@@ -1,6 +1,11 @@
 name: submit peering private extension
 on:
   push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master 
     paths:
       - Peering/**
 jobs:
