@@ -1,6 +1,11 @@
 name: submit database private extension
 on:
   push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master 
     paths:
       - Database/**
 jobs:
