@@ -2,7 +2,7 @@ name: submit subscription private extension
 on:
   push:
     paths:
-      - ProSubscription/**
+      - Subscription/**
 jobs:
   build:
     runs-on: ubuntu-latest
