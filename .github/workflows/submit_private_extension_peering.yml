@@ -2,7 +2,7 @@ name: submit peering private extension
 on:
   push:
     paths:
-      - SubscriptionPeering/**
+      - Peering/**
 jobs:
   build:
     runs-on: ubuntu-latest
