@@ -2,7 +2,7 @@ name: submit database private extension
 on:
   push:
     paths:
-      - ProDatabase/**
+      - Database/**
 jobs:
   build:
     runs-on: ubuntu-latest
