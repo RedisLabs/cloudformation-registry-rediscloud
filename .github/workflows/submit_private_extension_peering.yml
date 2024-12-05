@@ -18,7 +18,7 @@ jobs:
     - name: Publish new version as a private exension and set to default version
       run: |
          chmod +x ./scripts/upload_private_extension.sh
-         ./scripts/upload_private_extension.sh SubscriptionPeering
+         ./scripts/upload_private_extension.sh Peering
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
