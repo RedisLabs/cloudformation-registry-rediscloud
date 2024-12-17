@@ -1,6 +1,6 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
-    "SubscriptionID": "187624",
+    "SubscriptionID": "188726",
     "VpcCidrs": [
         "10.10.50.0/24",
         "10.10.60.0/24"
