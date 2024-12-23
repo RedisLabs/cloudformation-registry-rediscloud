@@ -1,10 +1,10 @@
 {
     "BaseUrl": "https://api-k8s-cloudapi.qa.redislabs.com",
-    "SubscriptionID": "188726",
+    "SubscriptionID": "189234",
     "Provider": "AWS",
     "Region": "us-east-1",
-    "AwsAccountId": "550460116595",
-    "VpcId": "vpc-07a19251ad51c5458",
+    "AwsAccountId": "688576139038",
+    "VpcId": "vpc-0935a17024232d75c",
     "VpcCidrs": [
         "10.10.10.0/24",
         "10.10.20.0/24"
