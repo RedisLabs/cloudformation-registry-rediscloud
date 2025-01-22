@@ -18,11 +18,6 @@ There are currently three Redis resource types that can be provisioned via Cloud
 
 ![Diagram](resource_architecture_diagram.png)
 
-### Bugs and feature requests
-[...]
-
-### CloudFormation examples
-[...]
 
 ## Getting Started
 ### 0. Prerequisites
@@ -60,7 +55,18 @@ aws cloudformation set-type-configuration \
     --configuration '{"RedisAccess": {"xapikey": "{{resolve:secretsmanager:"Secret Name":SecretString:"Secret Key for x_api_key"}}", "xapisecretkey": "{{resolve:secretsmanager:"Secret Name":SecretString:"Secret Key for x_api_secret_key"}}"}}'
 ```
 
+### How to contribute
+If you like to contribute to this project it is heavily recommended to read the AWS documentation for 'Extension Development for CloudFormation' [2] first.
+
+It is possible to freely test any feature by registering this extension to your own AWS account as a private extension. 
+
+If you like to publish your change via Redis then please create a PR to this Repository. Please note: In order for your code to be in the public AWS registry it needs to pass a specific set of tests [3]. Please especially focus on frequently running contract tests [4].
+
+### Bugs and feature requests
+[...]
+
+
 [1] https://api.redislabs.com/v1/swagger-ui/index.html#/
-
-
-
+[2] https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/resource-type-develop.html
+[3]https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/publish-extension.html
+[4] https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/resource-type-test.html
