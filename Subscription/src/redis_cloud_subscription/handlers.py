@@ -133,7 +133,7 @@ def DeleteDatabase(base_url, subscription_id, database_id, http_headers):
     )
 
     response = HttpRequests(method="DELETE", url=url, headers=http_headers)
-    LOG.info("Default database was deleted with response:" + str(response))
+    LOG.info("Default database was deleted with this response:" + str(response))
 
 
 # Functions which returns the total number of databases assigned to a subscription
