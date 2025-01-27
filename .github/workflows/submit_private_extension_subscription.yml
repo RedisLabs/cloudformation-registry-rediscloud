@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Subscription/**
   pull_request:
     branches:
       - master 
