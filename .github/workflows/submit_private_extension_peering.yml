@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Peering/**
   pull_request:
     branches:
       - master 
