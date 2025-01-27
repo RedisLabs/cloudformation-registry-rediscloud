@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Database/**
   pull_request:
     branches:
       - master 
